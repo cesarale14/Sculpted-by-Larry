@@ -17,7 +17,8 @@ const programs = [
     ],
     cta: "Book a Call",
     href: "/book",
-    featured: true,
+    featured: false,
+    badge: null,
   },
   {
     title: "Online Coaching",
@@ -31,7 +32,8 @@ const programs = [
     ],
     cta: "Book a Call",
     href: "/book",
-    featured: false,
+    featured: true,
+    badge: "Most Popular",
   },
   {
     title: "Starter Pack",
@@ -46,6 +48,7 @@ const programs = [
     cta: "Get Started",
     href: "/programs",
     featured: false,
+    badge: null,
   },
 ];
 
@@ -62,6 +65,13 @@ export function ProgramCards() {
           {programs.map((program, i) => (
             <ScrollReveal key={program.title} delay={i * 0.15}>
               <Card gold={program.featured} className="flex flex-col h-full">
+                {program.badge && (
+                  <div className="mb-4">
+                    <span className="inline-block bg-gold text-navy text-xs font-body font-medium uppercase tracking-wider px-3 py-1 rounded-full">
+                      {program.badge}
+                    </span>
+                  </div>
+                )}
                 <h3
                   className="font-heading text-xl md:text-2xl font-semibold uppercase tracking-wide"
                   style={{ color: "var(--text-primary)" }}

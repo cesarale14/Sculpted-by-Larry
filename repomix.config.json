@@ -1,0 +1,4 @@
+{
+  "output": { "filePath": "repomix-output.txt" },
+  "ignore": { "customPatterns": ["node_modules", ".next", "repomix-output.txt", ".git"] }
+}
