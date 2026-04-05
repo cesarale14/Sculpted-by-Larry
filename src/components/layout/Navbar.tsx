@@ -29,31 +29,33 @@ export function Navbar() {
           : "bg-transparent"
       }`}
     >
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-18 md:h-20">
-        <Link href="/" className="flex-shrink-0 flex items-center gap-3">
+      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20 md:h-24">
+        <Link href="/" className="flex-shrink-0 flex items-center gap-4">
           <Image
-            src="/logos/logo_icon.svg"
+            src={
+              theme === "dark"
+                ? "/logos/logo_badge_dark.svg"
+                : "/logos/logo_badge_light.svg"
+            }
             alt="Sculpted by Larry"
-            width={36}
-            height={36}
-            className="w-9 h-9 md:w-11 md:h-11 rounded-full"
+            width={56}
+            height={56}
+            className="rounded-full md:w-16 md:h-16"
           />
-          <div className="flex flex-col leading-tight">
+          <span
+            className={`font-heading text-xl md:text-2xl tracking-widest uppercase ${
+              theme === "dark" ? "text-white" : "text-navy"
+            }`}
+          >
+            Sculpted{" "}
             <span
-              className={`font-heading text-base md:text-lg font-bold uppercase tracking-[0.2em] ${
-                theme === "dark" ? "text-white" : "text-navy"
-              }`}
-            >
-              SCULPTED
-            </span>
-            <span
-              className={`font-heading text-sm md:text-base italic ${
+              className={`italic normal-case ${
                 theme === "dark" ? "text-gold" : "text-gold-dark"
               }`}
             >
               by Larry
             </span>
-          </div>
+          </span>
         </Link>
 
         <div className="hidden md:flex items-center gap-8">

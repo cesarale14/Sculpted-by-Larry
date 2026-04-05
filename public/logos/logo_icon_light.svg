@@ -1,10 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
   <!-- Background -->
-  <circle cx="200" cy="200" r="190" fill="#0F1525"/>
+  <circle cx="200" cy="200" r="190" fill="#F8F6F1"/>
   <!-- Outer ring -->
-  <circle cx="200" cy="200" r="175" fill="none" stroke="#C9A84C" stroke-width="2.5"/>
+  <circle cx="200" cy="200" r="175" fill="none" stroke="#A8873A" stroke-width="2.5"/>
   <!-- Muscular figure - double bicep pose -->
-  <g fill="none" stroke="#C9A84C" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+  <g fill="none" stroke="#A8873A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
     <!-- Head -->
     <ellipse cx="200" cy="145" rx="18" ry="22"/>
     <!-- Neck -->
