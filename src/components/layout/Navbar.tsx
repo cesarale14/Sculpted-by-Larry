@@ -34,13 +34,13 @@ export function Navbar() {
           <Image
             src={
               theme === "dark"
-                ? "/logos/logo_badge_dark.svg"
-                : "/logos/logo_badge_light.svg"
+                ? "/logos/logo_icon.svg"
+                : "/logos/logo_icon_light.svg"
             }
             alt="Sculpted by Larry"
-            width={56}
-            height={56}
-            className="rounded-full md:w-16 md:h-16"
+            width={64}
+            height={64}
+            className="rounded-full w-14 h-14 md:w-[72px] md:h-[72px]"
           />
           <span
             className={`font-heading text-xl md:text-2xl tracking-widest uppercase ${
