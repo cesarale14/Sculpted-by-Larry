@@ -32,14 +32,10 @@ export function Navbar() {
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20 md:h-24">
         <Link href="/" className="flex-shrink-0 flex items-center gap-4">
           <Image
-            src={
-              theme === "dark"
-                ? "/logos/logo_icon.svg"
-                : "/logos/logo_icon_light.svg"
-            }
+            src="/logos/logo_icon.jpg"
             alt="Sculpted by Larry"
-            width={64}
-            height={64}
+            width={72}
+            height={72}
             className="rounded-full w-14 h-14 md:w-[72px] md:h-[72px]"
           />
           <span
