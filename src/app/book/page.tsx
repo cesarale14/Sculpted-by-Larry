@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { CalEmbed } from "@/components/booking/CalEmbed";
+
+const CAL_LINK =
+  process.env.NEXT_PUBLIC_CALCOM_LINK || "sculpted-by-larry/free-consultation";
 
 export const metadata: Metadata = {
   title: "Book a Call",
@@ -38,17 +42,10 @@ export default function BookPage() {
 
           <ScrollReveal>
             <div
-              className="rounded-xl p-8 md:p-12 text-center min-h-[400px] flex items-center justify-center"
+              className="rounded-xl overflow-hidden min-h-[700px]"
               style={{ background: "var(--bg-secondary)", border: "1px solid var(--border-color)" }}
             >
-              <div>
-                <p className="text-lg" style={{ color: "var(--text-muted)" }}>
-                  Cal.com booking widget will be embedded here
-                </p>
-                <p className="text-sm mt-2" style={{ color: "var(--text-muted)" }}>
-                  Configure your Cal.com link in constants.ts to enable booking
-                </p>
-              </div>
+              <CalEmbed calLink={CAL_LINK} />
             </div>
           </ScrollReveal>
         </div>
