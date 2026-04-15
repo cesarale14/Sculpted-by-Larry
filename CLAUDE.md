@@ -1,144 +1,201 @@
 # CLAUDE.md — Sculpted by Larry
 
-> **IMPORTANT:** Always read this file first before any task. Run `npx repomix` after reading to understand the full codebase context before making changes.
+> **CRITICAL:** Read this file AND DESIGN_SYSTEM.md before ANY task.
+> Then run `npx repomix` to understand the full codebase before making changes.
+> Every prompt must begin by reading these two files.
 
 ---
 
 ## Project Overview
 
-**Sculpted by Larry** is a personal training and online coaching brand website for an ISSA-certified trainer based in Tampa, Florida. The business operates on a hybrid model: in-person training in Tampa Bay + scalable online coaching nationwide.
+**Sculpted by Larry** — Premium personal training & online coaching brand.
+ISSA-certified trainer based in Tampa, FL. Hybrid model: in-person Tampa Bay + online nationwide.
 
-**Live URL (target):** sculptedbylarry.com  
-**Repo:** Local development → Vercel deployment  
-**Status:** Initial build
+**Live:** https://sculpted-by-larry.vercel.app
+**Repo:** cesarale14/sculpted-by-larry
+**Status:** V2 rebuild — design system overhaul + backend integration
 
 ---
 
 ## Tech Stack
 
-| Layer | Technology |
-|-------|-----------|
-| Framework | Next.js 14 (App Router) |
-| Language | TypeScript |
-| Styling | Tailwind CSS |
-| Animations | Framer Motion |
-| Hosting | Vercel (free tier) |
-| Booking | Cal.com embed (free tier) |
-| Contact/Email | Resend (free tier, 3K emails/mo) |
-| Email Marketing | Mailerlite (free tier, up to 1K subs) |
-| Domain | sculptedbylarry.com |
-| Font | Google Fonts — Cormorant Garant (serif headings) + Inter or DM Sans (body) |
+| Layer | Technology | Status |
+|-------|-----------|--------|
+| Framework | Next.js 14 (App Router) | ✅ |
+| Language | TypeScript | ✅ |
+| Styling | Tailwind CSS | ✅ |
+| Animations | Framer Motion | ✅ |
+| Hosting | Vercel | ✅ |
+| Booking | Cal.com (embed + API) | 🔧 Needs integration |
+| Email | Resend | 🔧 API key ready |
+| Payments | Stripe (Checkout + Payment Links) | 🔧 API keys ready |
+| Email Marketing | Mailerlite | 📋 Future |
+| Analytics | Google Analytics + Meta Pixel | 📋 Future |
+| Training App | TBD — planned future product | 📋 Future |
+| Fonts | Google Fonts: Cormorant Garamond + DM Sans | ✅ |
+| Icons | Lucide React | ✅ |
 
 ---
 
-## Brand Identity
+## Brand Identity (Quick Reference)
 
-### Colors
+Full details in `DESIGN_SYSTEM.md`. Key values:
 
-```css
-/* Primary palette */
---navy: #0F1525;           /* Primary dark / backgrounds */
---gold: #C9A84C;           /* Primary accent / CTAs / highlights */
---gold-dark: #A8873A;      /* Gold on light backgrounds */
---white: #FFFFFF;           /* Body text on dark */
---off-white: #F8F6F1;      /* Light background variant */
---light-gray: #F5F5F5;     /* Section backgrounds */
---dark-gray: #333333;      /* Body text on light */
---med-gray: #666666;       /* Secondary text */
+```
+Navy:      #0F1525     (primary dark background)
+Navy-light: #1A2235    (elevated dark surfaces)
+Gold:      #C9A84C     (primary accent)
+Off-white: #F8F6F1     (light section backgrounds)
+Heading font: Cormorant Garamond (serif)
+Body font: DM Sans (sans-serif)
 ```
 
-### Typography
-
-- **Headings:** "SCULPTED" uses wide letter-spacing (tracking), uppercase, serif font (Cormorant Garant or Playfair Display)
-- **Script/Accent:** "by Larry" uses italic serif
-- **Body:** Clean sans-serif (DM Sans or Inter)
-- **Tone:** Premium, confident, approachable — NOT aggressive gym-bro energy
-
-### Logo Assets
-
-SVG logo files are in `/public/logos/`:
-
-| File | Usage |
-|------|-------|
-| `logo_badge_dark.svg` | Instagram profile, watermark, merch — navy circle with gold silhouette |
-| `logo_badge_light.svg` | Light backgrounds, print — cream circle with dark gold |
-| `logo_horizontal.svg` | **Website navbar**, email signature — icon + divider + wordmark |
-| `logo_icon.svg` | Favicon, app icon, small format — silhouette only in circle |
-| `logo_wordmark.svg` | Text-only — minimal placements, social bios |
-| `logo_social.svg` | Reels thumbnails, story graphics — gold block impact version |
-
-**The horizontal lockup (`logo_horizontal.svg`) is the primary website header logo.**
+**Design direction:** Dark navy hero with real gym photography of Larry. Alternating dark/light sections. Luxury-refined meets athletic confidence.
 
 ---
 
-## Site Architecture (5 Pages MVP)
+## Logo Assets
 
-### 1. Home (`/`)
-- **Hero section:** Full-viewport, navy background, large headline ("Your Body. Engineered."), one transformation photo, gold CTA button → Book a Call
-- **Trust bar:** ISSA certification badge, "Tampa, FL" location, client count
-- **Programs preview:** 3 cards (In-Person, Online Coaching, Starter Pack) with pricing hints
-- **Transformation spotlight:** Before/after with client testimonial quote
-- **Final CTA:** "Ready to get sculpted?" → Book a Call
+All logos in `/public/logos/` as SVG files:
 
-### 2. Programs (`/programs`)
-- **3 program tiers with pricing:**
-  - 1-on-1 In-Person: $75/session or $500/month (3x/week)
-  - Online Coaching: $175/month (custom programming, weekly check-ins, nutrition, WhatsApp support)
-  - Starter Pack: $49 one-time (4-week self-guided PDF program)
-- Each tier has feature list, CTA to book or purchase
-- FAQ section at bottom
+| File | Format | Usage |
+|------|--------|-------|
+| `logo_icon.svg` | SVG | Navbar icon (44px), favicon source |
+| `logo_badge_dark.svg` | SVG | Profile pic, watermarks |
+| `logo_badge_light.svg` | SVG | Light backgrounds, print |
+| `logo_horizontal.svg` | SVG | Email signature, wide placements |
+| `logo_wordmark.svg` | SVG | Text-only minimal placements |
+| `logo_social.svg` | SVG | Social media graphics |
 
-### 3. Results (`/results`)
-- Before/after photo gallery (start with 1 transformation, design for grid expansion)
-- Written testimonials with client first name + goal achieved
-- Metrics bar: "X lbs lost", "Y clients trained", "Z% retention rate"
+**Navbar logo:** `logo_icon.svg` at 44px + stacked text "SCULPTED" / "by Larry"
 
-### 4. About (`/about`)
-- Larry's personal story (origin, why he became a trainer)
-- ISSA certification display
-- Training philosophy section
-- Professional photo(s)
-
-### 5. Book a Call (`/book`)
-- Cal.com embed for free 15-min consultation
-- "What to expect" section explaining the call structure
-- Confirmation flow via Resend
-
-### Lead Magnet Landing Page (`/free-plan`)
-- Standalone page (not in main nav)
-- Email capture form → delivers "Larry's 5-Day Sculpt Starter Plan" PDF
-- Instagram bio link destination
-- Connected to Mailerlite for email nurture sequence
-
-### Contact (`/contact`) — Optional, can be footer section
-- Contact form via Resend
-- WhatsApp direct link
-- Location: Tampa, FL (no specific address)
-- Social links: Instagram, TikTok
+**IMPORTANT:** All logos must be served as SVG, never JPG/PNG. Check that `next.config.js` allows SVG imports or use them via `<Image>` or `<img>` with proper SVG source paths.
 
 ---
 
-## Design Guidelines
+## Site Architecture
 
-### Layout Principles
-- **Mobile-first** — 80%+ of fitness traffic is mobile
-- **Dark theme primary** — navy backgrounds with gold accents (matches brand)
-- **Every page has a CTA** — no dead-end pages
-- **Generous whitespace** — premium feel, not cluttered
-- **Sticky navbar** with horizontal logo lockup, transparent on hero → solid on scroll
+### Pages
 
-### Component Patterns
-- **Buttons:** Gold background (#C9A84C) with navy text, rounded-lg, hover: slight brightness increase
-- **Cards:** Navy or dark-gray background, subtle gold border or gold accent line, rounded-xl
-- **Section transitions:** Subtle Framer Motion fade-in-up on scroll (useInView)
-- **Hero:** Full viewport height, centered content, subtle background texture or gradient overlay on photo
-- **Typography scale:** Hero h1 = 48-64px, Section h2 = 32-40px, Card h3 = 20-24px, Body = 16px
+| Route | Page | Purpose |
+|-------|------|---------|
+| `/` | Home | Hero + trust + programs + transformation + CTA |
+| `/programs` | Programs | Detailed tiers + FAQ |
+| `/results` | Results | Stats + transformations + testimonials |
+| `/about` | About | Larry's story + credentials + philosophy |
+| `/book` | Book a Call | Cal.com embed + what to expect |
+| `/free-plan` | Lead Magnet | Email capture for free 5-day plan |
+| `/payment/success` | Payment Success | Post-Stripe confirmation |
+| `/payment/cancel` | Payment Cancel | Stripe cancel redirect |
 
-### Animations (Framer Motion)
-- Page load: staggered fade-in for hero elements (0.2s delay between headline, subhead, CTA)
-- Scroll reveals: fade-in-up with 0.6s duration, triggered at 20% viewport intersection
-- Hover states: subtle scale(1.02) on cards, brightness increase on buttons
-- **Keep it tasteful** — subtle motion that adds polish, not distracting
+### API Routes
+
+| Route | Method | Purpose |
+|-------|--------|---------|
+| `/api/contact` | POST | Contact form → Resend email |
+| `/api/lead` | POST | Lead capture → Resend + (future) Mailerlite |
+| `/api/checkout` | POST | Create Stripe Checkout session |
+| `/api/webhooks/stripe` | POST | Handle Stripe payment events |
+
+---
+
+## Backend Architecture
+
+### Environment Variables (`.env.local`)
+
+```env
+# Resend
+RESEND_API_KEY=re_xxxxxxxxxxxx
+RESEND_FROM_EMAIL=larry@sculptedbylarry.com
+
+# Stripe
+STRIPE_SECRET_KEY=sk_live_xxxxxxxxxxxx
+STRIPE_PUBLISHABLE_KEY=pk_live_xxxxxxxxxxxx
+STRIPE_WEBHOOK_SECRET=whsec_xxxxxxxxxxxx
+
+# Stripe Price IDs (create in Stripe Dashboard)
+STRIPE_PRICE_STARTER=price_xxxxxxxxxxxx
+STRIPE_PRICE_ONLINE_MONTHLY=price_xxxxxxxxxxxx
+STRIPE_PRICE_INPERSON_SESSION=price_xxxxxxxxxxxx
+STRIPE_PRICE_INPERSON_MONTHLY=price_xxxxxxxxxxxx
+
+# Cal.com
+NEXT_PUBLIC_CALCOM_LINK=sculpted-by-larry/free-consultation
+
+# Site
+NEXT_PUBLIC_SITE_URL=https://sculptedbylarry.com
+```
+
+### Stripe Integration
+
+**Business flow:** Larry discusses plans with client on consultation call → creates a payment request → client pays via Stripe.
+
+**Implementation approach:** Stripe Checkout Sessions created via API route. Larry can trigger these manually via a simple admin action, or send clients a payment link.
+
+```
+POST /api/checkout
+Body: { priceId: string, customerEmail: string, customerName: string }
+Returns: { url: string } (Stripe Checkout URL to redirect client to)
+
+POST /api/webhooks/stripe
+Handles: checkout.session.completed, customer.subscription.created
+Actions: Send confirmation email via Resend, log payment
+```
+
+**Stripe products to create in Dashboard:**
+- Starter Pack — $49.00 one-time
+- Online Coaching — $175.00/month recurring
+- In-Person Session — $75.00 one-time
+- In-Person Monthly — $500.00/month recurring
+
+**Payment success/cancel pages:**
+- `/payment/success` — Thank you message, next steps, what to expect
+- `/payment/cancel` — Friendly message, "still have questions?" CTA back to Book a Call
+
+**Security:**
+- Validate webhook signatures using `STRIPE_WEBHOOK_SECRET`
+- Never expose `STRIPE_SECRET_KEY` to client
+- Only `STRIPE_PUBLISHABLE_KEY` is prefixed with `NEXT_PUBLIC_`
+- Rate limit the checkout endpoint (basic: check for duplicate sessions)
+
+### Resend Integration
+
+```typescript
+// src/lib/resend.ts
+import { Resend } from 'resend';
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+// Contact form
+export async function sendContactEmail(data: { name: string; email: string; message: string }) { ... }
+
+// Lead magnet delivery
+export async function sendLeadMagnetEmail(data: { name: string; email: string }) { ... }
+
+// Payment confirmation
+export async function sendPaymentConfirmation(data: { email: string; plan: string; amount: number }) { ... }
+```
+
+**Email templates** (use React Email or inline HTML):
+- Contact form notification (to Larry)
+- Lead magnet delivery (to subscriber, includes PDF link)
+- Payment confirmation (to client)
+- Welcome email (to new coaching client)
+
+### Cal.com Integration
+
+```tsx
+// In /book/page.tsx
+import Cal, { getCalApi } from "@calcom/embed-react";
+
+// Inline embed (preferred)
+<Cal calLink="sculpted-by-larry/free-consultation" config={{ theme: "dark" }} />
+
+// Or popup trigger
+const cal = await getCalApi();
+cal("ui", { theme: "dark", styles: { branding: { brandColor: "#C9A84C" } } });
+```
+
+**Cal.com styling:** Set brand color to gold (#C9A84C), dark theme, hide Cal branding if possible on paid plan.
 
 ---
 
@@ -147,65 +204,80 @@ SVG logo files are in `/public/logos/`:
 ```
 sculpted-by-larry/
 ├── public/
-│   ├── logos/
-│   │   ├── logo_badge_dark.svg
-│   │   ├── logo_badge_light.svg
-│   │   ├── logo_horizontal.svg
-│   │   ├── logo_icon.svg
-│   │   ├── logo_wordmark.svg
-│   │   └── logo_social.svg
-│   ├── images/
-│   │   ├── transformation-1.jpg    (placeholder until real photo)
-│   │   └── larry-portrait.jpg      (placeholder until real photo)
-│   └── favicon.ico                 (generated from logo_icon.svg)
+│   ├── logos/                    # All SVG logo variants
+│   ├── images/                  # Larry's photos, transformation photos
+│   │   ├── hero/                # Hero section images
+│   │   ├── transformations/     # Before/after photos
+│   │   ├── about/               # Larry portrait, gym shots
+│   │   └── programs/            # Program-related imagery
+│   ├── downloads/               # Downloadable assets
+│   │   └── sculpt-starter-plan.pdf
+│   └── favicon.ico
 ├── src/
 │   ├── app/
-│   │   ├── layout.tsx              (root layout, fonts, metadata)
-│   │   ├── page.tsx                (home page)
-│   │   ├── programs/
-│   │   │   └── page.tsx
-│   │   ├── results/
-│   │   │   └── page.tsx
-│   │   ├── about/
-│   │   │   └── page.tsx
-│   │   ├── book/
-│   │   │   └── page.tsx
-│   │   ├── free-plan/
-│   │   │   └── page.tsx
-│   │   └── globals.css
+│   │   ├── layout.tsx           # Root layout, fonts, metadata, Navbar, Footer
+│   │   ├── page.tsx             # Home page
+│   │   ├── programs/page.tsx
+│   │   ├── results/page.tsx
+│   │   ├── about/page.tsx
+│   │   ├── book/page.tsx
+│   │   ├── free-plan/page.tsx
+│   │   ├── payment/
+│   │   │   ├── success/page.tsx
+│   │   │   └── cancel/page.tsx
+│   │   ├── api/
+│   │   │   ├── contact/route.ts
+│   │   │   ├── lead/route.ts
+│   │   │   ├── checkout/route.ts
+│   │   │   └── webhooks/
+│   │   │       └── stripe/route.ts
+│   │   ├── globals.css
+│   │   └── not-found.tsx        # Custom 404
 │   ├── components/
 │   │   ├── layout/
 │   │   │   ├── Navbar.tsx
 │   │   │   ├── Footer.tsx
-│   │   │   └── MobileMenu.tsx
+│   │   │   ├── MobileMenu.tsx
+│   │   │   └── AnnouncementBar.tsx
 │   │   ├── sections/
 │   │   │   ├── Hero.tsx
+│   │   │   ├── TrustBar.tsx
 │   │   │   ├── ProgramCards.tsx
 │   │   │   ├── TransformationSpotlight.tsx
 │   │   │   ├── Testimonials.tsx
-│   │   │   └── CTASection.tsx
+│   │   │   ├── CTASection.tsx
+│   │   │   ├── StatsCounter.tsx
+│   │   │   └── ProcessSteps.tsx
 │   │   ├── ui/
 │   │   │   ├── Button.tsx
 │   │   │   ├── Card.tsx
 │   │   │   ├── SectionHeading.tsx
-│   │   │   └── ScrollReveal.tsx
+│   │   │   ├── ScrollReveal.tsx
+│   │   │   ├── Badge.tsx
+│   │   │   └── Accordion.tsx
 │   │   └── forms/
 │   │       ├── ContactForm.tsx
 │   │       └── LeadCaptureForm.tsx
-│   └── lib/
-│       ├── constants.ts            (brand colors, pricing, social links)
-│       └── resend.ts               (email sending utility)
+│   ├── lib/
+│   │   ├── constants.ts         # Brand info, pricing, social links
+│   │   ├── resend.ts            # Email utilities
+│   │   ├── stripe.ts            # Stripe client + helpers
+│   │   └── utils.ts             # cn() helper, formatters
+│   └── types/
+│       └── index.ts             # Shared TypeScript types
+├── CLAUDE.md                    # This file
+├── DESIGN_SYSTEM.md             # Visual design rules
 ├── tailwind.config.ts
 ├── next.config.js
 ├── package.json
 ├── tsconfig.json
 ├── repomix.config.json
-└── CLAUDE.md                       (this file)
+└── .env.local                   # API keys (not in git)
 ```
 
 ---
 
-## Constants Reference (`src/lib/constants.ts`)
+## Constants (`src/lib/constants.ts`)
 
 ```typescript
 export const BRAND = {
@@ -214,121 +286,162 @@ export const BRAND = {
   location: "Tampa, Florida",
   certification: "ISSA Certified Personal Trainer",
   email: "larry@sculptedbylarry.com",
-  phone: "",  // TBD
-  instagram: "https://instagram.com/sculptedbylarry",  // TBD - confirm handle
-  tiktok: "",  // TBD
-  whatsapp: "",  // TBD
-  calcom: "",  // TBD - Cal.com booking link
+  phone: "",
+  instagram: "https://instagram.com/sculptedbylarry",
+  tiktok: "",
+  whatsapp: "",
+  calcom: process.env.NEXT_PUBLIC_CALCOM_LINK || "sculpted-by-larry/free-consultation",
+  siteUrl: process.env.NEXT_PUBLIC_SITE_URL || "https://sculptedbylarry.com",
 } as const;
 
 export const PRICING = {
-  inPerson: { session: 75, monthly: 500, frequency: "3x/week" },
-  onlineCoaching: { monthly: 175 },
-  starterPack: { oneTime: 49 },
+  inPerson: {
+    session: 75,
+    monthly: 500,
+    frequency: "3x/week",
+    description: "Work directly with Larry in Tampa for hands-on coaching, form correction, and real-time accountability.",
+    features: [
+      "Fully personalized workout programming",
+      "Real-time form correction & coaching",
+      "Progressive overload tracking",
+      "Nutrition guidance included",
+      "Flexible scheduling",
+      "In-person accountability & motivation",
+    ],
+  },
+  onlineCoaching: {
+    monthly: 175,
+    description: "Get a custom training and nutrition plan with weekly coaching, no matter where you are.",
+    features: [
+      "Custom workout programming updated monthly",
+      "Weekly video check-ins",
+      "Personalized nutrition plan",
+      "WhatsApp support for questions",
+      "Progress tracking & adjustments",
+      "Access from anywhere nationwide",
+    ],
+    badge: "Most Popular",
+  },
+  starterPack: {
+    oneTime: 49,
+    description: "A 4-week self-guided program to kickstart your fitness journey on your own terms.",
+    features: [
+      "4-week structured workout plan (PDF)",
+      "Exercise demonstration video links",
+      "Nutrition basics & meal ideas",
+      "Progress tracking template",
+      "Great for beginners",
+    ],
+  },
 } as const;
 
-export const COLORS = {
-  navy: "#0F1525",
-  gold: "#C9A84C",
-  goldDark: "#A8873A",
-  offWhite: "#F8F6F1",
-} as const;
+export const NAV_LINKS = [
+  { href: "/", label: "Home" },
+  { href: "/programs", label: "Programs" },
+  { href: "/results", label: "Results" },
+  { href: "/about", label: "About" },
+] as const;
 ```
+
+---
+
+## Build Phases
+
+### Phase 1: Backend Foundation (Priority)
+1. Set up environment variables in `.env.local`
+2. Install Stripe SDK: `npm install stripe @stripe/stripe-js`
+3. Install Cal.com embed: `npm install @calcom/embed-react`
+4. Create `/api/contact/route.ts` — Resend contact form handler
+5. Create `/api/lead/route.ts` — Lead magnet email delivery
+6. Create `/api/checkout/route.ts` — Stripe Checkout session creation
+7. Create `/api/webhooks/stripe/route.ts` — Stripe webhook handler
+8. Create `src/lib/stripe.ts` — Stripe server + client utilities
+9. Create `src/lib/resend.ts` — Email sending functions
+10. Create payment success/cancel pages
+11. Wire Cal.com embed into `/book` page
+
+### Phase 2: Design System Overhaul
+12. Update `tailwind.config.ts` with full color system from DESIGN_SYSTEM.md
+13. Update `globals.css` with CSS custom properties and base styles
+14. Rebuild Navbar (dark theme, transparent→solid, proper SVG logo)
+15. Rebuild Footer (dark theme, 4-column grid)
+16. Rebuild all UI components (Button, Card, SectionHeading, ScrollReveal) per design system
+17. Remove light/cream theme — establish dark navy as hero default
+
+### Phase 3: Page Redesign
+18. Rebuild Hero (dark navy, Larry's photo with overlay, staggered animation)
+19. Rebuild TrustBar (dark strip, animated stats)
+20. Rebuild ProgramCards (alternating section, featured card treatment)
+21. Rebuild TransformationSpotlight (real photos when available)
+22. Rebuild CTASection (gold background break)
+23. Rebuild Programs page (dark/light alternating sections)
+24. Rebuild Results page (stats counter + testimonials)
+25. Rebuild About page (Larry's photo + story, split layout)
+26. Rebuild Book page (Cal.com embed + dark theme)
+27. Build Lead Magnet page (email capture + Resend delivery)
+28. Add AnnouncementBar component (top of site, lead magnet CTA)
+
+### Phase 4: Polish & Launch
+29. SEO metadata per page (titles, descriptions, OG images)
+30. Favicon generation from logo_icon.svg
+31. Custom 404 page
+32. Form validation + error handling polish
+33. Mobile responsive testing pass
+34. Performance audit (Lighthouse)
+35. Google Analytics setup
+36. Structured data (JSON-LD for LocalBusiness)
+
+### Future: Training App
+37. Client portal / dashboard (separate Next.js route group)
+38. Workout program viewer
+39. Progress tracking
+40. Direct messaging with Larry
+41. Payment history / subscription management
 
 ---
 
 ## Development Commands
 
 ```bash
-# Install dependencies
-npm install
+npm run dev          # Local development
+npm run build        # Production build
+npm run lint         # ESLint
+npx repomix          # Generate codebase context
 
-# Run dev server
-npm run dev
-
-# Build for production
-npm run build
-
-# Generate repomix context
-npx repomix
-
-# Deploy (auto via Vercel Git integration)
-git push origin main
+# Stripe CLI (for webhook testing locally)
+stripe listen --forward-to localhost:3000/api/webhooks/stripe
 ```
 
 ---
 
-## Build Order (Phase by Phase)
+## Rules for Claude Code
 
-### Phase 1: Foundation
-1. Initialize Next.js 14 project with TypeScript + Tailwind
-2. Set up tailwind.config.ts with brand colors and fonts
-3. Copy logo SVGs to `/public/logos/`
-4. Create root layout with fonts (Cormorant Garant + DM Sans from Google Fonts)
-5. Build Navbar (sticky, transparent→solid, horizontal logo, mobile hamburger)
-6. Build Footer (logo, nav links, social icons, "ISSA Certified" badge)
-
-### Phase 2: Home Page
-7. Hero section (full viewport, headline, CTA)
-8. Trust bar (certification, location, stats)
-9. Program cards preview (3 tiers)
-10. Transformation spotlight (before/after + testimonial)
-11. Final CTA section
-
-### Phase 3: Inner Pages
-12. Programs page (detailed tiers + FAQ)
-13. Results page (gallery + testimonials)
-14. About page (story + credentials)
-15. Book a Call page (Cal.com embed)
-
-### Phase 4: Lead Capture
-16. Lead magnet landing page (`/free-plan`)
-17. Contact form with Resend integration
-18. Email confirmation flow
-
-### Phase 5: Polish
-19. SEO metadata (per page titles, descriptions, OG images)
-20. Performance optimization (image optimization, lazy loading)
-21. Mobile testing pass
-22. Favicon generation from logo_icon.svg
-23. Google Business Profile link
+1. **Always read CLAUDE.md and DESIGN_SYSTEM.md first**
+2. **Always run `npx repomix` after reading docs** to get full codebase context
+3. Use App Router (not Pages Router)
+4. All components use TypeScript with proper typing
+5. `"use client"` only where required (Framer Motion, forms, Cal.com embed, interactive)
+6. Server Components are default
+7. Use `next/image` for all images
+8. Tailwind classes only — no inline styles, no CSS modules
+9. Framer Motion for animations — `import { motion } from "framer-motion"`
+10. Mobile-first responsive design
+11. All API routes must validate inputs and handle errors gracefully
+12. Never expose secret keys to the client (no `NEXT_PUBLIC_` prefix on secrets)
+13. All SVG logos loaded as SVG source, never converted to JPG/PNG
+14. Follow the color system and typography scale exactly as specified in DESIGN_SYSTEM.md
+15. The site aesthetic is luxury-refined, not template-generic
 
 ---
 
-## Notes for Claude Code
+## Image Assets Needed from Larry
 
-- **Always read this CLAUDE.md first** before starting any task
-- **Always run `npx repomix`** after reading this file to get full codebase context
-- Use App Router (not Pages Router)
-- All components use TypeScript with proper typing
-- Prefer `"use client"` only where needed (Framer Motion components, forms, interactive elements)
-- Keep Server Components as default
-- Use Next.js Image component for all images
-- Tailwind classes only — no inline styles, no CSS modules
-- Framer Motion for animations — import from `"framer-motion"`
-- Mobile-first responsive: design for mobile, then add `md:` and `lg:` breakpoints
-- The site should feel premium and polished, not generic template-y
-- Gold (#C9A84C) is the primary action color — all CTAs use this
-- Navy (#0F1525) is the primary background — most sections use this
+Before the design overhaul, Larry should provide:
 
----
+- [ ] **Hero photo** — Larry training a client, or a dramatic gym shot (landscape, high-res)
+- [ ] **Portrait photo** — Professional or semi-professional headshot for About page
+- [ ] **Gym environment shots** — 2-3 photos of the training space or Larry working out
+- [ ] **Transformation photos** — Before/after of at least 1 client (with permission)
+- [ ] **Video clip** (optional) — Short gym footage for hero background video
 
-## Placeholder Content
-
-Until Larry provides real photos and copy, use:
-- **Transformation photo:** A placeholder card with "Before → After" text and a note "Photo coming soon"
-- **Larry's portrait:** A styled placeholder with his initials "L" in gold
-- **Testimonials:** 2-3 realistic but clearly placeholder testimonials
-- **Stats:** "50+ Clients Trained" / "98% Client Satisfaction" / "Tampa's Premier Trainer"
-
----
-
-## Reference: What NOT to do
-
-- ❌ No generic gym/fitness template aesthetic
-- ❌ No bright colors or gradients (stay with navy + gold)
-- ❌ No stock photography vibes
-- ❌ No aggressive "BEAST MODE" energy
-- ❌ No cluttered layouts or small text
-- ❌ No pages without a clear CTA
-- ❌ No slow page loads (optimize everything)
+These go in `/public/images/` organized by subfolder. Until provided, use styled placeholders with the silhouette logo watermark as described in DESIGN_SYSTEM.md.
