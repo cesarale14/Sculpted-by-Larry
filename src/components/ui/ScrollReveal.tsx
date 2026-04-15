@@ -1,18 +1,15 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useInView } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 
-export function ScrollReveal({
-  children,
-  className = "",
-  delay = 0,
-}: {
+interface ScrollRevealProps {
   children: React.ReactNode;
   className?: string;
   delay?: number;
-}) {
+}
+
+export function ScrollReveal({ children, className = "", delay = 0 }: ScrollRevealProps) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.2 });
 

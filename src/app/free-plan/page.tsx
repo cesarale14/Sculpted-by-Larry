@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { BRAND } from "@/lib/constants";
-import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { Check } from "lucide-react";
 import { LeadCaptureForm } from "@/components/forms/LeadCaptureForm";
 
 export const metadata: Metadata = {
@@ -9,45 +8,45 @@ export const metadata: Metadata = {
     "Get Larry's free 5-Day Sculpt Starter Plan delivered to your inbox. Start your fitness transformation today.",
 };
 
+const included = [
+  "5-day structured workout plan",
+  "Basic nutrition framework",
+  "Exercise demonstrations",
+  "Hydration & recovery guide",
+];
+
 export default function FreePlanPage() {
   return (
-    <section
-      className="min-h-screen flex items-center justify-center py-20"
-      style={{ background: "var(--bg-primary)" }}
-    >
-      <div className="max-w-lg mx-auto px-4 sm:px-6 text-center">
-        <ScrollReveal>
-          <p
-            className="text-sm uppercase tracking-[0.3em] font-body mb-4"
-            style={{ color: "var(--accent)" }}
-          >
-            Free Download
-          </p>
-          <h1
-            className="font-heading text-3xl md:text-4xl lg:text-5xl font-semibold uppercase tracking-wider leading-tight"
-            style={{ color: "var(--text-primary)" }}
-          >
-            Larry&apos;s 5-Day
-            <br />
-            <span style={{ color: "var(--accent)" }}>Sculpt Starter Plan</span>
-          </h1>
-          <p
-            className="mt-6 font-body leading-relaxed"
-            style={{ color: "var(--text-secondary)" }}
-          >
-            A free 5-day training plan to kickstart your fitness journey. Enter
-            your email and get instant access.
-          </p>
-        </ScrollReveal>
+    <section className="min-h-screen bg-navy">
+      <div className="max-w-2xl mx-auto px-6 lg:px-8 py-24 md:py-32 text-center">
+        <p className="font-body text-[13px] font-medium uppercase tracking-[0.2em] text-gold mb-4">
+          Free Download
+        </p>
+        <h1 className="font-heading text-4xl md:text-5xl font-bold text-white uppercase tracking-wide leading-[0.95]">
+          Get Larry&apos;s Free
+        </h1>
+        <h2 className="mt-2 font-heading text-4xl md:text-5xl font-bold text-gold uppercase tracking-wide leading-[0.95]">
+          5-Day Sculpt Plan
+        </h2>
+        <p className="mt-6 font-body text-lg text-gray-300 leading-relaxed">
+          5 days of workouts + nutrition basics to kickstart your transformation.
+        </p>
 
-        <ScrollReveal delay={0.2}>
-          <div className="mt-10">
-            <LeadCaptureForm />
-          </div>
-        </ScrollReveal>
+        <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-4 text-left">
+          {included.map((item) => (
+            <div key={item} className="flex items-center gap-3">
+              <Check size={18} strokeWidth={1.5} className="text-gold shrink-0" />
+              <span className="font-body text-sm text-gray-300">{item}</span>
+            </div>
+          ))}
+        </div>
 
-        <p className="mt-6 text-xs" style={{ color: "var(--text-muted)" }}>
-          By signing up you agree to receive emails from {BRAND.name}. Unsubscribe anytime.
+        <div className="mt-10 bg-navy-light rounded-2xl p-6 md:p-8 border border-navy-lighter">
+          <LeadCaptureForm />
+        </div>
+
+        <p className="mt-6 font-body text-sm text-gray-500">
+          Join 100+ people who&apos;ve started their journey.
         </p>
       </div>
     </section>

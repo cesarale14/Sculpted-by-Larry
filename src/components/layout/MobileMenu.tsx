@@ -2,58 +2,78 @@
 
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import { X } from "lucide-react";
 import { NAV_LINKS } from "@/lib/constants";
-import { useTheme } from "@/components/ThemeProvider";
 
-export function MobileMenu({
-  open,
-  onClose,
-}: {
+interface MobileMenuProps {
   open: boolean;
   onClose: () => void;
-}) {
-  const { theme } = useTheme();
+}
 
+const overlayVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      duration: 0.25,
+      when: "beforeChildren",
+      staggerChildren: 0.08,
+    },
+  },
+  exit: { opacity: 0, transition: { duration: 0.2 } },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, x: -20 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.3, ease: "easeOut" as const } },
+};
+
+export function MobileMenu({ open, onClose }: MobileMenuProps) {
   return (
     <AnimatePresence>
       {open && (
         <motion.div
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: "auto" }}
-          exit={{ opacity: 0, height: 0 }}
-          className="md:hidden backdrop-blur-sm overflow-hidden"
-          style={{
-            background:
-              theme === "dark"
-                ? "rgba(15, 21, 37, 0.95)"
-                : "rgba(248, 246, 241, 0.95)",
-            borderTop: "1px solid var(--border-color)",
-          }}
+          variants={overlayVariants}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+          className="fixed inset-0 z-[60] md:hidden bg-navy-light/95 backdrop-blur-md flex flex-col"
+          role="dialog"
+          aria-modal="true"
         >
-          <ul className="flex flex-col items-center gap-6 py-8">
-            {NAV_LINKS.map((link) => (
-              <li key={link.href}>
+          <div className="flex items-center justify-end h-16 px-6">
+            <button
+              className="p-2 text-white hover:text-gold transition-colors"
+              onClick={onClose}
+              aria-label="Close menu"
+            >
+              <X size={28} strokeWidth={1.5} />
+            </button>
+          </div>
+          <nav className="flex-1 flex flex-col items-center justify-center gap-8 px-6">
+            <ul className="flex flex-col items-center gap-8">
+              {NAV_LINKS.map((link) => (
+                <motion.li key={link.href} variants={itemVariants}>
+                  <Link
+                    href={link.href}
+                    onClick={onClose}
+                    className="font-heading text-3xl uppercase tracking-wide text-white hover:text-gold transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                </motion.li>
+              ))}
+              <motion.li variants={itemVariants}>
                 <Link
-                  href={link.href}
+                  href="/book"
                   onClick={onClose}
-                  className="text-lg font-body"
-                  style={
-                    link.label === "Book a Call"
-                      ? {
-                          background: "var(--accent)",
-                          color: "var(--accent-text)",
-                          padding: "0.5rem 1.5rem",
-                          borderRadius: "0.5rem",
-                          display: "inline-block",
-                        }
-                      : { color: "var(--text-secondary)" }
-                  }
+                  className="inline-flex items-center font-body text-sm font-medium bg-gold text-navy px-8 py-4 rounded-lg hover:bg-gold-hover transition-colors"
                 >
-                  {link.label}
+                  Book a Call
                 </Link>
-              </li>
-            ))}
-          </ul>
+              </motion.li>
+            </ul>
+          </nav>
         </motion.div>
       )}
     </AnimatePresence>

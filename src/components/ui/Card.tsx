@@ -2,27 +2,37 @@
 
 import { motion } from "framer-motion";
 
+interface CardProps {
+  children: React.ReactNode;
+  className?: string;
+  variant?: "dark" | "light";
+  featured?: boolean;
+}
+
 export function Card({
   children,
   className = "",
-  gold = false,
-}: {
-  children: React.ReactNode;
-  className?: string;
-  gold?: boolean;
-}) {
+  variant = "dark",
+  featured = false,
+}: CardProps) {
+  const base =
+    variant === "dark"
+      ? "bg-navy-light border border-navy-lighter"
+      : "bg-white border border-gray-100 shadow-sm";
+
+  const featuredClasses = featured
+    ? "border-gold md:scale-[1.02]"
+    : "";
+
   return (
     <motion.div
-      whileHover={{ scale: 1.02 }}
-      transition={{ duration: 0.2 }}
-      className={`rounded-xl p-6 md:p-8 ${className}`}
-      style={{
-        background: "var(--bg-card)",
-        border: gold
-          ? "2px solid var(--accent)"
-          : "1px solid var(--border-color)",
-      }}
+      whileHover={{ y: -4 }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
+      className={`relative rounded-2xl p-8 transition-all ${base} ${featuredClasses} ${className}`}
     >
+      {featured && (
+        <div className="absolute top-0 left-0 right-0 h-[3px] bg-gold rounded-t-2xl" />
+      )}
       {children}
     </motion.div>
   );

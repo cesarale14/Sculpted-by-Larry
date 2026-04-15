@@ -27,61 +27,39 @@ const nextSteps = [
 
 export default function PaymentSuccessPage() {
   return (
-    <section
-      className="min-h-screen flex items-center justify-center pt-32 pb-20 md:pt-40 md:pb-28"
-      style={{ background: "var(--bg-primary)" }}
-    >
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 text-center">
+    <section className="min-h-screen flex items-center justify-center pt-32 pb-20 md:pt-40 md:pb-28 bg-navy">
+      <div className="max-w-2xl mx-auto px-6 lg:px-8 text-center">
         <div className="flex justify-center">
-          <CheckCircle2
-            size={80}
-            strokeWidth={1.5}
-            style={{ color: "var(--accent)" }}
-          />
+          <CheckCircle2 size={80} strokeWidth={1.5} className="text-gold" />
         </div>
 
-        <h1
-          className="mt-8 font-heading text-4xl md:text-5xl font-bold uppercase tracking-wide"
-          style={{ color: "var(--text-primary)" }}
-        >
+        <p className="mt-8 font-body text-[13px] font-medium uppercase tracking-[0.2em] text-gold">
+          You&apos;re In
+        </p>
+        <h1 className="mt-3 font-heading text-4xl md:text-5xl font-bold text-white uppercase tracking-wide leading-[0.95]">
           Payment Confirmed
         </h1>
 
-        <p
-          className="mt-6 text-lg leading-relaxed"
-          style={{ color: "var(--text-muted)" }}
-        >
+        <p className="mt-6 font-body text-lg text-gray-300 leading-relaxed">
           Thank you for choosing Sculpted by Larry. You&apos;ll receive a confirmation email shortly with your next steps.
         </p>
 
         <div className="mt-12 text-left">
-          <h2
-            className="font-heading text-xl font-semibold uppercase tracking-wide text-center"
-            style={{ color: "var(--text-primary)" }}
-          >
+          <h2 className="font-heading text-xl md:text-2xl font-semibold text-white uppercase tracking-wide text-center">
             What Happens Next
           </h2>
 
           <ol className="mt-8 space-y-6">
             {nextSteps.map((step) => (
               <li key={step.num} className="flex gap-4">
-                <span
-                  className="font-heading text-3xl font-bold shrink-0"
-                  style={{ color: "var(--accent)" }}
-                >
+                <span className="font-heading text-3xl font-bold text-gold shrink-0">
                   {step.num}
                 </span>
                 <div>
-                  <h3
-                    className="font-heading text-lg font-semibold"
-                    style={{ color: "var(--text-primary)" }}
-                  >
+                  <h3 className="font-heading text-lg font-semibold text-white">
                     {step.title}
                   </h3>
-                  <p
-                    className="mt-1 text-sm leading-relaxed"
-                    style={{ color: "var(--text-muted)" }}
-                  >
+                  <p className="mt-1 font-body text-sm text-gray-300 leading-relaxed">
                     {step.desc}
                   </p>
                 </div>
@@ -93,8 +71,7 @@ export default function PaymentSuccessPage() {
         <div className="mt-12">
           <Link
             href="/"
-            className="inline-block px-8 py-4 rounded-lg font-sans text-sm font-medium uppercase tracking-wider transition-all hover:-translate-y-0.5"
-            style={{ background: "var(--accent)", color: "var(--bg-primary)" }}
+            className="inline-flex items-center font-body text-[15px] font-medium bg-gold text-navy rounded-lg px-8 py-3.5 hover:bg-gold-hover transition-all duration-200 hover:-translate-y-0.5"
           >
             Back to Home
           </Link>

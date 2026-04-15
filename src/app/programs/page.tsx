@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { Check } from "lucide-react";
 import { PRICING } from "@/lib/constants";
-import { Button } from "@/components/ui/Button";
-import { Card } from "@/components/ui/Card";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { CTASection } from "@/components/sections/CTASection";
@@ -12,59 +12,49 @@ export const metadata: Metadata = {
     "In-person training, online coaching, and starter packs. Find the right program for your fitness goals.",
 };
 
-const tiers = [
-  {
-    title: "1-on-1 In-Person Training",
-    price: `$${PRICING.inPerson.session}/session`,
-    altPrice: `$${PRICING.inPerson.monthly}/month (${PRICING.inPerson.frequency})`,
-    description:
-      "Work directly with Larry in Tampa for hands-on coaching, form correction, and real-time accountability.",
-    features: [
-      "Fully personalized workout programming",
-      "Real-time form correction & coaching",
-      "Progressive overload tracking",
-      "Nutrition guidance included",
-      "Flexible scheduling",
-      "In-person accountability & motivation",
-    ],
-    cta: "Book a Call",
-    href: "/book",
-    featured: true,
-  },
-  {
-    title: "Online Coaching",
-    price: `$${PRICING.onlineCoaching.monthly}/month`,
-    altPrice: null,
-    description:
-      "Get a custom training and nutrition plan with weekly coaching, no matter where you are.",
-    features: [
-      "Custom workout programming updated monthly",
-      "Weekly video check-ins",
-      "Personalized nutrition plan",
-      "WhatsApp support for questions",
-      "Progress tracking & adjustments",
-      "Access from anywhere nationwide",
-    ],
-    cta: "Book a Call",
-    href: "/book",
-    featured: false,
-  },
+interface Tier {
+  title: string;
+  price: string;
+  priceSuffix?: string;
+  altPrice?: string;
+  description: string;
+  features: readonly string[];
+  cta: string;
+  href: string;
+  featured?: boolean;
+  badge?: string;
+}
+
+const tiers: Tier[] = [
   {
     title: "Starter Pack",
     price: `$${PRICING.starterPack.oneTime}`,
-    altPrice: "one-time purchase",
-    description:
-      "A 4-week self-guided program to kickstart your fitness journey on your own terms.",
-    features: [
-      "4-week structured workout plan (PDF)",
-      "Exercise demonstration video links",
-      "Nutrition basics & meal ideas",
-      "Progress tracking template",
-      "Great for beginners",
-    ],
+    priceSuffix: "one-time",
+    description: PRICING.starterPack.description,
+    features: PRICING.starterPack.features,
     cta: "Get Started",
     href: "/book",
-    featured: false,
+  },
+  {
+    title: "Online Coaching",
+    price: `$${PRICING.onlineCoaching.monthly}`,
+    priceSuffix: "/ month",
+    description: PRICING.onlineCoaching.description,
+    features: PRICING.onlineCoaching.features,
+    cta: "Book a Call",
+    href: "/book",
+    featured: true,
+    badge: PRICING.onlineCoaching.badge,
+  },
+  {
+    title: "In-Person Training",
+    price: `$${PRICING.inPerson.session}`,
+    priceSuffix: "/ session",
+    altPrice: `or $${PRICING.inPerson.monthly}/mo (${PRICING.inPerson.frequency})`,
+    description: PRICING.inPerson.description,
+    features: PRICING.inPerson.features,
+    cta: "Book a Call",
+    href: "/book",
   },
 ];
 
@@ -83,7 +73,7 @@ const faqs = [
   },
   {
     q: "Can I switch between in-person and online?",
-    a: "Yes! Many clients do a hybrid approach. We'll figure out what works best for your schedule and goals.",
+    a: "Yes. Many clients do a hybrid approach. We'll figure out what works best for your schedule and goals.",
   },
   {
     q: "What's included in the free consultation?",
@@ -94,90 +84,102 @@ const faqs = [
 export default function ProgramsPage() {
   return (
     <>
-      <section className="pt-32 pb-20 md:pt-40 md:pb-28" style={{ background: "var(--bg-primary)" }}>
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+      <section className="pt-32 pb-16 md:pt-40 md:pb-20 bg-navy">
+        <div className="max-w-5xl mx-auto px-6 lg:px-8">
           <SectionHeading
+            overline="Pick Your Program"
             title="Programs"
             subtitle="Choose the training experience that fits your goals, schedule, and budget."
+            variant="dark"
           />
+        </div>
+      </section>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+      <section className="py-16 md:py-20 bg-off-white">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 items-stretch">
             {tiers.map((tier, i) => (
-              <ScrollReveal key={tier.title} delay={i * 0.15}>
-                <Card gold={tier.featured} className="flex flex-col h-full">
-                  <h3
-                    className="font-heading text-xl md:text-2xl font-semibold uppercase tracking-wide"
-                    style={{ color: "var(--text-primary)" }}
-                  >
+              <ScrollReveal key={tier.title} delay={i * 0.15} className="flex">
+                <div
+                  className={`relative w-full flex flex-col rounded-2xl bg-white p-8 border shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ${
+                    tier.featured ? "border-gold lg:scale-[1.02]" : "border-gray-100"
+                  }`}
+                >
+                  {tier.featured && (
+                    <div className="absolute top-0 left-0 right-0 h-[3px] bg-gold rounded-t-2xl" />
+                  )}
+                  {tier.badge && (
+                    <span className="absolute -top-3 right-6 inline-block font-body text-[11px] font-medium uppercase tracking-[0.15em] bg-gold text-navy px-3 py-1 rounded-full">
+                      {tier.badge}
+                    </span>
+                  )}
+
+                  <h3 className="font-heading text-2xl font-semibold text-gray-700 uppercase tracking-wide">
                     {tier.title}
                   </h3>
-                  <p
-                    className="mt-3 font-heading text-3xl md:text-4xl font-bold"
-                    style={{ color: "var(--accent)" }}
-                  >
-                    {tier.price}
-                  </p>
+
+                  <div className="mt-4 flex items-baseline gap-2">
+                    <span className="font-heading italic text-4xl text-gray-700">
+                      {tier.price}
+                    </span>
+                    {tier.priceSuffix && (
+                      <span className="font-body text-sm text-gray-500">
+                        {tier.priceSuffix}
+                      </span>
+                    )}
+                  </div>
                   {tier.altPrice && (
-                    <p className="text-sm mt-1" style={{ color: "var(--text-muted)" }}>
-                      {tier.altPrice}
-                    </p>
+                    <p className="mt-1 font-body text-xs text-gray-500">{tier.altPrice}</p>
                   )}
-                  <p
-                    className="mt-4 text-sm leading-relaxed"
-                    style={{ color: "var(--text-secondary)" }}
-                  >
+
+                  <p className="mt-4 font-body text-sm text-gray-500 leading-relaxed">
                     {tier.description}
                   </p>
+
                   <ul className="mt-6 space-y-3 flex-1">
-                    {tier.features.map((f) => (
-                      <li
-                        key={f}
-                        className="flex items-start gap-2 text-sm"
-                        style={{ color: "var(--text-secondary)" }}
-                      >
-                        <span className="mt-0.5" style={{ color: "var(--accent)" }}>
-                          &#10003;
-                        </span>
-                        {f}
+                    {tier.features.map((feature) => (
+                      <li key={feature} className="flex items-start gap-3 font-body text-sm text-gray-700">
+                        <Check size={18} strokeWidth={1.5} className="mt-0.5 shrink-0 text-gold-dark" />
+                        {feature}
                       </li>
                     ))}
                   </ul>
+
                   <div className="mt-8">
-                    <Button
+                    <Link
                       href={tier.href}
-                      variant={tier.featured ? "primary" : "outline"}
-                      className="w-full"
+                      className={`inline-flex items-center justify-center w-full font-body text-[15px] font-medium rounded-lg px-8 py-3.5 transition-all duration-200 hover:-translate-y-0.5 ${
+                        tier.featured
+                          ? "bg-gold text-navy hover:bg-gold-hover"
+                          : "bg-transparent border border-gold-dark text-gold-dark hover:bg-gold-dark hover:text-white"
+                      }`}
                     >
                       {tier.cta}
-                    </Button>
+                    </Link>
                   </div>
-                </Card>
+                </div>
               </ScrollReveal>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="py-20 md:py-28" style={{ background: "var(--bg-secondary)" }}>
-        <div className="max-w-3xl mx-auto px-4 sm:px-6">
+      <section className="py-20 md:py-24 bg-navy">
+        <div className="max-w-3xl mx-auto px-6 lg:px-8">
           <SectionHeading
+            overline="Frequently Asked"
             title="FAQ"
             subtitle="Common questions about training with Larry."
+            variant="dark"
           />
           <div className="space-y-6">
-            {faqs.map((faq) => (
-              <ScrollReveal key={faq.q}>
-                <div className="pb-6" style={{ borderBottom: "1px solid var(--border-color)" }}>
-                  <h3
-                    className="font-body font-medium text-lg"
-                    style={{ color: "var(--text-primary)" }}
-                  >
+            {faqs.map((faq, i) => (
+              <ScrollReveal key={faq.q} delay={i * 0.05}>
+                <div className="pb-6 border-b border-navy-lighter">
+                  <h3 className="font-heading text-lg md:text-xl font-semibold text-white">
                     {faq.q}
                   </h3>
-                  <p
-                    className="mt-2 text-sm leading-relaxed"
-                    style={{ color: "var(--text-muted)" }}
-                  >
+                  <p className="mt-2 font-body text-sm text-gray-300 leading-relaxed">
                     {faq.a}
                   </p>
                 </div>

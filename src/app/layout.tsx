@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, DM_Sans } from "next/font/google";
-import { ThemeProvider } from "@/components/ThemeProvider";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import "./globals.css";
@@ -8,7 +7,8 @@ import "./globals.css";
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
   display: "swap",
 });
 
@@ -38,12 +38,10 @@ export default function RootLayout({
       lang="en"
       className={`${cormorant.variable} ${dmSans.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
-        <ThemeProvider>
-          <Navbar />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </ThemeProvider>
+      <body className="min-h-full flex flex-col bg-navy text-white font-body">
+        <Navbar />
+        <main className="flex-1">{children}</main>
+        <Footer />
       </body>
     </html>
   );
