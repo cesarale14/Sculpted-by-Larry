@@ -5,9 +5,9 @@ import { CountUp } from "@/components/ui/CountUp";
 import { CTASection } from "@/components/sections/CTASection";
 
 export const metadata: Metadata = {
-  title: "Results",
+  title: "Client Results & Transformations | Sculpted by Larry",
   description:
-    "See real client transformations and testimonials from Sculpted by Larry training programs.",
+    "Real client transformations and testimonials. See what's possible with personalized training and accountability coaching from Sculpted by Larry.",
 };
 
 const metrics = [
@@ -47,6 +47,7 @@ export default function ResultsPage() {
             title="Results"
             subtitle="Real people, real transformations."
             variant="dark"
+            as="h1"
           />
         </div>
       </section>

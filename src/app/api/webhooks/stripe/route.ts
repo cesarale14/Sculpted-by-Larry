@@ -41,29 +41,17 @@ export async function POST(request: Request) {
           (session.metadata?.plan as string | undefined) ??
           (session.mode === "subscription" ? "Coaching Subscription" : "Sculpted by Larry");
 
-        console.log("[stripe-webhook] checkout.session.completed", {
-          id: session.id,
-          email,
-          amount,
-          mode: session.mode,
-        });
-
         if (email) {
           await sendPaymentConfirmation({ email, customerName, plan, amount });
         }
         break;
       }
       case "customer.subscription.created": {
-        const subscription = event.data.object as Stripe.Subscription;
-        console.log("[stripe-webhook] customer.subscription.created", {
-          id: subscription.id,
-          customer: subscription.customer,
-          status: subscription.status,
-        });
+        // Future: persist subscription record
         break;
       }
       default:
-        console.log(`[stripe-webhook] unhandled event type: ${event.type}`);
+        break;
     }
 
     return NextResponse.json({ received: true });

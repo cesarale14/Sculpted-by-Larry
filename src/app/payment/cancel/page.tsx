@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Payment Cancelled",
+  title: "Payment Cancelled | Sculpted by Larry",
   description: "No worries — your spot is still available.",
+  robots: { index: false, follow: false },
 };
 
 export default function PaymentCancelPage() {

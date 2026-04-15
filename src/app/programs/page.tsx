@@ -7,9 +7,9 @@ import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { CTASection } from "@/components/sections/CTASection";
 
 export const metadata: Metadata = {
-  title: "Programs",
+  title: "Training Programs | Sculpted by Larry",
   description:
-    "In-person training, online coaching, and starter packs. Find the right program for your fitness goals.",
+    "Choose from in-person training in Tampa ($75/session), online coaching ($175/month), or our self-guided Starter Pack ($49). ISSA certified, results-driven programming.",
 };
 
 interface Tier {
@@ -27,12 +27,13 @@ interface Tier {
 
 const tiers: Tier[] = [
   {
-    title: "Starter Pack",
-    price: `$${PRICING.starterPack.oneTime}`,
-    priceSuffix: "one-time",
-    description: PRICING.starterPack.description,
-    features: PRICING.starterPack.features,
-    cta: "Get Started",
+    title: "In-Person Training",
+    price: `$${PRICING.inPerson.session}`,
+    priceSuffix: "/ session",
+    altPrice: `or $${PRICING.inPerson.monthly}/mo (${PRICING.inPerson.frequency})`,
+    description: PRICING.inPerson.description,
+    features: PRICING.inPerson.features,
+    cta: "Book a Call",
     href: "/book",
   },
   {
@@ -47,13 +48,12 @@ const tiers: Tier[] = [
     badge: PRICING.onlineCoaching.badge,
   },
   {
-    title: "In-Person Training",
-    price: `$${PRICING.inPerson.session}`,
-    priceSuffix: "/ session",
-    altPrice: `or $${PRICING.inPerson.monthly}/mo (${PRICING.inPerson.frequency})`,
-    description: PRICING.inPerson.description,
-    features: PRICING.inPerson.features,
-    cta: "Book a Call",
+    title: "Starter Pack",
+    price: `$${PRICING.starterPack.oneTime}`,
+    priceSuffix: "one-time",
+    description: PRICING.starterPack.description,
+    features: PRICING.starterPack.features,
+    cta: "Get Started",
     href: "/book",
   },
 ];
@@ -91,6 +91,7 @@ export default function ProgramsPage() {
             title="Programs"
             subtitle="Choose the training experience that fits your goals, schedule, and budget."
             variant="dark"
+            as="h1"
           />
         </div>
       </section>

@@ -55,10 +55,38 @@ export function ContactForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <input type="text" name="name" required placeholder="Your name" className={inputClasses} />
-        <input type="email" name="email" required placeholder="Email" className={inputClasses} />
+        <div>
+          <label htmlFor="contact-name" className="sr-only">
+            Your name
+          </label>
+          <input
+            id="contact-name"
+            type="text"
+            name="name"
+            required
+            placeholder="Your name"
+            className={inputClasses}
+          />
+        </div>
+        <div>
+          <label htmlFor="contact-email" className="sr-only">
+            Email address
+          </label>
+          <input
+            id="contact-email"
+            type="email"
+            name="email"
+            required
+            placeholder="Email"
+            className={inputClasses}
+          />
+        </div>
       </div>
+      <label htmlFor="contact-message" className="sr-only">
+        Your message
+      </label>
       <textarea
+        id="contact-message"
         name="message"
         required
         rows={4}

@@ -23,6 +23,7 @@ export function TransformationSpotlight() {
                   <img
                     src="/logos/logo_badge_dark.svg"
                     alt=""
+                    loading="lazy"
                     className="w-24 h-24"
                   />
                 </div>
@@ -38,6 +39,7 @@ export function TransformationSpotlight() {
                   <img
                     src="/logos/logo_badge_dark.svg"
                     alt=""
+                    loading="lazy"
                     className="w-24 h-24"
                   />
                 </div>

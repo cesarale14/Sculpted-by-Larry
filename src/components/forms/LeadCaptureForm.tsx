@@ -53,14 +53,22 @@ export function LeadCaptureForm() {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-3 max-w-md mx-auto text-left">
+      <label htmlFor="lead-name" className="sr-only">
+        Your first name
+      </label>
       <input
+        id="lead-name"
         type="text"
         name="name"
         required
         placeholder="Your first name"
         className={inputClasses}
       />
+      <label htmlFor="lead-email" className="sr-only">
+        Your email
+      </label>
       <input
+        id="lead-email"
         type="email"
         name="email"
         required

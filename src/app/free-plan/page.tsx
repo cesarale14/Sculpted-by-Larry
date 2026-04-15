@@ -3,9 +3,9 @@ import { Check } from "lucide-react";
 import { LeadCaptureForm } from "@/components/forms/LeadCaptureForm";
 
 export const metadata: Metadata = {
-  title: "Free 5-Day Sculpt Starter Plan",
+  title: "Free 5-Day Sculpt Starter Plan | Sculpted by Larry",
   description:
-    "Get Larry's free 5-Day Sculpt Starter Plan delivered to your inbox. Start your fitness transformation today.",
+    "Download Larry's free 5-day workout and nutrition starter plan. Kickstart your transformation with structured workouts and nutrition basics.",
 };
 
 const included = [

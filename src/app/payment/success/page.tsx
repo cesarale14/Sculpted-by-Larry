@@ -3,8 +3,9 @@ import Link from "next/link";
 import { CheckCircle2 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Payment Confirmed",
+  title: "Payment Confirmed | Sculpted by Larry",
   description: "Thank you for choosing Sculpted by Larry.",
+  robots: { index: false, follow: false },
 };
 
 const nextSteps = [

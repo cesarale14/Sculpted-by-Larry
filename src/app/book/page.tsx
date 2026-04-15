@@ -6,9 +6,9 @@ const CAL_LINK =
   process.env.NEXT_PUBLIC_CALCOM_LINK || "sculpted-by-larry/free-consultation";
 
 export const metadata: Metadata = {
-  title: "Book a Call",
+  title: "Book a Free Consultation | Sculpted by Larry",
   description:
-    "Book a free 15-minute consultation with Larry. Let's discuss your fitness goals and find the right program for you.",
+    "Book a free 15-minute consultation with Larry. No pressure, no commitment. Let's talk about your fitness goals and find the right program for you.",
 };
 
 const steps = [
@@ -27,6 +27,7 @@ export default function BookPage() {
             title="Book Your Free Call"
             subtitle="15 minutes. No pressure. Let's talk about your goals."
             variant="dark"
+            as="h1"
           />
         </div>
       </section>

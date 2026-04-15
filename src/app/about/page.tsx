@@ -4,11 +4,13 @@ import { BRAND } from "@/lib/constants";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { CTASection } from "@/components/sections/CTASection";
+import { StructuredData } from "@/components/StructuredData";
+import { personSchema } from "@/lib/schema";
 
 export const metadata: Metadata = {
-  title: "About",
+  title: "About Larry | ISSA Certified Personal Trainer | Tampa, FL",
   description:
-    "Meet Larry — ISSA-certified personal trainer in Tampa, FL. Learn about his story, training philosophy, and approach.",
+    "Meet Larry — ISSA certified personal trainer in Tampa, FL. Learn about his training philosophy, credentials, and why he built Sculpted by Larry.",
 };
 
 const pillars = [
@@ -32,12 +34,14 @@ const pillars = [
 export default function AboutPage() {
   return (
     <>
+      <StructuredData data={personSchema} />
       <section className="pt-32 pb-12 md:pt-40 md:pb-16 bg-navy text-center">
         <div className="max-w-4xl mx-auto px-6 lg:px-8">
           <SectionHeading
             overline="The Trainer"
             title="Meet Larry"
             variant="dark"
+            as="h1"
           />
         </div>
       </section>
@@ -47,7 +51,7 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <ScrollReveal>
               <div className="rounded-2xl overflow-hidden border border-gray-100 bg-white shadow-sm min-h-[500px] flex items-center justify-center flex-col p-8">
-                <div className="w-24 h-24 rounded-full border-2 border-gold flex items-center justify-center">
+                <div className="w-24 h-24 rounded-full border-2 border-gold flex items-center justify-center" aria-hidden="true">
                   <span className="font-heading text-4xl font-bold text-gold">L</span>
                 </div>
                 <p className="mt-4 font-body text-sm text-gray-500">

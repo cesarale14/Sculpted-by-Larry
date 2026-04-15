@@ -18,13 +18,13 @@ interface Tier {
 
 const tiers: Tier[] = [
   {
-    title: "Starter Pack",
-    price: `$${PRICING.starterPack.oneTime}`,
-    priceSuffix: "one-time",
-    description: PRICING.starterPack.description,
-    features: PRICING.starterPack.features,
-    cta: "Get Started",
-    href: "/programs",
+    title: "In-Person Training",
+    price: `$${PRICING.inPerson.session}`,
+    priceSuffix: "/ session",
+    description: PRICING.inPerson.description,
+    features: PRICING.inPerson.features,
+    cta: "Book a Call",
+    href: "/book",
   },
   {
     title: "Online Coaching",
@@ -38,13 +38,13 @@ const tiers: Tier[] = [
     badge: PRICING.onlineCoaching.badge,
   },
   {
-    title: "In-Person Training",
-    price: `$${PRICING.inPerson.session}`,
-    priceSuffix: "/ session",
-    description: PRICING.inPerson.description,
-    features: PRICING.inPerson.features,
-    cta: "Book a Call",
-    href: "/book",
+    title: "Starter Pack",
+    price: `$${PRICING.starterPack.oneTime}`,
+    priceSuffix: "one-time",
+    description: PRICING.starterPack.description,
+    features: PRICING.starterPack.features,
+    cta: "Get Started",
+    href: "/programs",
   },
 ];
 

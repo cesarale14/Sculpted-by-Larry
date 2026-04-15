@@ -1,5 +1,6 @@
 type Variant = "dark" | "light";
 type Align = "center" | "left";
+type HeadingLevel = "h1" | "h2";
 
 interface SectionHeadingProps {
   overline?: string;
@@ -7,6 +8,7 @@ interface SectionHeadingProps {
   subtitle?: string;
   variant?: Variant;
   align?: Align;
+  as?: HeadingLevel;
 }
 
 export function SectionHeading({
@@ -15,10 +17,12 @@ export function SectionHeading({
   subtitle,
   variant = "dark",
   align = "center",
+  as: Tag = "h2",
 }: SectionHeadingProps) {
   const isDark = variant === "dark";
   const alignClasses = align === "center" ? "text-center items-center" : "text-left items-start";
   const ruleClasses = align === "center" ? "mx-auto" : "ml-0";
+  const HeadingTag = Tag;
 
   return (
     <div className={`mb-12 md:mb-16 flex flex-col ${alignClasses}`}>
@@ -31,13 +35,13 @@ export function SectionHeading({
           {overline}
         </p>
       )}
-      <h2
+      <HeadingTag
         className={`font-heading text-3xl md:text-4xl lg:text-5xl font-semibold uppercase tracking-wide leading-tight ${
           isDark ? "text-white" : "text-gray-700"
         }`}
       >
         {title}
-      </h2>
+      </HeadingTag>
       {subtitle && (
         <p
           className={`mt-4 font-body text-lg leading-relaxed max-w-2xl ${

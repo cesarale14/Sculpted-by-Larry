@@ -6,7 +6,11 @@ import { Menu, X } from "lucide-react";
 import { NAV_LINKS } from "@/lib/constants";
 import { MobileMenu } from "./MobileMenu";
 
-export function Navbar() {
+interface NavbarProps {
+  topOffset?: number;
+}
+
+export function Navbar({ topOffset = 0 }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -20,7 +24,9 @@ export function Navbar() {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        className={`fixed left-0 right-0 z-50 transition-all duration-300 ${
+          topOffset === 0 ? "top-0" : "top-9"
+        } ${
           scrolled
             ? "bg-navy-light/90 backdrop-blur-md border-b border-navy-lighter"
             : "bg-transparent"
