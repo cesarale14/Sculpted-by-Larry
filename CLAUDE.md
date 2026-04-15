@@ -56,20 +56,20 @@ Body font: DM Sans (sans-serif)
 
 ## Logo Assets
 
-All logos in `/public/logos/` as SVG files:
+All logos in `/public/logos/` as PNG files:
 
-| File | Format | Usage |
-|------|--------|-------|
-| `logo_icon.svg` | SVG | Navbar icon (44px), favicon source |
-| `logo_badge_dark.svg` | SVG | Profile pic, watermarks |
-| `logo_badge_light.svg` | SVG | Light backgrounds, print |
-| `logo_horizontal.svg` | SVG | Email signature, wide placements |
-| `logo_wordmark.svg` | SVG | Text-only minimal placements |
-| `logo_social.svg` | SVG | Social media graphics |
+| File | Size | Usage |
+|------|------|-------|
+| `logo_icon.png` | 722x722 | Navbar icon (44px), favicon, watermarks |
+| `logo_icon_512.png` | 512x512 | Pre-sized icon for medium contexts |
+| `logo_badge_dark.png` | 1000x1000 | Footer, Instagram profile, social media, merch (navy bg) |
+| `logo_badge_light.png` | 1000x1000 | Light backgrounds, print materials |
 
-**Navbar logo:** `logo_icon.svg` at 44px + stacked text "SCULPTED" / "by Larry"
+**Navbar logo:** `logo_icon.png` at 44px with `rounded-full` + stacked text "SCULPTED" / "by Larry" in HTML (Cormorant Garamond).
 
-**IMPORTANT:** All logos must be served as SVG, never JPG/PNG. Check that `next.config.js` allows SVG imports or use them via `<Image>` or `<img>` with proper SVG source paths.
+**Footer logo:** `logo_badge_dark.png` at ~80px — the badge already contains the "SCULPTED by Larry" text, so no separate HTML text is rendered next to it.
+
+**Note:** The logo mark is a high-quality PNG — the detailed muscle linework requires raster rendering, so the previous "SVG only" rule has been dropped. The wordmark text in the Navbar is still rendered in HTML with Cormorant Garamond, not as an image.
 
 ---
 

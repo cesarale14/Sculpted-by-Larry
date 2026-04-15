@@ -30,21 +30,15 @@ export function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Brand column */}
           <div>
-            <Link href="/" className="flex items-center gap-3" aria-label="Sculpted by Larry home">
+            <Link href="/" aria-label="Sculpted by Larry home" className="inline-block">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/logos/logo_badge_dark.svg"
-                alt=""
-                width={56}
-                height={56}
-                className="w-14 h-14"
+                src="/logos/logo_badge_dark.png"
+                alt="Sculpted by Larry"
+                width={80}
+                height={80}
+                className="w-20 h-auto"
               />
-              <span className="flex flex-col leading-none">
-                <span className="font-heading text-base font-bold text-white uppercase tracking-[0.15em]">
-                  Sculpted
-                </span>
-                <span className="font-heading text-sm italic text-gold">by Larry</span>
-              </span>
             </Link>
             <p className="mt-6 font-body text-sm text-gray-300 leading-relaxed">
               {BRAND.tagline}

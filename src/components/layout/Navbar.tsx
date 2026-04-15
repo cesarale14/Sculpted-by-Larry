@@ -36,11 +36,11 @@ export function Navbar({ topOffset = 0 }: NavbarProps) {
           <Link href="/" className="flex items-center gap-3 shrink-0" aria-label="Sculpted by Larry home">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/logos/logo_icon.svg"
+              src="/logos/logo_icon.png"
               alt=""
               width={44}
               height={44}
-              className="w-11 h-11"
+              className="w-11 h-11 rounded-full"
             />
             <span className="flex flex-col leading-none">
               <span className="font-heading text-base font-bold text-white uppercase tracking-[0.15em]">

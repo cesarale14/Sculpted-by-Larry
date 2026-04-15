@@ -286,7 +286,7 @@ Default state: transparent background
 Scrolled state (>50px): navy-light bg + backdrop-blur-md + border-bottom navy-lighter
 Transition: background 300ms, backdrop-filter 300ms
 
-Logo: icon SVG (44px) + "SCULPTED" text + "by Larry" text, link to /
+Logo: logo_icon.png (44px, rounded-full) + "SCULPTED" text + "by Larry" text, link to /. The logo mark is a PNG (not SVG) — the detailed muscle linework needs raster rendering. The wordmark text beside it stays HTML (Cormorant Garamond).
 Nav links: DM Sans, 14px, 500, white, hover gold
 CTA button: gold, small size, "Book a Call"
 Mobile: hamburger → fullscreen overlay menu with staggered animation

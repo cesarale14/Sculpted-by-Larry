@@ -31,8 +31,8 @@ export const metadata: Metadata = {
   description:
     "ISSA-certified personal trainer in Tampa, Florida. In-person training, online coaching, and custom programs. Your body, engineered.",
   icons: {
-    icon: "/logos/logo_icon.svg",
-    apple: "/logos/logo_icon.svg",
+    icon: "/logos/logo_icon.png",
+    apple: "/logos/logo_icon.png",
   },
   openGraph: {
     title: "Sculpted by Larry",

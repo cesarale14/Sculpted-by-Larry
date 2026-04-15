@@ -21,10 +21,10 @@ export function TransformationSpotlight() {
                 <div className="absolute inset-0 flex items-center justify-center opacity-10">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src="/logos/logo_badge_dark.svg"
+                    src="/logos/logo_icon_512.png"
                     alt=""
                     loading="lazy"
-                    className="w-24 h-24"
+                    className="w-24 h-24 rounded-full"
                   />
                 </div>
                 <div className="relative text-center">
@@ -37,10 +37,10 @@ export function TransformationSpotlight() {
                 <div className="absolute inset-0 flex items-center justify-center opacity-10">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src="/logos/logo_badge_dark.svg"
+                    src="/logos/logo_icon_512.png"
                     alt=""
                     loading="lazy"
-                    className="w-24 h-24"
+                    className="w-24 h-24 rounded-full"
                   />
                 </div>
                 <div className="relative text-center">
