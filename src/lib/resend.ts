@@ -1,6 +1,17 @@
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+let resendClient: Resend | null = null;
+
+function getResend(): Resend {
+  if (!resendClient) {
+    const key = process.env.RESEND_API_KEY;
+    if (!key) {
+      throw new Error("RESEND_API_KEY is not set");
+    }
+    resendClient = new Resend(key);
+  }
+  return resendClient;
+}
 
 const FROM_EMAIL =
   process.env.RESEND_FROM_EMAIL || "Sculpted by Larry <larry@sculptedbylarry.com>";
@@ -23,7 +34,7 @@ export async function sendContactEmail(data: {
   message: string;
 }): Promise<Result> {
   try {
-    const { error } = await resend.emails.send({
+    const { error } = await getResend().emails.send({
       from: FROM_EMAIL,
       to: LARRY_INBOX,
       replyTo: data.email,
@@ -49,7 +60,7 @@ export async function sendLeadMagnetEmail(data: {
 }): Promise<Result> {
   try {
     const downloadUrl = `${SITE_URL}/downloads/sculpt-starter-plan.pdf`;
-    const { error } = await resend.emails.send({
+    const { error } = await getResend().emails.send({
       from: FROM_EMAIL,
       to: data.email,
       subject: "Your Sculpt Starter Plan is here",
@@ -76,7 +87,7 @@ export async function sendPaymentConfirmation(data: {
 }): Promise<Result> {
   try {
     const amount = (data.amount / 100).toFixed(2);
-    const { error } = await resend.emails.send({
+    const { error } = await getResend().emails.send({
       from: FROM_EMAIL,
       to: data.email,
       subject: `Payment confirmed — welcome to ${data.plan}`,
