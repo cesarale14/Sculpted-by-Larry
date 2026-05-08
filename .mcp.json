@@ -1,0 +1,8 @@
+﻿{
+  "mcpServers": {
+    "mcpvault": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "@bitbonsai/mcpvault@latest", "C:\\Users\\cesar\\sculpted-by-larry-vault"]
+    }
+  }
+}

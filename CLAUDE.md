@@ -445,3 +445,67 @@ Before the design overhaul, Larry should provide:
 - [ ] **Video clip** (optional) â€” Short gym footage for hero background video
 
 These go in `/public/images/` organized by subfolder. Until provided, use styled placeholders with the silhouette logo watermark as described in DESIGN_SYSTEM.md.
+---
+
+## Vault policy
+
+This project uses a Git-versioned Obsidian vault at `C:\Users\cesar\sculpted-by-larry-vault` (sister repo to this one) for session notes, decisions, strategy, and accumulated thinking. The vault is registered as the `mcpvault` MCP server in `.mcp.json` at this project root.
+
+### Hard rules
+
+**All vault content reads and writes MUST go through mcpvault tool calls.** Direct filesystem access to the vault via Bash, view, str_replace, create_file, or any other file tool is forbidden. This is not a suggestion — it preserves the audit trail and lets the vault stay portable across machines (workstation, Virginia VPS, Ireland VPS).
+
+- Reading a vault file: use mcpvault's read tool
+- Writing a new vault file: use mcpvault's write tool
+- Editing an existing vault file: use mcpvault's edit tool
+- Listing vault contents: use mcpvault's list tool
+
+**Bash is allowed for sync-layer Git operations only:**
+
+- `cd C:\Users\cesar\sculpted-by-larry-vault && git pull` at the start of any session that will write to the vault
+- `git add`, `git commit`, `git push` after substantive vault writes
+- `git status` and `git log` for diagnostics
+
+If `mcpvault` is unavailable in a session (server failed to start, tool calls return errors), **halt and surface to the user**. Do not fall back to filesystem writes. The policy preserves vault integrity; the alternative is silent drift between what's committed and what's on disk.
+
+### Vault structure
+~/sculpted-by-larry-vault/
++-- sessions/      Dated session notes (YYYY-MM-DD-<slug>.md)
++-- decisions/     Locked-in choices: stack, brand, pricing, positioning
++-- strategy/      90-day plan, content calendar, funnel architecture
++-- content/       Post drafts, hooks, captions, video scripts, lead magnets
++-- brand/         Voice, visual system, copy bank, tone notes
++-- ops/           CRM tracking, client list, automation runbooks
++-- reference/     Research, competitor notes, swipe file
++-- journal.txt    Running index of session notes (one line per session)
+
+### Session note discipline
+
+After any substantive work in a Claude session — design changes, strategy decisions, content drafted, automations built — write a session note to `sessions/YYYY-MM-DD-<slug>.md`. The note captures:
+
+- **What was worked on** (one sentence)
+- **What was decided** (concrete locked-in choices)
+- **What's open** (questions or follow-ups for next session)
+- **Where this connects** (links to other sessions, decisions, or strategy docs via wiki-links)
+
+Naming: lowercase, hyphenated slug — e.g., `2026-05-08-content-engine-mapping.md`. If multiple sessions happen the same day, suffix with a letter: `-a`, `-b`, etc.
+
+### Decision document discipline
+
+When an architectural, brand, pricing, or strategic choice is **locked** (not just considered — actually committed to), write or update a decision document in `decisions/`. Decision docs are the canonical artifacts future sessions ground in; session notes reference them, never replace them.
+
+Decision doc naming: lowercase, hyphenated, content-focused — e.g., `decisions/pricing-tiers.md`, `decisions/lead-funnel-architecture.md`, `decisions/brand-voice-bronze-on-ink.md`. One file per decision. If a decision evolves, edit the existing doc and add a `## Revised YYYY-MM-DD` section at the bottom — never delete prior reasoning.
+
+### journal.txt convention
+
+After writing a session note, append one line to `journal.txt` at the vault root:
+YYYY-MM-DD  sessions/YYYY-MM-DD-<slug>.md  one-line summary of the session
+
+Tab-separated. The journal is the human-scannable index — useful when scrolling Obsidian's file tree feels like too much. Keep summaries punchy (under ~80 chars).
+
+### Sister repos
+
+- **Code:** `C:\Users\cesar\Desktop\sculpted-by-larry` (this repo, live at sculpted-by-larry.vercel.app)
+- **Vault:** `C:\Users\cesar\sculpted-by-larry-vault` (private repo at github.com/cesarale14/sculpted-by-larry-vault)
+
+The repos are separate by design: code can be rewritten without losing thinking, and the vault doesn't pollute the Vercel build context.
