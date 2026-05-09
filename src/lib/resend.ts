@@ -14,8 +14,8 @@ function getResend(): Resend {
 }
 
 const FROM_EMAIL =
-  process.env.RESEND_FROM_EMAIL || "Sculpted by Larry <larry@sculptedbylarry.com>";
-const LARRY_INBOX = "larry@sculptedbylarry.com";
+  process.env.RESEND_FROM_EMAIL || "Sculpted by Larry <lfaria@sculptedbylarry.com>";
+const LARRY_INBOX = "lfaria@sculptedbylarry.com";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://sculptedbylarry.com";
 
 type Result = { success: boolean; error?: string };
@@ -63,13 +63,14 @@ export async function sendLeadMagnetEmail(data: {
     const { error } = await getResend().emails.send({
       from: FROM_EMAIL,
       to: data.email,
-      subject: "Your Sculpt Starter Plan is here",
+      subject: `Here's the plan, ${data.name}.`,
       html: `
-        <h2>Welcome, ${escape(data.name)}!</h2>
-        <p>Thanks for grabbing the free starter plan. Here's your download:</p>
-        <p><a href="${downloadUrl}">Download the Sculpt Starter Plan (PDF)</a></p>
-        <p>Follow it for the next 5 days and you'll feel the difference. Questions? Just reply to this email.</p>
-        <p>— Larry<br />ISSA Certified Personal Trainer</p>
+        <p>Five days. Five workouts. One nutrition rule.</p>
+        <p><a href="${downloadUrl}">Download it here →</a></p>
+        <p>Don't print it. Don't read the whole thing tonight.</p>
+        <p>Open Day 1 tomorrow morning. Do the workout.<br />Then come back to me.</p>
+        <p>If something doesn't make sense, hit reply.<br />I read every email.</p>
+        <p>— Larry</p>
       `,
     });
     if (error) return { success: false, error: error.message };

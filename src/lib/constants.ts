@@ -3,7 +3,7 @@ export const BRAND = {
   tagline: "Your Body. Engineered.",
   location: "Tampa, Florida",
   certification: "ISSA Certified Personal Trainer",
-  email: "larry@sculptedbylarry.com",
+  email: "lfaria@sculptedbylarry.com",
   phone: "",
   instagram: "https://instagram.com/sculptedbylarry",
   tiktok: "",
