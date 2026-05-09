@@ -83,7 +83,7 @@ export function LeadCaptureForm() {
         disabled={loading}
         className="inline-flex items-center justify-center font-body text-[15px] font-medium bg-gold text-navy rounded-lg px-8 py-3.5 hover:bg-gold-hover transition-all duration-200 hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed"
       >
-        {loading ? "Sending..." : "Get the Free Plan"}
+        {loading ? "Sending..." : "Send me the plan →"}
       </button>
     </form>
   );
