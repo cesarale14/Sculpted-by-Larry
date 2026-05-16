@@ -34,45 +34,47 @@ export function Hero() {
           variants={item}
           className="font-body text-[13px] font-medium uppercase tracking-[0.2em] text-gold mb-8"
         >
-          ISSA Certified Personal Trainer &mdash; Tampa, FL
+          Sculpted by Larry &mdash; Tampa, FL
         </motion.p>
 
         <motion.h1
           variants={item}
-          className="font-heading font-bold uppercase tracking-wide leading-[0.95]"
+          className="font-heading font-bold tracking-tight leading-[0.98]"
         >
-          <span className="block text-5xl md:text-6xl lg:text-7xl xl:text-[72px] text-white">
-            Your Body.
+          <span className="block text-4xl md:text-5xl lg:text-6xl xl:text-[64px] text-white">
+            You&rsquo;ve tried before.
           </span>
-          <span className="block text-5xl md:text-6xl lg:text-7xl xl:text-[72px] text-gold mt-2">
-            Engineered.
+          <span className="block text-4xl md:text-5xl lg:text-6xl xl:text-[64px] text-gold mt-2 italic">
+            You&rsquo;ve stopped before, too.
           </span>
         </motion.h1>
 
-        <motion.p
+        <motion.div
           variants={item}
-          className="mt-8 font-body text-lg text-gray-300 max-w-xl mx-auto leading-relaxed"
+          className="mt-8 font-body text-lg md:text-xl text-gray-300 max-w-xl mx-auto leading-relaxed space-y-1"
         >
-          Premium personal training and online coaching designed to sculpt the
-          strongest version of you.
-        </motion.p>
+          <p>Real coaching. No motivational rhetoric.</p>
+          <p>Strong and visible in sixteen weeks.</p>
+        </motion.div>
 
         <motion.div
           variants={item}
           className="mt-10 flex flex-col sm:flex-row gap-4 justify-center"
         >
           <Link
-            href="/book"
+            href="/free-plan"
             className="inline-flex items-center justify-center font-body text-[15px] font-medium bg-gold text-navy rounded-lg px-8 py-3.5 hover:bg-gold-hover transition-all duration-200 hover:-translate-y-0.5"
           >
-            Book a Free Call
+            Get your free starter training plan
           </Link>
-          <Link
-            href="/programs"
+          <a
+            href="https://cal.com/sculptedbylarry/15min"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center justify-center font-body text-[15px] font-medium bg-transparent border border-gold text-gold rounded-lg px-8 py-3.5 hover:bg-gold hover:text-navy transition-all duration-200"
           >
-            View Programs
-          </Link>
+            Book a 15-min call
+          </a>
         </motion.div>
       </motion.div>
 

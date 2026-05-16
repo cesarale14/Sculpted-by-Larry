@@ -66,12 +66,14 @@ export function Footer() {
                 </li>
               ))}
               <li>
-                <Link
-                  href="/book"
+                <a
+                  href="https://cal.com/sculptedbylarry/15min"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="font-body text-sm text-gray-300 hover:text-gold transition-colors"
                 >
-                  Book a Call
-                </Link>
+                  Book a 15-min call
+                </a>
               </li>
               <li>
                 <Link

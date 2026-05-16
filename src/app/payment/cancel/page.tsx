@@ -23,12 +23,14 @@ export default function PaymentCancelPage() {
         </p>
 
         <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
-          <Link
-            href="/book"
+          <a
+            href="https://cal.com/sculptedbylarry/15min"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center justify-center font-body text-[15px] font-medium bg-gold text-navy rounded-lg px-8 py-3.5 hover:bg-gold-hover transition-all duration-200 hover:-translate-y-0.5"
           >
-            Book a Free Call
-          </Link>
+            Book a 15-min call
+          </a>
           <Link
             href="/programs"
             className="inline-flex items-center justify-center font-body text-[15px] font-medium bg-transparent border border-gold text-gold rounded-lg px-8 py-3.5 hover:bg-gold hover:text-navy transition-all duration-200"

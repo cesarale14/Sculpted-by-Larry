@@ -65,12 +65,14 @@ export function Navbar({ topOffset = 0 }: NavbarProps) {
                 </li>
               ))}
             </ul>
-            <Link
-              href="/book"
+            <a
+              href="https://cal.com/sculptedbylarry/15min"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center font-body text-sm font-medium bg-gold text-navy px-5 py-2.5 rounded-lg hover:bg-gold-hover transition-all duration-200 hover:-translate-y-0.5"
             >
-              Book a Call
-            </Link>
+              Book a 15-min call
+            </a>
           </div>
 
           <button

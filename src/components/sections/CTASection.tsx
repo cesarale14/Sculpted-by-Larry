@@ -1,26 +1,29 @@
-import Link from "next/link";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 
 export function CTASection() {
   return (
     <section className="py-16 md:py-20 bg-gold">
-      <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
+      <div className="max-w-3xl mx-auto px-6 lg:px-8 text-center">
         <ScrollReveal>
-          <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-navy uppercase tracking-wide leading-tight">
-            Ready to Get{" "}
-            <span className="italic font-semibold">Sculpted?</span>
+          <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-navy leading-tight">
+            Real coaching, <span className="italic">not motivational content.</span>
           </h2>
-          <p className="mt-6 font-body text-lg text-navy/70 max-w-xl mx-auto leading-relaxed">
-            Book a free 15-minute consultation and let&apos;s build the plan
-            that gets you there.
-          </p>
+          <div className="mt-6 font-body text-lg text-navy/75 max-w-xl mx-auto leading-relaxed space-y-3">
+            <p>
+              Programming built to your body, your history, and what you can
+              actually sustain.
+            </p>
+            <p>Get on the calendar with Larry to talk through fit.</p>
+          </div>
           <div className="mt-10">
-            <Link
-              href="/book"
+            <a
+              href="https://cal.com/sculptedbylarry/15min"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center font-body text-[15px] font-medium bg-navy text-white rounded-lg px-8 py-3.5 hover:bg-navy-light transition-all duration-200 hover:-translate-y-0.5"
             >
-              Book a Free Call
-            </Link>
+              Book a 15-min call
+            </a>
           </div>
         </ScrollReveal>
       </div>

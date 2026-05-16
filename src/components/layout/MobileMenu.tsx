@@ -64,13 +64,15 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
                 </motion.li>
               ))}
               <motion.li variants={itemVariants}>
-                <Link
-                  href="/book"
+                <a
+                  href="https://cal.com/sculptedbylarry/15min"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   onClick={onClose}
                   className="inline-flex items-center font-body text-sm font-medium bg-gold text-navy px-8 py-4 rounded-lg hover:bg-gold-hover transition-colors"
                 >
-                  Book a Call
-                </Link>
+                  Book a 15-min call
+                </a>
               </motion.li>
             </ul>
           </nav>
