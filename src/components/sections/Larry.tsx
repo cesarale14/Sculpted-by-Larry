@@ -28,8 +28,8 @@ export function Larry() {
   return (
     <section
       id="larry"
+      className="section-pad"
       style={{
-        padding: "140px 0",
         borderTop: "1px solid var(--line)",
         background: "var(--bg-soft)",
       }}

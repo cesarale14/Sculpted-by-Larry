@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function FreePlanPage() {
   return (
     <section className="min-h-screen bg-navy">
-      <div className="max-w-2xl mx-auto px-6 lg:px-8 py-24 md:py-32 text-center">
+      <div className="max-w-2xl mx-auto px-5 sm:px-6 lg:px-8 pt-24 pb-16 sm:pt-28 sm:pb-24 md:pt-32 md:pb-32 text-center">
         <h1 className="font-heading text-4xl md:text-5xl font-bold text-white leading-[1.05]">
           You&apos;ve started before.
         </h1>

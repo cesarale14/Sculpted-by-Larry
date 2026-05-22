@@ -38,7 +38,7 @@ function FooterCol({ title, links }: { title: string; links: FooterLink[] }) {
       </div>
       <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
         {links.map((l) => (
-          <li key={l.label} style={{ marginBottom: 10 }}>
+          <li key={l.label}>
             {l.external ? (
               <a
                 href={l.href}
@@ -72,7 +72,7 @@ export function Footer() {
       <div className="container">
         <div className="footer-grid">
           <div>
-            <Logo href="/" size={32} ariaLabel="Sculpted by Larry — back to top" />
+            <Logo href="/" size={32} showByLarry={false} ariaLabel="Sculpted by Larry — back to top" />
             <p
               style={{
                 color: "var(--fg-mute)",
@@ -112,14 +112,20 @@ export function Footer() {
           gap: 40px;
         }
         .footer-link {
+          display: inline-block;
           color: var(--fg-soft);
           font-size: 14px;
           text-decoration: none;
           transition: color 200ms ease;
+          padding: 8px 0;
+          line-height: 1.4;
         }
         .footer-link:hover { color: var(--accent); }
         @media (max-width: 720px) {
           .footer-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 480px) {
+          .footer-grid { grid-template-columns: 1fr; gap: 28px; }
         }
       `}</style>
     </footer>

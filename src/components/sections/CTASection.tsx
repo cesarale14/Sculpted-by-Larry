@@ -5,15 +5,15 @@ export function CTASection() {
   return (
     <section
       id="start"
+      className="section-pad-lg"
       style={{
-        padding: "160px 0 160px",
         borderTop: "1px solid var(--line)",
         position: "relative",
       }}
     >
       <div className="container">
         <h2
-          className="display reveal"
+          className="display reveal final-cta-headline"
           style={{
             fontSize: "clamp(64px,11vw,184px)",
             margin: "0 0 24px",
@@ -51,7 +51,7 @@ export function CTASection() {
           you want and whether I can help.
         </p>
         <div
-          className="reveal reveal-delay-2"
+          className="reveal reveal-delay-2 cta-row"
           style={{
             display: "flex",
             justifyContent: "center",

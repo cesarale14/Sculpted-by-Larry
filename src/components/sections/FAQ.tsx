@@ -35,7 +35,8 @@ export function FAQ() {
   return (
     <section
       id="faq"
-      style={{ padding: "140px 0", borderTop: "1px solid var(--line)" }}
+      className="section-pad"
+      style={{ borderTop: "1px solid var(--line)" }}
     >
       <div className="container">
         <div className="faq-grid">

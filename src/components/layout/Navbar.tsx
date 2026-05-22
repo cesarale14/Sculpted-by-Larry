@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { NAV_LINKS } from "@/lib/constants";
 import { Logo } from "@/components/ui/Logo";
+import { MobileNav } from "@/components/layout/MobileNav";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -30,11 +31,13 @@ export function Navbar() {
 
         <Link
           href="/free-plan"
-          className="btn btn-primary"
+          className="btn btn-primary nav-cta-desktop"
           style={{ padding: "10px 18px", fontSize: 12 }}
         >
           Free starter plan <span className="arrow">→</span>
         </Link>
+
+        <MobileNav />
       </div>
     </nav>
   );

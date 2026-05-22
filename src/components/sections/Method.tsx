@@ -25,7 +25,8 @@ export function Method() {
   return (
     <section
       id="method"
-      style={{ padding: "140px 0", borderTop: "1px solid var(--line)" }}
+      className="section-pad"
+      style={{ borderTop: "1px solid var(--line)" }}
     >
       <div className="container">
         <div

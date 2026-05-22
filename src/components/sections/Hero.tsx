@@ -10,11 +10,10 @@ export function Hero() {
   return (
     <section
       id="top"
+      className="hero-pad"
       style={{
         position: "relative",
         minHeight: "100vh",
-        paddingTop: 140,
-        paddingBottom: 80,
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
@@ -58,7 +57,7 @@ export function Hero() {
             One coach. Real programming. Direct access. Start with the free
             5-day plan, or book a call.
           </p>
-          <div className="hero-ctas">
+          <div className="cta-row hero-ctas">
             <Link href="/free-plan" className="btn btn-primary">
               Get your free starter training plan{" "}
               <span className="arrow">→</span>
