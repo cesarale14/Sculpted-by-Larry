@@ -70,3 +70,24 @@ export const INPERSON_FEATURES = [
   "Online check-ins between sessions",
   "Flexible scheduling around your week",
 ] as const;
+
+/**
+ * Real client testimonials.
+ *
+ * IMPORTANT: The Testimonials section renders nothing when this array is empty.
+ * Add real reviews here — NEVER placeholders, NEVER fabricated quotes.
+ *
+ * Required shape per entry:
+ *   { quote: string, name: string, context?: string }
+ *
+ * Example (commented out so it stays empty until real reviews come in):
+ *   // { quote: "His program got me back to deadlifting after my back surgery.",
+ *   //   name: "—— ——", context: "Online client · 6 months" }
+ */
+export interface Testimonial {
+  quote: string;
+  name: string;
+  context?: string;
+}
+
+export const TESTIMONIALS: ReadonlyArray<Testimonial> = [];

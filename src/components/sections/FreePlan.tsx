@@ -1,63 +1,5 @@
 import Link from "next/link";
 
-const days = [
-  {
-    n: "Day 01",
-    kind: "Training" as const,
-    title: "Lower Body · Strength",
-    block: [
-      "A.  Goblet squat — 3 × 8",
-      "B.  Romanian deadlift — 3 × 8",
-      "C.  Walking lunge — 3 × 10 per leg",
-      "D.  Plank — 3 × 30 sec",
-    ],
-  },
-  {
-    n: "Day 02",
-    kind: "Mobility" as const,
-    title: "Hips · Ankles · Recovery walk",
-    block: [
-      "World's greatest stretch — 2 × 5 per side",
-      "90/90 hip switches — 2 × 8 per side",
-      "Wall ankle mobilization — 2 × 10 per side",
-      "Easy walk — 25–35 min",
-    ],
-  },
-  {
-    n: "Day 03",
-    kind: "Training" as const,
-    title: "Upper Body · Push & Pull",
-    block: [
-      "A.  Dumbbell bench press — 3 × 8",
-      "B.  Seated cable row — 3 × 10",
-      "C.  Standing dumbbell press — 3 × 8",
-      "D.  Lat pulldown — 3 × 10",
-    ],
-  },
-  {
-    n: "Day 04",
-    kind: "Mobility" as const,
-    title: "Thoracic · Shoulders · Reset",
-    block: [
-      "Cat-cow — 2 × 8",
-      "Open book — 2 × 6 per side",
-      "Banded shoulder dislocates — 2 × 10",
-      "Easy walk — 25–35 min",
-    ],
-  },
-  {
-    n: "Day 05",
-    kind: "Training" as const,
-    title: "Full Body · Conditioning",
-    block: [
-      "A.  Trap bar deadlift — 4 × 6",
-      "B.  Push-up — 3 × max-2",
-      "C.  KB swing — 3 × 15",
-      "D.  Carry circuit — 3 × 40 yd",
-    ],
-  },
-];
-
 export function FreePlan() {
   return (
     <section
@@ -68,7 +10,6 @@ export function FreePlan() {
         <div
           className="reveal"
           style={{
-            marginBottom: 72,
             display: "flex",
             justifyContent: "space-between",
             alignItems: "flex-end",
@@ -120,85 +61,7 @@ export function FreePlan() {
         </div>
 
         <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-            gap: 0,
-            borderTop: "1px solid var(--line)",
-            borderLeft: "1px solid var(--line)",
-          }}
-        >
-          {days.map((d, i) => (
-            <div
-              key={d.n}
-              className="reveal"
-              style={{
-                borderRight: "1px solid var(--line)",
-                borderBottom: "1px solid var(--line)",
-                padding: "28px 26px 32px",
-                transitionDelay: `${i * 60}ms`,
-                background:
-                  d.kind === "Mobility" ? "var(--bg-soft)" : "transparent",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "baseline",
-                  marginBottom: 22,
-                }}
-              >
-                <div className="eyebrow">{d.n}</div>
-                <div
-                  className="eyebrow"
-                  style={{
-                    color:
-                      d.kind === "Training"
-                        ? "var(--accent)"
-                        : "var(--fg-mute)",
-                  }}
-                >
-                  {d.kind}
-                </div>
-              </div>
-              <h3
-                className="display"
-                style={{
-                  fontSize: 22,
-                  lineHeight: 1.05,
-                  margin: "0 0 18px",
-                  letterSpacing: "-0.005em",
-                }}
-              >
-                {d.title}
-              </h3>
-              <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
-                {d.block.map((line, j) => (
-                  <li
-                    key={j}
-                    style={{
-                      fontFamily: "var(--mono)",
-                      fontSize: 12,
-                      color: "var(--fg-soft)",
-                      lineHeight: 1.7,
-                      padding: "5px 0",
-                      borderBottom:
-                        j < d.block.length - 1
-                          ? "1px solid var(--line)"
-                          : "none",
-                    }}
-                  >
-                    {line}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-
-        <div
-          className="reveal"
+          className="reveal reveal-delay-1"
           style={{
             marginTop: 56,
             display: "flex",

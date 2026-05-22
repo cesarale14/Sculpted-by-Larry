@@ -26,24 +26,15 @@ export function Hero() {
       <div
         className="container reveal"
         style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
           marginBottom: 40,
           color: "var(--fg-mute)",
           fontFamily: "var(--mono)",
           fontSize: 11,
           letterSpacing: "0.2em",
           textTransform: "uppercase",
-          flexWrap: "wrap",
-          gap: 12,
         }}
       >
-        <span>
-          <span className="live-dot" aria-hidden="true"></span>
-          Taking new clients · online &amp; in Tampa
-        </span>
-        <span style={{ opacity: 0.7 }}>Real coaching, not rhetoric</span>
+        Taking new clients online &amp; in person — Tampa, FL only
       </div>
 
       <div className="container">
@@ -133,6 +124,10 @@ export function Hero() {
           .hero-grid {
             grid-template-columns: 1fr;
             gap: 40px;
+          }
+          .hero-portrait-wrap {
+            aspect-ratio: 4 / 5;
+            max-height: 70vh;
           }
         }
       `}</style>

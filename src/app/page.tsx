@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import { Hero } from "@/components/sections/Hero";
 import { Method } from "@/components/sections/Method";
 import { FreePlan } from "@/components/sections/FreePlan";
-import { ProgramCards } from "@/components/sections/ProgramCards";
 import { Larry } from "@/components/sections/Larry";
+import { Testimonials } from "@/components/sections/Testimonials";
+import { ProgramCards } from "@/components/sections/ProgramCards";
 import { FAQ } from "@/components/sections/FAQ";
 import { CTASection } from "@/components/sections/CTASection";
 
@@ -28,8 +29,9 @@ export default function Home() {
       <Hero />
       <Method />
       <FreePlan />
-      <ProgramCards />
       <Larry />
+      <Testimonials />
+      <ProgramCards />
       <FAQ />
       <CTASection />
     </>

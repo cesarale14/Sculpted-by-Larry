@@ -102,13 +102,25 @@ export function ProgramCards() {
                   fontSize: 14.5,
                   color: "var(--fg-soft)",
                   lineHeight: 1.6,
-                  margin: "0 0 22px",
+                  margin: "0 0 14px",
                 }}
               >
                 Programming written for your body and your week, plus direct
                 access to me whenever the work gets hard. Pick the commitment
                 that matches where you are right now — month-to-month is fine,
                 longer saves money.
+              </p>
+              <p
+                style={{
+                  fontFamily: "var(--mono)",
+                  fontSize: 11,
+                  letterSpacing: "0.12em",
+                  textTransform: "uppercase",
+                  color: "var(--accent)",
+                  margin: "0 0 22px",
+                }}
+              >
+                Monthly is rolling — cancel anytime.
               </p>
               <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
                 {ONLINE_FEATURES.map((f, j) => (

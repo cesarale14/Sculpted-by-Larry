@@ -12,16 +12,8 @@ export function CTASection() {
       }}
     >
       <div className="container">
-        <div
-          className="reveal"
-          style={{ textAlign: "center", marginBottom: 40 }}
-        >
-          <span className="eyebrow">
-            <span className="dot" aria-hidden="true"></span>Two doors. Both open.
-          </span>
-        </div>
         <h2
-          className="display reveal reveal-delay-1"
+          className="display reveal"
           style={{
             fontSize: "clamp(64px,11vw,184px)",
             margin: "0 0 24px",
@@ -44,7 +36,7 @@ export function CTASection() {
           .
         </h2>
         <p
-          className="reveal reveal-delay-2"
+          className="reveal reveal-delay-1"
           style={{
             textAlign: "center",
             maxWidth: 560,
@@ -59,7 +51,7 @@ export function CTASection() {
           we&rsquo;ll talk about what you want and whether I can help.
         </p>
         <div
-          className="reveal reveal-delay-3"
+          className="reveal reveal-delay-2"
           style={{
             display: "flex",
             justifyContent: "center",

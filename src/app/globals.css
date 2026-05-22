@@ -10,8 +10,8 @@
   --color-fg-mute: #8A8472;
   --color-line: #2A2723;
   --color-line-strong: #3D3933;
-  --color-accent: #B8753A;      /* burnished bronze */
-  --color-accent-soft: #8C5829;
+  --color-accent: #C84E2A;      /* burnt orange — site/PDF brand unification */
+  --color-accent-soft: #A03A20;
   --color-accent-fg: #0B0B0B;
   --color-danger: #C84A38;
 
@@ -29,10 +29,10 @@
   --color-navy: #0B0B0B;            /* → bg */
   --color-navy-light: #131311;      /* → bg-soft */
   --color-navy-lighter: #2A2723;    /* → line */
-  --color-gold: #B8753A;            /* → accent */
-  --color-gold-hover: #8C5829;      /* → accent-soft */
-  --color-gold-dark: #8C5829;
-  --color-gold-muted: rgba(184, 117, 58, 0.15);
+  --color-gold: #C84E2A;            /* → accent (burnt orange) */
+  --color-gold-hover: #A03A20;      /* → accent-soft */
+  --color-gold-dark: #A03A20;
+  --color-gold-muted: rgba(200, 78, 42, 0.15);
   --color-off-white: #ECE6D6;       /* → fg */
   --color-cream: #C9C2B0;
   --color-success: #6BD58A;
@@ -56,8 +56,8 @@
   --fg-mute: #8A8472;
   --line: #2A2723;
   --line-strong: #3D3933;
-  --accent: #B8753A;
-  --accent-soft: #8C5829;
+  --accent: #C84E2A;
+  --accent-soft: #A03A20;
   --accent-fg: #0B0B0B;
   --danger: #C84A38;
 
@@ -209,21 +209,6 @@ section { position: relative; }
 
 /* ── Hairline divider ─────────────────────────────────────────── */
 .hairline { height: 1px; background: var(--line); width: 100%; }
-
-/* ── Live dot (hero meta) ─────────────────────────────────────── */
-@keyframes pulse {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 1; }
-}
-.live-dot {
-  width: 6px; height: 6px;
-  background: #6BD58A;
-  border-radius: 999px;
-  display: inline-block;
-  animation: pulse 1.8s ease-in-out infinite;
-  margin-right: 8px;
-  vertical-align: middle;
-}
 
 /* ── Hero specific ────────────────────────────────────────────── */
 .hero-headline {
@@ -391,6 +376,5 @@ section { position: relative; }
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-  .live-dot { animation: none; opacity: 1; }
   .reveal { opacity: 1; transform: none; }
 }
