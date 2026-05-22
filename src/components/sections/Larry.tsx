@@ -52,7 +52,7 @@ export function Larry() {
               <span className="dot" aria-hidden="true"></span>The Coach
             </span>
             <h2
-              className="display"
+              className="display larry-headline"
               style={{
                 fontSize: "clamp(40px,6vw,84px)",
                 margin: "20px 0 24px",
@@ -119,16 +119,7 @@ export function Larry() {
               and I&rsquo;ll do my job.&rdquo;
             </p>
 
-            <div
-              style={{
-                borderTop: "1px solid var(--line-strong)",
-                paddingTop: 28,
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
-                gap: 28,
-                maxWidth: 600,
-              }}
-            >
+            <div className="larry-credentials">
               {credentials.map((c) => (
                 <div key={c.label}>
                   <div
@@ -137,19 +128,7 @@ export function Larry() {
                   >
                     {c.label}
                   </div>
-                  <div
-                    style={{
-                      fontFamily: "var(--display)",
-                      fontWeight: 700,
-                      fontSize: 18,
-                      lineHeight: 1.15,
-                      letterSpacing: "-0.005em",
-                      textTransform: "uppercase",
-                      color: "var(--fg)",
-                    }}
-                  >
-                    {c.value}
-                  </div>
+                  <div className="larry-credential-value">{c.value}</div>
                 </div>
               ))}
             </div>

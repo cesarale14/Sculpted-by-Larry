@@ -225,20 +225,6 @@ section { position: relative; }
   transform: translateY(-0.04em);
 }
 
-/* Sticky-marker (hero side stamp) */
-.side-stamp {
-  position: absolute;
-  left: var(--gutter);
-  top: 40px;
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.3em;
-  color: var(--fg-mute);
-  text-transform: uppercase;
-}
-
 /* ── Accordion (FAQ) ──────────────────────────────────────────── */
 .acc-item { border-bottom: 1px solid var(--line); }
 .acc-trigger {
@@ -503,18 +489,79 @@ section { position: relative; }
 /* ── Section vertical padding utilities ───────────────────────── */
 .section-pad     { padding: 140px 0; }
 .section-pad-lg  { padding: 160px 0; }
-.hero-pad        { padding-top: 140px; padding-bottom: 80px; }
+.hero-pad {
+  position: relative;
+  padding-top: 140px;
+  padding-bottom: 80px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
 @media (max-width: 720px) {
   .section-pad     { padding: 80px 0; }
   .section-pad-lg  { padding: 88px 0; }
-  .hero-pad        { padding-top: 96px; padding-bottom: 56px; }
+  .hero-pad {
+    padding-top: 96px;
+    padding-bottom: 56px;
+    min-height: auto;
+    justify-content: flex-start;
+  }
 }
 
-/* ── Mobile headline sizing (replaces stale .hero-headline 72px) ─ */
+/* ── Mobile headline sizing + collision fixes ─────────────────── */
 @media (max-width: 720px) {
-  .hero-headline       { font-size: 52px; line-height: 0.92; }
-  .final-cta-headline  { font-size: 56px; line-height: 0.92; }
-  .side-stamp          { display: none; }
+  /* Hero / final-CTA: serif italic inline within wrapping caps —
+     line-height needs room for italic ascenders/descenders. */
+  .hero-headline       { font-size: 52px; line-height: 1.05; }
+  .final-cta-headline  { font-size: 56px; line-height: 1.0;  }
+
+  /* Larry h2: italic "Every rep." on its own middle line — needs
+     the most vertical breathing room of any headline on the site. */
+  .larry-headline      { line-height: 1.18; }
+
+  /* FAQ h2: italic "direct" inline within a wrapping headline —
+     line-height fix prevents wrapped lines colliding. */
+  .faq-headline        { line-height: 1.1; }
+}
+
+/* ── Larry credentials grid (collapses on narrow mobile) ──────── */
+.larry-credentials {
+  border-top: 1px solid var(--line-strong);
+  padding-top: 28px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 28px;
+  max-width: 600px;
+}
+.larry-credential-value {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 1.15;
+  letter-spacing: -0.005em;
+  text-transform: uppercase;
+  color: var(--fg);
+  overflow-wrap: anywhere;
+}
+@media (max-width: 600px) {
+  .larry-credentials {
+    grid-template-columns: 1fr;
+    gap: 22px;
+    padding-top: 22px;
+  }
+  .larry-credential-value {
+    font-size: 16px;
+    line-height: 1.2;
+  }
+}
+
+/* ── Method spacing on mobile (tighten gap above cards, in cards) ─ */
+@media (max-width: 720px) {
+  .method-head { margin-bottom: 40px !important; }
+  .pillar      { padding: 22px 20px 22px; }
+  .pillar .num { margin-bottom: 16px; }
+  .pillar h3   { font-size: 26px; margin: 0 0 10px; }
 }
 
 /* ── Hero / CTA button row — full-width stacking on narrow mobile ─ */

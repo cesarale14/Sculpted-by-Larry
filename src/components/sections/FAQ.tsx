@@ -45,7 +45,7 @@ export function FAQ() {
               <span className="dot" aria-hidden="true"></span>FAQ
             </span>
             <h2
-              className="display"
+              className="display faq-headline"
               style={{
                 fontSize: "clamp(40px,5vw,72px)",
                 margin: "20px 0 0",

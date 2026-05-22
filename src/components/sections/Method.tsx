@@ -30,7 +30,7 @@ export function Method() {
     >
       <div className="container">
         <div
-          className="reveal"
+          className="reveal method-head"
           style={{
             marginBottom: 72,
             display: "flex",

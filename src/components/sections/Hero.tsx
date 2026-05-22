@@ -8,19 +8,7 @@ export function Hero() {
   useReveal();
 
   return (
-    <section
-      id="top"
-      className="hero-pad"
-      style={{
-        position: "relative",
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-      }}
-    >
-      <div className="side-stamp">SCULPTED — N°001 — TAMPA · FL</div>
-
+    <section id="top" className="hero-pad">
       <div
         className="container reveal"
         style={{
