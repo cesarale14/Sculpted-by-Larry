@@ -25,12 +25,9 @@ export function ProgramCards() {
           }}
         >
           <div>
-            <span className="eyebrow">
-              <span className="dot" aria-hidden="true"></span>Coaching · Available now
-            </span>
             <h2
               className="display"
-              style={{ fontSize: "clamp(40px,6vw,84px)", margin: "20px 0 0" }}
+              style={{ fontSize: "clamp(40px,6vw,84px)", margin: 0 }}
             >
               Two ways to{" "}
               <em
@@ -132,13 +129,16 @@ export function ProgramCards() {
                     }}
                   >
                     <span
+                      aria-hidden="true"
                       style={{
                         color: "var(--accent)",
                         fontFamily: "var(--mono)",
-                        fontSize: 11,
+                        fontSize: 14,
+                        lineHeight: 1.3,
+                        flexShrink: 0,
                       }}
                     >
-                      {String(j + 1).padStart(2, "0")}
+                      —
                     </span>
                     <span>{f}</span>
                   </li>
@@ -294,27 +294,23 @@ export function ProgramCards() {
                     }}
                   >
                     <span
+                      aria-hidden="true"
                       style={{
                         color: "var(--accent)",
                         fontFamily: "var(--mono)",
-                        fontSize: 11,
+                        fontSize: 14,
+                        lineHeight: 1.3,
+                        flexShrink: 0,
                       }}
                     >
-                      {String(j + 1).padStart(2, "0")}
+                      —
                     </span>
                     <span>{f}</span>
                   </li>
                 ))}
               </ul>
             </div>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr",
-                gap: 12,
-                alignContent: "start",
-              }}
-            >
+            <div style={{ width: "100%" }}>
               <div
                 style={{
                   border: "1px solid var(--accent)",
@@ -323,6 +319,7 @@ export function ProgramCards() {
                   flexDirection: "column",
                   gap: 14,
                   background: "var(--bg)",
+                  width: "100%",
                 }}
               >
                 <div className="eyebrow" style={{ fontSize: 10 }}>

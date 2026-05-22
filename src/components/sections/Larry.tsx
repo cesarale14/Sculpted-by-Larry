@@ -9,18 +9,15 @@ import { BRAND } from "@/lib/constants";
  * invented credentials, client counts, or fabricated specifics.
  */
 
-const credentials = [
+const credentials: { label: string; value: string; hideLabel?: boolean }[] = [
   {
     label: "Certification",
     value: BRAND.certification,
+    hideLabel: true,
   },
   {
     label: "Based",
     value: "Tampa, FL",
-  },
-  {
-    label: "Experience",
-    value: "[Larry: years training clients]",
   },
 ];
 
@@ -48,14 +45,11 @@ export function Larry() {
           </div>
 
           <div className="reveal reveal-delay-1 larry-copy">
-            <span className="eyebrow">
-              <span className="dot" aria-hidden="true"></span>The Coach
-            </span>
             <h2
               className="display larry-headline"
               style={{
                 fontSize: "clamp(40px,6vw,84px)",
-                margin: "20px 0 24px",
+                margin: "0 0 24px",
                 letterSpacing: "-0.005em",
               }}
             >
@@ -93,21 +87,6 @@ export function Larry() {
               style={{
                 fontSize: 16,
                 lineHeight: 1.65,
-                color: "var(--fg-soft)",
-                margin: "0 0 22px",
-                maxWidth: 540,
-              }}
-            >
-              [Larry: your story goes here — how you got into coaching, what
-              you learned along the way, who you&rsquo;ve worked with, and the
-              philosophy that runs through every program you write. 3–5 short
-              paragraphs. Direct, honest, no influencer voice.]
-            </p>
-
-            <p
-              style={{
-                fontSize: 16,
-                lineHeight: 1.65,
                 color: "var(--fg-mute)",
                 margin: "0 0 36px",
                 maxWidth: 540,
@@ -122,12 +101,14 @@ export function Larry() {
             <div className="larry-credentials">
               {credentials.map((c) => (
                 <div key={c.label}>
-                  <div
-                    className="eyebrow"
-                    style={{ marginBottom: 8, fontSize: 10 }}
-                  >
-                    {c.label}
-                  </div>
+                  {!c.hideLabel && (
+                    <div
+                      className="eyebrow"
+                      style={{ marginBottom: 8, fontSize: 10 }}
+                    >
+                      {c.label}
+                    </div>
+                  )}
                   <div className="larry-credential-value">{c.value}</div>
                 </div>
               ))}
