@@ -504,8 +504,9 @@ section { position: relative; }
   .hero-pad {
     padding-top: 96px;
     padding-bottom: 56px;
-    min-height: auto;
-    justify-content: flex-start;
+    min-height: 100vh;       /* fallback */
+    min-height: 100dvh;      /* dynamic viewport — iOS Safari 15.4+ */
+    justify-content: center;  /* cluster content in center, no empty middle */
   }
 }
 
