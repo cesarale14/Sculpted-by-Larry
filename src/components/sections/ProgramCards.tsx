@@ -71,9 +71,6 @@ export function ProgramCards() {
         >
           <div className="prog-grid">
             <div>
-              <div className="eyebrow" style={{ marginBottom: 14 }}>
-                Product 01
-              </div>
               <h3
                 className="display"
                 style={{
@@ -238,9 +235,6 @@ export function ProgramCards() {
         >
           <div className="prog-grid">
             <div>
-              <div className="eyebrow" style={{ marginBottom: 14 }}>
-                Product 02
-              </div>
               <h3
                 className="display"
                 style={{
@@ -271,7 +265,7 @@ export function ProgramCards() {
                   marginBottom: 22,
                 }}
               >
-                1:1 · In studio
+                1:1 sessions
               </div>
               <p
                 style={{
@@ -352,7 +346,7 @@ export function ProgramCards() {
                     margin: 0,
                   }}
                 >
-                  An hour in the studio. Movement screen, a real training
+                  An hour at my gym. Movement screen, a real training
                   session, an honest conversation about what working together
                   would look like. No pitch deck.
                 </p>

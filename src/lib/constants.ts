@@ -64,7 +64,7 @@ export const ONLINE_FEATURES = [
  * In-person Tampa feature list.
  */
 export const INPERSON_FEATURES = [
-  "Sessions at my Tampa studio",
+  "Sessions at my gym in Tampa",
   "Programming + nutrition framework",
   "Hands-on movement & technique coaching",
   "Online check-ins between sessions",

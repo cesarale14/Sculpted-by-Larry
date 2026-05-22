@@ -18,15 +18,11 @@ export function FreePlan() {
           }}
         >
           <div style={{ maxWidth: 760 }}>
-            <span className="eyebrow">
-              <span className="dot" aria-hidden="true"></span>
-              Free starter plan · No email guilt
-            </span>
             <h2
               className="display"
               style={{
                 fontSize: "clamp(40px,6vw,84px)",
-                margin: "20px 0 0",
+                margin: 0,
                 letterSpacing: "-0.005em",
               }}
             >
