@@ -18,7 +18,7 @@ export function Navbar() {
   return (
     <nav className={`nav ${scrolled ? "scrolled" : ""}`}>
       <div className="container nav-row">
-        <Logo href="/" size={28} />
+        <Logo href="/" size={36} />
 
         <div className="nav-links">
           {NAV_LINKS.map((link) => (
