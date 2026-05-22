@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import {
   Big_Shoulders,
   Instrument_Serif,
@@ -50,8 +50,21 @@ export const metadata: Metadata = {
   description:
     "1:1 coaching with Larry Faria. Online anywhere, in-person in Tampa. Real programming, real coaching, no hype.",
   icons: {
-    icon: "/logos/logo_icon.png",
-    apple: "/logos/logo_icon.png",
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      {
+        url: "/favicon-light.svg",
+        type: "image/svg+xml",
+        media: "(prefers-color-scheme: light)",
+      },
+      {
+        url: "/favicon.svg",
+        type: "image/svg+xml",
+        media: "(prefers-color-scheme: dark)",
+      },
+    ],
+    apple: "/favicon.svg",
+    shortcut: "/favicon.svg",
   },
   openGraph: {
     title: "Sculpted by Larry",
@@ -67,6 +80,10 @@ export const metadata: Metadata = {
     title: "Sculpted by Larry",
     description: "Sculpt the body your life demands.",
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#0B0B0B",
 };
 
 export default function RootLayout({

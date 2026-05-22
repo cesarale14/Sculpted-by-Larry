@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { BRAND, CAL_BOOKING_URL } from "@/lib/constants";
+import { Logo } from "@/components/ui/Logo";
 
 interface FooterLink {
   label: string;
@@ -71,15 +72,7 @@ export function Footer() {
       <div className="container">
         <div className="footer-grid">
           <div>
-            <Link
-              href="/"
-              className="logo"
-              style={{ marginBottom: 16 }}
-              aria-label="Sculpted by Larry — back to top"
-            >
-              <div className="logo-mark">S</div>
-              <div className="logo-wm">Sculpted by Larry</div>
-            </Link>
+            <Logo href="/" size={32} ariaLabel="Sculpted by Larry — back to top" />
             <p
               style={{
                 color: "var(--fg-mute)",
