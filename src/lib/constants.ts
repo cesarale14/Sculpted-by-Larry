@@ -16,11 +16,11 @@ export const CAL_BOOKING_URL = "https://cal.com/sculptedbylarry/15min";
 export const FREE_PLAN_URL = "/free-plan";
 
 export const NAV_LINKS = [
-  { href: "#method", label: "Method" },
-  { href: "#free-plan", label: "Free plan" },
-  { href: "#programs", label: "Coaching" },
-  { href: "#larry", label: "About" },
-  { href: "#faq", label: "FAQ" },
+  { href: "/#method", label: "Method" },
+  { href: "/#free-plan", label: "Free plan" },
+  { href: "/#programs", label: "Coaching" },
+  { href: "/#larry", label: "About" },
+  { href: "/#faq", label: "FAQ" },
 ] as const;
 
 /**

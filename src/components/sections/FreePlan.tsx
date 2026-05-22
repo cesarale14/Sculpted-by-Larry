@@ -54,9 +54,8 @@ export function FreePlan() {
               margin: 0,
             }}
           >
-            Three training days, two mobility days. Full-gym,
-            beginner-appropriate, written the same way I write programs for
-            paying clients. No upsell.
+            Three training days, two mobility days. Beginner-appropriate.
+            Written like a paying client&rsquo;s program. No upsell.
           </p>
         </div>
 
@@ -80,9 +79,9 @@ export function FreePlan() {
               lineHeight: 1.6,
             }}
           >
-            The full PDF — warm-ups, sets/reps progressions, video form notes,
-            and a one-page nutrition primer — arrives by email immediately. Use
-            it. If it helps and you want more, you know where to find me.
+            Full PDF arrives by email — five days of programming with the form
+            cues that matter. Use it. If you want more after, you know where
+            to find me.
           </p>
           <Link href="/free-plan" className="btn btn-primary">
             Get your free starter training plan{" "}

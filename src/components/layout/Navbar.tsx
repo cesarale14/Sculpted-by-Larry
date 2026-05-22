@@ -17,7 +17,7 @@ export function Navbar() {
   return (
     <nav className={`nav ${scrolled ? "scrolled" : ""}`}>
       <div className="container nav-row">
-        <Link href="#top" className="logo" aria-label="Sculpted by Larry — home">
+        <Link href="/" className="logo" aria-label="Sculpted by Larry — home">
           <div className="logo-mark">S</div>
           <div className="logo-wm">
             Sculpted by Larry

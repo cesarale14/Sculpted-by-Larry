@@ -46,9 +46,9 @@ export function CTASection() {
             lineHeight: 1.6,
           }}
         >
-          Try the free 5-day plan if you want to see how I program before
-          committing to anything. Or skip ahead and book a 15-minute call —
-          we&rsquo;ll talk about what you want and whether I can help.
+          Try the free 5-day plan if you want to see how I program first. Or
+          skip ahead and book a 15-minute call. We&rsquo;ll talk about what
+          you want and whether I can help.
         </p>
         <div
           className="reveal reveal-delay-2"

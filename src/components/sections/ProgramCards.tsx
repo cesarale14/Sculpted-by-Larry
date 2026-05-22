@@ -54,9 +54,8 @@ export function ProgramCards() {
               margin: 0,
             }}
           >
-            Online — anywhere with a gym and a phone. In-person — Tampa only.
-            Both start with a 15-minute call so we can be sure it&rsquo;s a
-            fit.
+            Online: anywhere with a gym and a phone. In-person: Tampa only.
+            Both start with a 15-minute call.
           </p>
         </div>
 
@@ -105,10 +104,9 @@ export function ProgramCards() {
                   margin: "0 0 14px",
                 }}
               >
-                Programming written for your body and your week, plus direct
-                access to me whenever the work gets hard. Pick the commitment
-                that matches where you are right now — month-to-month is fine,
-                longer saves money.
+                Programming written for your body and your week. Direct access
+                when the work gets hard. Pick the commitment that fits —
+                monthly is fine, longer saves money.
               </p>
               <p
                 style={{
@@ -283,10 +281,9 @@ export function ProgramCards() {
                   margin: "0 0 22px",
                 }}
               >
-                Train with me in person. We program around your schedule, lift
-                in the same room, and fix what only gets fixed when someone is
-                actually watching you move. The first session is free — if it
-                isn&rsquo;t a fit, that&rsquo;s fine.
+                Train with me in person. We program around your schedule and
+                fix what only gets fixed in person. First session is free. If
+                it isn&rsquo;t a fit, that&rsquo;s fine.
               </p>
               <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
                 {INPERSON_FEATURES.map((f, j) => (

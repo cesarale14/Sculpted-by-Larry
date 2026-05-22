@@ -74,8 +74,8 @@ export function Method() {
               margin: 0,
             }}
           >
-            Every Sculpted client moves through the same system — adapted to
-            their body, schedule, and goals.
+            Same system, every client. Adapted to your body, your schedule,
+            your goals.
           </p>
         </div>
 

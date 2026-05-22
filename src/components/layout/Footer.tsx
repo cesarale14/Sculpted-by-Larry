@@ -14,10 +14,10 @@ const coaching: FooterLink[] = [
 ];
 
 const site: FooterLink[] = [
-  { label: "The Method", href: "#method" },
-  { label: "Free 5-day plan", href: "#free-plan" },
-  { label: "About Larry", href: "#larry" },
-  { label: "FAQ", href: "#faq" },
+  { label: "The Method", href: "/#method" },
+  { label: "Free 5-day plan", href: "/#free-plan" },
+  { label: "About Larry", href: "/#larry" },
+  { label: "FAQ", href: "/#faq" },
 ];
 
 const contact: FooterLink[] = [
@@ -72,7 +72,7 @@ export function Footer() {
         <div className="footer-grid">
           <div>
             <Link
-              href="#top"
+              href="/"
               className="logo"
               style={{ marginBottom: 16 }}
               aria-label="Sculpted by Larry — back to top"

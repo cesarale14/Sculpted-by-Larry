@@ -84,10 +84,9 @@ export function Larry() {
                 maxWidth: 540,
               }}
             >
-              I&rsquo;m Larry. I coach out of Tampa, in person and online. No
-              franchise, no funnel, no assistant writing your program. Just one
-              trainer who writes the work, watches you do it, and tells you
-              the truth.
+              I&rsquo;m Larry. I coach in Tampa, in person and online. No
+              franchise. No assistant writing your program. One trainer. I
+              write the work, I watch you do it, I tell you the truth.
             </p>
 
             <p

@@ -57,9 +57,8 @@ export function Hero() {
                 maxWidth: 460,
               }}
             >
-              One coach. Real programming. Direct access to Larry. Start with a
-              free 5-day plan, or book a 15-minute call and we&rsquo;ll figure
-              out the right fit together.
+              One coach. Real programming. Direct access. Start with the free
+              5-day plan, or book a call.
             </p>
             <div className="hero-ctas">
               <Link href="/free-plan" className="btn btn-primary">
