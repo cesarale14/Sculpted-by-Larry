@@ -42,3 +42,15 @@ repomix-output.txt
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# hallmark sandbox (exploration, never commits)
+.hallmark-sandbox/
+
+# installed agent skills (per-machine)
+.agents/
+
+# skills CLI lockfile (per-machine)
+skills-lock.json
+
+# design handoff bundle (extracted to disk, not source of truth)
+.design-reference/

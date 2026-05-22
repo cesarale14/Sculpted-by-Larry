@@ -1,67 +1,389 @@
 @import "tailwindcss";
 
 @theme inline {
-  /* Brand — Navy */
-  --color-navy: #0F1525;
-  --color-navy-light: #1A2235;
-  --color-navy-lighter: #232D42;
+  /* Onyx palette */
+  --color-bg: #0B0B0B;
+  --color-bg-soft: #131311;
+  --color-bg-elevated: #18181580;
+  --color-fg: #ECE6D6;          /* bone */
+  --color-fg-soft: #C9C2B0;
+  --color-fg-mute: #8A8472;
+  --color-line: #2A2723;
+  --color-line-strong: #3D3933;
+  --color-accent: #B8753A;      /* burnished bronze */
+  --color-accent-soft: #8C5829;
+  --color-accent-fg: #0B0B0B;
+  --color-danger: #C84A38;
 
-  /* Brand — Gold */
-  --color-gold: #C9A84C;
-  --color-gold-hover: #D4B65E;
-  --color-gold-dark: #A8873A;
-  --color-gold-muted: rgba(201, 168, 76, 0.15);
+  /* Font tokens (wired via next/font in layout.tsx) */
+  --font-display: var(--font-big-shoulders), "Oswald", "Anton", Impact, sans-serif;
+  --font-serif:   var(--font-instrument-serif), "Cormorant Garamond", Georgia, serif;
+  --font-body:    var(--font-manrope), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono:    var(--font-jetbrains-mono), ui-monospace, monospace;
 
-  /* Brand — Neutrals (light surfaces) */
-  --color-off-white: #F8F6F1;
-  --color-cream: #F0EDE5;
-
-  /* Brand — Grays (override Tailwind defaults) */
-  --color-gray-100: #E8E5DE;
-  --color-gray-300: #B8B5AE;
-  --color-gray-500: #6B6860;
-  --color-gray-700: #3D3A35;
-  --color-gray-900: #1A1815;
-
-  /* Semantic */
-  --color-success: #4CAF50;
-  --color-error: #E53935;
+  /* Backward-compat aliases for pages preserved un-touched (per spec):
+     /free-plan, /about, /book, /results, LeadCaptureForm, payment success/cancel.
+     These map the old navy/gold/Cormorant token names onto Onyx equivalents
+     so legacy Tailwind utilities (bg-navy, text-gold, font-heading) still
+     render under the new system. New code should use the Onyx tokens directly. */
+  --color-navy: #0B0B0B;            /* → bg */
+  --color-navy-light: #131311;      /* → bg-soft */
+  --color-navy-lighter: #2A2723;    /* → line */
+  --color-gold: #B8753A;            /* → accent */
+  --color-gold-hover: #8C5829;      /* → accent-soft */
+  --color-gold-dark: #8C5829;
+  --color-gold-muted: rgba(184, 117, 58, 0.15);
+  --color-off-white: #ECE6D6;       /* → fg */
+  --color-cream: #C9C2B0;
+  --color-success: #6BD58A;
+  --color-error: #C84A38;
   --color-info: #5C8DB5;
-
-  /* Fonts */
-  --font-heading: var(--font-cormorant), "Georgia", serif;
-  --font-body: var(--font-dm-sans), "Helvetica Neue", sans-serif;
+  --font-heading: var(--font-big-shoulders), "Oswald", Impact, sans-serif;
 }
 
-html {
-  scroll-behavior: smooth;
+:root {
+  --container: 1280px;
+  --gutter: clamp(20px, 4vw, 56px);
+
+  /* Mirror tokens as plain CSS vars so the design's .display / .eyebrow /
+     .btn / .pillar / .acc-* / .nav classes can use var(--bg) etc. without
+     the --color- prefix Tailwind requires. */
+  --bg: #0B0B0B;
+  --bg-soft: #131311;
+  --bg-elevated: #18181580;
+  --fg: #ECE6D6;
+  --fg-soft: #C9C2B0;
+  --fg-mute: #8A8472;
+  --line: #2A2723;
+  --line-strong: #3D3933;
+  --accent: #B8753A;
+  --accent-soft: #8C5829;
+  --accent-fg: #0B0B0B;
+  --danger: #C84A38;
+
+  --display: var(--font-big-shoulders), "Oswald", "Anton", Impact, sans-serif;
+  --serif:   var(--font-instrument-serif), "Cormorant Garamond", Georgia, serif;
+  --body:    var(--font-manrope), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --mono:    var(--font-jetbrains-mono), ui-monospace, monospace;
 }
 
+html, body { margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
 body {
-  background: var(--color-navy);
-  color: #ffffff;
-  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--body);
+  font-feature-settings: "ss01", "cv11";
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-heading);
+::selection { background: var(--accent); color: var(--accent-fg); }
+
+/* ── Type tokens ──────────────────────────────────────────────── */
+.display {
+  font-family: var(--display);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 0.88;
+  text-transform: uppercase;
 }
 
-.hero-texture-radial {
-  background-image:
-    radial-gradient(circle at 20% 20%, #C9A84C 0%, transparent 40%),
-    radial-gradient(circle at 80% 70%, #C9A84C 0%, transparent 45%);
+.serif-i {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
 }
 
-.hero-texture-grid {
-  background-image:
-    linear-gradient(to right, #FFFFFF 1px, transparent 1px),
-    linear-gradient(to bottom, #FFFFFF 1px, transparent 1px);
-  background-size: 64px 64px;
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--fg-mute);
+}
+.eyebrow .dot {
+  display: inline-block;
+  width: 6px; height: 6px;
+  border-radius: 999px;
+  background: var(--accent);
+  margin-right: 10px;
+  transform: translateY(-2px);
 }
 
+/* ── Layout ───────────────────────────────────────────────────── */
+.container { max-width: var(--container); margin: 0 auto; padding: 0 var(--gutter); }
+section { position: relative; }
+
+/* Grain overlay (subtle film grain — improves the near-black surface) */
+.grain {
+  position: fixed; inset: 0;
+  pointer-events: none;
+  opacity: 0.06;
+  z-index: 1;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.7 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+
+/* ── Buttons ──────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 22px;
+  font-family: var(--body);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid transparent;
+  border-radius: 0;
+  cursor: pointer;
+  transition: background-color 220ms cubic-bezier(.2,.7,.2,1),
+              color 220ms cubic-bezier(.2,.7,.2,1),
+              border-color 220ms cubic-bezier(.2,.7,.2,1);
+  background: transparent;
+  color: var(--fg);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.btn-primary {
+  background: var(--accent);
+  color: var(--accent-fg);
+}
+.btn-primary:hover { background: var(--fg); color: var(--bg); }
+.btn-ghost {
+  border-color: var(--line-strong);
+  color: var(--fg);
+}
+.btn-ghost:hover { border-color: var(--fg); }
+.btn-link {
+  padding: 0;
+  color: var(--fg);
+  border-bottom: 1px solid var(--line-strong);
+  padding-bottom: 4px;
+  letter-spacing: 0.06em;
+}
+.btn-link:hover { border-color: var(--accent); color: var(--accent); }
+.btn .arrow {
+  display: inline-block;
+  transition: transform 220ms ease;
+}
+.btn:hover .arrow { transform: translateX(4px); }
+.btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* ── Inputs ───────────────────────────────────────────────────── */
+.field {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--line-strong);
+  color: var(--fg);
+  font-family: var(--body);
+  font-size: 17px;
+  padding: 16px 0;
+  outline: none;
+  transition: border-color 200ms ease;
+}
+.field:focus { border-color: var(--accent); }
+.field::placeholder { color: var(--fg-mute); }
+
+/* ── Reveal-on-scroll ─────────────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 800ms cubic-bezier(.2,.7,.2,1),
+              transform 800ms cubic-bezier(.2,.7,.2,1);
+}
+.reveal.in { opacity: 1; transform: none; }
+.reveal-delay-1 { transition-delay: 80ms; }
+.reveal-delay-2 { transition-delay: 160ms; }
+.reveal-delay-3 { transition-delay: 240ms; }
+
+/* ── Hairline divider ─────────────────────────────────────────── */
+.hairline { height: 1px; background: var(--line); width: 100%; }
+
+/* ── Live dot (hero meta) ─────────────────────────────────────── */
+@keyframes pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+.live-dot {
+  width: 6px; height: 6px;
+  background: #6BD58A;
+  border-radius: 999px;
+  display: inline-block;
+  animation: pulse 1.8s ease-in-out infinite;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+/* ── Hero specific ────────────────────────────────────────────── */
+.hero-headline {
+  font-size: clamp(64px, 11vw, 184px);
+}
+.hero-headline em {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  text-transform: none;
+  color: var(--fg-soft);
+  letter-spacing: -0.02em;
+  display: inline-block;
+  transform: translateY(-0.04em);
+}
+
+/* Sticky-marker (hero side stamp) */
+.side-stamp {
+  position: absolute;
+  left: var(--gutter);
+  top: 40px;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  color: var(--fg-mute);
+  text-transform: uppercase;
+}
+
+/* ── Accordion (FAQ) ──────────────────────────────────────────── */
+.acc-item { border-bottom: 1px solid var(--line); }
+.acc-trigger {
+  width: 100%;
+  background: none;
+  border: none;
+  color: var(--fg);
+  text-align: left;
+  padding: 28px 0;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  font-family: var(--display);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: clamp(20px, 2.2vw, 28px);
+  letter-spacing: -0.005em;
+  transition: color 180ms ease;
+}
+.acc-trigger:hover { color: var(--accent); }
+.acc-trigger .plus { font-family: var(--body); font-weight: 300; font-size: 22px; color: var(--fg-mute); transition: transform 240ms ease, color 240ms ease; }
+.acc-item.open .acc-trigger .plus { transform: rotate(45deg); color: var(--accent); }
+.acc-content { max-height: 0; overflow: hidden; transition: max-height 360ms cubic-bezier(.2,.7,.2,1); }
+.acc-item.open .acc-content { max-height: 600px; }
+.acc-inner { padding: 0 0 28px; max-width: 720px; color: var(--fg-soft); font-size: 16px; line-height: 1.65; }
+
+/* ── Method pillars ───────────────────────────────────────────── */
+.pillar {
+  border: 1px solid var(--line);
+  padding: 32px 28px 28px;
+  position: relative;
+  background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.01) 100%);
+  transition: border-color 240ms ease, transform 240ms ease;
+}
+.pillar:hover { border-color: var(--line-strong); transform: translateY(-2px); }
+.pillar .num {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--fg-mute);
+  letter-spacing: 0.2em;
+  margin-bottom: 36px;
+}
+.pillar h3 {
+  font-family: var(--display);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 32px;
+  line-height: 0.96;
+  letter-spacing: -0.005em;
+  margin: 0 0 14px;
+}
+.pillar p {
+  color: var(--fg-soft);
+  font-size: 14.5px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ── Nav ──────────────────────────────────────────────────────── */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 50;
+  transition: background-color 240ms ease, border-color 240ms ease, padding 240ms ease;
+  padding: 24px 0;
+  border-bottom: 1px solid transparent;
+}
+.nav.scrolled {
+  background: rgba(11,11,11,0.78);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border-bottom-color: var(--line);
+  padding: 14px 0;
+}
+
+.nav-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 20px;
+}
+.logo {
+  display: flex; align-items: center; gap: 12px;
+  text-decoration: none; color: var(--fg);
+}
+.logo-mark {
+  width: 30px; height: 30px;
+  border: 1.5px solid var(--fg);
+  display: grid; place-items: center;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 16px;
+  line-height: 1;
+}
+.logo-wm {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.logo-sub {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--fg-mute);
+  margin-left: 8px;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.nav-links { display: flex; gap: 36px; }
+@media (max-width: 860px) { .nav-links { display: none; } }
+.nav-link {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fg-soft);
+  text-decoration: none;
+  transition: color 200ms ease;
+}
+.nav-link:hover { color: var(--accent); }
+
+/* ── Responsive ───────────────────────────────────────────────── */
+@media (max-width: 720px) {
+  .hero-headline { font-size: 72px; }
+  .side-stamp { display: none; }
+}
+
+/* ── Motion-cut ───────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -69,4 +391,6 @@ h1, h2, h3, h4, h5, h6 {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+  .live-dot { animation: none; opacity: 1; }
+  .reveal { opacity: 1; transform: none; }
 }

@@ -1,145 +1,134 @@
 import Link from "next/link";
-import { Mail, MapPin, Award } from "lucide-react";
+import { BRAND, CAL_BOOKING_URL } from "@/lib/constants";
 
-function InstagramIcon({ size = 16 }: { size?: number }) {
+interface FooterLink {
+  label: string;
+  href: string;
+  external?: boolean;
+}
+
+const coaching: FooterLink[] = [
+  { label: "Online — $199/mo", href: CAL_BOOKING_URL, external: true },
+  { label: "Online — $499/qtr", href: CAL_BOOKING_URL, external: true },
+  { label: "In-Person (Tampa)", href: CAL_BOOKING_URL, external: true },
+];
+
+const site: FooterLink[] = [
+  { label: "The Method", href: "#method" },
+  { label: "Free 5-day plan", href: "#free-plan" },
+  { label: "About Larry", href: "#larry" },
+  { label: "FAQ", href: "#faq" },
+];
+
+const contact: FooterLink[] = [
+  {
+    label: BRAND.email,
+    href: `mailto:${BRAND.email}`,
+  },
+  { label: "Book a 15-min call", href: CAL_BOOKING_URL, external: true },
+  { label: "Instagram", href: BRAND.instagram, external: true },
+];
+
+function FooterCol({ title, links }: { title: string; links: FooterLink[] }) {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-    </svg>
+    <div>
+      <div className="eyebrow" style={{ marginBottom: 18 }}>
+        {title}
+      </div>
+      <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+        {links.map((l) => (
+          <li key={l.label} style={{ marginBottom: 10 }}>
+            {l.external ? (
+              <a
+                href={l.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="footer-link"
+              >
+                {l.label}
+              </a>
+            ) : (
+              <Link href={l.href} className="footer-link">
+                {l.label}
+              </Link>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
-import { BRAND, NAV_LINKS } from "@/lib/constants";
 
 export function Footer() {
   return (
-    <footer className="bg-navy border-t border-navy-lighter">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12 md:py-16">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
-          {/* Brand column */}
+    <footer
+      style={{
+        borderTop: "1px solid var(--line)",
+        padding: "60px 0 40px",
+        background: "var(--bg-soft)",
+      }}
+    >
+      <div className="container">
+        <div className="footer-grid">
           <div>
-            <Link href="/" aria-label="Sculpted by Larry home" className="inline-block">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/logos/logo_badge_dark.png"
-                alt="Sculpted by Larry"
-                width={80}
-                height={80}
-                className="w-20 h-auto"
-              />
+            <Link
+              href="#top"
+              className="logo"
+              style={{ marginBottom: 16 }}
+              aria-label="Sculpted by Larry — back to top"
+            >
+              <div className="logo-mark">S</div>
+              <div className="logo-wm">Sculpted by Larry</div>
             </Link>
-            <p className="mt-6 font-body text-sm text-gray-300 leading-relaxed">
-              {BRAND.tagline}
+            <p
+              style={{
+                color: "var(--fg-mute)",
+                fontSize: 13.5,
+                lineHeight: 1.55,
+                maxWidth: 320,
+                margin: "16px 0 0",
+              }}
+            >
+              1:1 coaching. Online anywhere, in-person in Tampa. Real
+              programming, real coaching, no hype.
             </p>
-            <p className="mt-4 flex items-center gap-2 font-body text-xs uppercase tracking-[0.2em] text-gold">
-              <Award size={14} strokeWidth={1.5} />
-              {BRAND.certification}
-            </p>
           </div>
-
-          {/* Navigation */}
-          <div>
-            <h4 className="font-body text-xs font-medium uppercase tracking-[0.2em] text-gold mb-5">
-              Explore
-            </h4>
-            <ul className="space-y-3">
-              {NAV_LINKS.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="font-body text-sm text-gray-300 hover:text-gold transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-              <li>
-                <a
-                  href="https://cal.com/sculptedbylarry/15min"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-body text-sm text-gray-300 hover:text-gold transition-colors"
-                >
-                  Book a 15-min call
-                </a>
-              </li>
-              <li>
-                <Link
-                  href="/free-plan"
-                  className="font-body text-sm text-gray-300 hover:text-gold transition-colors"
-                >
-                  Free 5-Day Plan
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Contact */}
-          <div>
-            <h4 className="font-body text-xs font-medium uppercase tracking-[0.2em] text-gold mb-5">
-              Contact
-            </h4>
-            <ul className="space-y-3">
-              <li>
-                <a
-                  href={`mailto:${BRAND.email}`}
-                  className="flex items-start gap-2 font-body text-sm text-gray-300 hover:text-gold transition-colors"
-                >
-                  <Mail size={16} strokeWidth={1.5} className="mt-0.5 shrink-0" />
-                  {BRAND.email}
-                </a>
-              </li>
-              <li className="flex items-start gap-2 font-body text-sm text-gray-300">
-                <MapPin size={16} strokeWidth={1.5} className="mt-0.5 shrink-0" />
-                {BRAND.location}
-              </li>
-            </ul>
-          </div>
-
-          {/* Social */}
-          <div>
-            <h4 className="font-body text-xs font-medium uppercase tracking-[0.2em] text-gold mb-5">
-              Follow
-            </h4>
-            <ul className="space-y-3">
-              {BRAND.instagram && (
-                <li>
-                  <a
-                    href={BRAND.instagram}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 font-body text-sm text-gray-300 hover:text-gold transition-colors"
-                  >
-                    <InstagramIcon size={16} />
-                    Instagram
-                  </a>
-                </li>
-              )}
-            </ul>
-          </div>
+          <FooterCol title="Coaching" links={coaching} />
+          <FooterCol title="Site" links={site} />
+          <FooterCol title="Contact" links={contact} />
         </div>
-
-        <div className="mt-12 pt-8 border-t border-navy-lighter flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="font-body text-xs text-gray-300">
-            &copy; {new Date().getFullYear()} {BRAND.name}. All rights reserved.
-          </p>
-          <p className="font-body text-xs text-gray-300">
-            {BRAND.location}
-          </p>
+        <div className="hairline" style={{ margin: "48px 0 24px" }}></div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            flexWrap: "wrap",
+            gap: 16,
+          }}
+        >
+          <div className="eyebrow">© 2026 Sculpted by Larry — Tampa, FL</div>
+          <div className="eyebrow">{BRAND.tagline}</div>
         </div>
       </div>
+
+      <style>{`
+        .footer-grid {
+          display: grid;
+          grid-template-columns: 1.4fr 1fr 1fr 1fr;
+          gap: 40px;
+        }
+        .footer-link {
+          color: var(--fg-soft);
+          font-size: 14px;
+          text-decoration: none;
+          transition: color 200ms ease;
+        }
+        .footer-link:hover { color: var(--accent); }
+        @media (max-width: 720px) {
+          .footer-grid { grid-template-columns: 1fr 1fr; }
+        }
+      `}</style>
     </footer>
   );
 }

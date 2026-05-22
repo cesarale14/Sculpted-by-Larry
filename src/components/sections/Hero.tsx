@@ -1,97 +1,141 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { ChevronDown } from "lucide-react";
-
-const container = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.15, delayChildren: 0.1 },
-  },
-};
-
-const item = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" as const } },
-};
+import Image from "next/image";
+import { useReveal } from "@/lib/useReveal";
+import { CAL_BOOKING_URL } from "@/lib/constants";
 
 export function Hero() {
+  useReveal();
+
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-navy">
-      {/* Subtle radial + grid texture */}
-      <div aria-hidden className="absolute inset-0 opacity-[0.07] pointer-events-none hero-texture-radial" />
-      <div aria-hidden className="absolute inset-0 opacity-[0.05] pointer-events-none hero-texture-grid" />
+    <section
+      id="top"
+      style={{
+        position: "relative",
+        minHeight: "100vh",
+        paddingTop: 140,
+        paddingBottom: 80,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+      }}
+    >
+      <div className="side-stamp">SCULPTED — N°001 — TAMPA · FL</div>
 
-      <motion.div
-        variants={container}
-        initial="hidden"
-        animate="visible"
-        className="relative z-10 max-w-4xl mx-auto px-6 text-center py-24"
+      <div
+        className="container reveal"
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: 40,
+          color: "var(--fg-mute)",
+          fontFamily: "var(--mono)",
+          fontSize: 11,
+          letterSpacing: "0.2em",
+          textTransform: "uppercase",
+          flexWrap: "wrap",
+          gap: 12,
+        }}
       >
-        <motion.p
-          variants={item}
-          className="font-body text-[13px] font-medium uppercase tracking-[0.2em] text-gold mb-8"
-        >
-          Sculpted by Larry &mdash; Tampa, FL
-        </motion.p>
+        <span>
+          <span className="live-dot" aria-hidden="true"></span>
+          Taking new clients · online &amp; in Tampa
+        </span>
+        <span style={{ opacity: 0.7 }}>Real coaching, not rhetoric</span>
+      </div>
 
-        <motion.h1
-          variants={item}
-          className="font-heading font-bold tracking-tight leading-[0.98]"
-        >
-          <span className="block text-4xl md:text-5xl lg:text-6xl xl:text-[64px] text-white">
-            You&rsquo;ve tried before.
-          </span>
-          <span className="block text-4xl md:text-5xl lg:text-6xl xl:text-[64px] text-gold mt-2 italic">
-            You&rsquo;ve stopped before, too.
-          </span>
-        </motion.h1>
+      <div className="container">
+        <h1 className="display hero-headline reveal" style={{ margin: 0 }}>
+          Sculpt the<br />
+          <em>body</em> your<br />
+          life demands.
+        </h1>
+      </div>
 
-        <motion.div
-          variants={item}
-          className="mt-8 font-body text-lg md:text-xl text-gray-300 max-w-xl mx-auto leading-relaxed space-y-1"
-        >
-          <p>Real coaching. No motivational rhetoric.</p>
-          <p>Strong and visible in sixteen weeks.</p>
-        </motion.div>
+      <div className="container" style={{ marginTop: 64 }}>
+        <div className="hero-grid">
+          <div className="reveal reveal-delay-1">
+            <p
+              style={{
+                fontSize: 17,
+                lineHeight: 1.55,
+                color: "var(--fg-soft)",
+                margin: "0 0 32px",
+                maxWidth: 460,
+              }}
+            >
+              One coach. Real programming. Direct access to Larry. Start with a
+              free 5-day plan, or book a 15-minute call and we&rsquo;ll figure
+              out the right fit together.
+            </p>
+            <div className="hero-ctas">
+              <Link href="/free-plan" className="btn btn-primary">
+                Get your free starter training plan{" "}
+                <span className="arrow">→</span>
+              </Link>
+              <a
+                href={CAL_BOOKING_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-ghost"
+              >
+                Book a 15-min call <span className="arrow">→</span>
+              </a>
+            </div>
+          </div>
 
-        <motion.div
-          variants={item}
-          className="mt-10 flex flex-col sm:flex-row gap-4 justify-center"
-        >
-          <Link
-            href="/free-plan"
-            className="inline-flex items-center justify-center font-body text-[15px] font-medium bg-gold text-navy rounded-lg px-8 py-3.5 hover:bg-gold-hover transition-all duration-200 hover:-translate-y-0.5"
-          >
-            Get your free starter training plan
-          </Link>
-          <a
-            href="https://cal.com/sculptedbylarry/15min"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center font-body text-[15px] font-medium bg-transparent border border-gold text-gold rounded-lg px-8 py-3.5 hover:bg-gold hover:text-navy transition-all duration-200"
-          >
-            Book a 15-min call
-          </a>
-        </motion.div>
-      </motion.div>
+          <div className="reveal reveal-delay-2 hero-portrait-wrap">
+            <Image
+              src="/images/larry-portrait.jpg"
+              alt="Larry Faria — portrait"
+              width={1200}
+              height={1600}
+              priority
+              sizes="(max-width: 880px) 100vw, 40vw"
+              className="hero-portrait-img"
+            />
+          </div>
+        </div>
+      </div>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.2, duration: 0.8 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10"
-      >
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          className="text-gold"
-        >
-          <ChevronDown size={28} strokeWidth={1.5} />
-        </motion.div>
-      </motion.div>
+      <style jsx>{`
+        .hero-grid {
+          display: grid;
+          grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+          gap: 64px;
+          align-items: end;
+        }
+        .hero-portrait-wrap {
+          aspect-ratio: 3 / 4;
+          position: relative;
+          overflow: hidden;
+          background: var(--bg-soft);
+          border: 1px solid var(--line);
+        }
+        :global(.hero-portrait-img) {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center top;
+          display: block;
+          filter: contrast(1.02) saturate(0.96);
+        }
+        .hero-ctas {
+          display: flex;
+          flex-direction: row;
+          gap: 14px;
+          flex-wrap: wrap;
+          align-items: center;
+        }
+        @media (max-width: 880px) {
+          .hero-grid {
+            grid-template-columns: 1fr;
+            gap: 40px;
+          }
+        }
+      `}</style>
     </section>
   );
 }

@@ -1,31 +1,85 @@
-import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import Link from "next/link";
+import { CAL_BOOKING_URL } from "@/lib/constants";
 
 export function CTASection() {
   return (
-    <section className="py-16 md:py-20 bg-gold">
-      <div className="max-w-3xl mx-auto px-6 lg:px-8 text-center">
-        <ScrollReveal>
-          <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-navy leading-tight">
-            Real coaching, <span className="italic">not motivational content.</span>
-          </h2>
-          <div className="mt-6 font-body text-lg text-navy/75 max-w-xl mx-auto leading-relaxed space-y-3">
-            <p>
-              Programming built to your body, your history, and what you can
-              actually sustain.
-            </p>
-            <p>Get on the calendar with Larry to talk through fit.</p>
-          </div>
-          <div className="mt-10">
-            <a
-              href="https://cal.com/sculptedbylarry/15min"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center font-body text-[15px] font-medium bg-navy text-white rounded-lg px-8 py-3.5 hover:bg-navy-light transition-all duration-200 hover:-translate-y-0.5"
-            >
-              Book a 15-min call
-            </a>
-          </div>
-        </ScrollReveal>
+    <section
+      id="start"
+      style={{
+        padding: "160px 0 160px",
+        borderTop: "1px solid var(--line)",
+        position: "relative",
+      }}
+    >
+      <div className="container">
+        <div
+          className="reveal"
+          style={{ textAlign: "center", marginBottom: 40 }}
+        >
+          <span className="eyebrow">
+            <span className="dot" aria-hidden="true"></span>Two doors. Both open.
+          </span>
+        </div>
+        <h2
+          className="display reveal reveal-delay-1"
+          style={{
+            fontSize: "clamp(64px,11vw,184px)",
+            margin: "0 0 24px",
+            textAlign: "center",
+            lineHeight: 0.86,
+            letterSpacing: "-0.01em",
+          }}
+        >
+          Start the{" "}
+          <em
+            className="serif-i"
+            style={{
+              textTransform: "none",
+              color: "var(--accent)",
+              letterSpacing: "-0.02em",
+            }}
+          >
+            work
+          </em>
+          .
+        </h2>
+        <p
+          className="reveal reveal-delay-2"
+          style={{
+            textAlign: "center",
+            maxWidth: 560,
+            margin: "0 auto 56px",
+            color: "var(--fg-soft)",
+            fontSize: 17,
+            lineHeight: 1.6,
+          }}
+        >
+          Try the free 5-day plan if you want to see how I program before
+          committing to anything. Or skip ahead and book a 15-minute call —
+          we&rsquo;ll talk about what you want and whether I can help.
+        </p>
+        <div
+          className="reveal reveal-delay-3"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            gap: 14,
+            flexWrap: "wrap",
+          }}
+        >
+          <Link href="/free-plan" className="btn btn-primary">
+            Get your free starter training plan{" "}
+            <span className="arrow">→</span>
+          </Link>
+          <a
+            href={CAL_BOOKING_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-ghost"
+          >
+            Book a 15-min call <span className="arrow">→</span>
+          </a>
+        </div>
       </div>
     </section>
   );

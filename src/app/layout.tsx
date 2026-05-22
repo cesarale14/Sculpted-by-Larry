@@ -1,35 +1,54 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, DM_Sans } from "next/font/google";
-import { TopChrome } from "@/components/layout/TopChrome";
+import {
+  Big_Shoulders,
+  Instrument_Serif,
+  Manrope,
+  JetBrains_Mono,
+} from "next/font/google";
+import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { StructuredData } from "@/components/StructuredData";
 import { localBusinessSchema } from "@/lib/schema";
 import { BRAND } from "@/lib/constants";
 import "./globals.css";
 
-const cormorant = Cormorant_Garamond({
-  variable: "--font-cormorant",
+const bigShoulders = Big_Shoulders({
+  variable: "--font-big-shoulders",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "600", "700", "800", "900"],
+  display: "swap",
+});
+
+const instrumentSerif = Instrument_Serif({
+  variable: "--font-instrument-serif",
+  subsets: ["latin"],
+  weight: "400",
   style: ["normal", "italic"],
   display: "swap",
 });
 
-const dmSans = DM_Sans({
-  variable: "--font-dm-sans",
+const manrope = Manrope({
+  variable: "--font-manrope",
   subsets: ["latin"],
-  weight: ["400", "500", "700"],
+  weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
+  subsets: ["latin"],
+  weight: ["400", "500"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL(BRAND.siteUrl),
   title: {
-    default: "Sculpted by Larry | Personal Training in Tampa, FL",
+    default: "Sculpted by Larry — Premium Coaching · Tampa, FL",
     template: "%s | Sculpted by Larry",
   },
   description:
-    "ISSA-certified personal trainer in Tampa, Florida. In-person training, online coaching, and custom programs. Your body, engineered.",
+    "1:1 coaching with Larry Faria. Online anywhere, in-person in Tampa. Real programming, real coaching, no hype.",
   icons: {
     icon: "/logos/logo_icon.png",
     apple: "/logos/logo_icon.png",
@@ -37,7 +56,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Sculpted by Larry",
     description:
-      "ISSA-certified personal trainer in Tampa, Florida. In-person training, online coaching, and custom programs.",
+      "1:1 coaching with Larry Faria. Online anywhere, in-person in Tampa. Real programming, real coaching, no hype.",
     url: BRAND.siteUrl,
     siteName: "Sculpted by Larry",
     type: "website",
@@ -46,8 +65,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Sculpted by Larry",
-    description:
-      "ISSA-certified personal trainer in Tampa, Florida. Your body, engineered.",
+    description: "Sculpt the body your life demands.",
   },
 };
 
@@ -56,23 +74,26 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const fontVars = [
+    bigShoulders.variable,
+    instrumentSerif.variable,
+    manrope.variable,
+    jetbrainsMono.variable,
+  ].join(" ");
+
   return (
-    <html
-      lang="en"
-      className={`${cormorant.variable} ${dmSans.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col bg-navy text-white font-body">
+    <html lang="en" className={fontVars}>
+      <body>
         <StructuredData data={localBusinessSchema} />
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:bg-gold focus:text-navy focus:px-4 focus:py-2 focus:rounded"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:bg-accent focus:text-accent-fg focus:px-4 focus:py-2"
         >
           Skip to content
         </a>
-        <TopChrome />
-        <main id="main" className="flex-1">
-          {children}
-        </main>
+        <div className="grain" aria-hidden="true" />
+        <Navbar />
+        <main id="main">{children}</main>
         <Footer />
       </body>
     </html>

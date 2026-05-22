@@ -1,18 +1,20 @@
 import type { Metadata } from "next";
 import { Hero } from "@/components/sections/Hero";
-import { TrustBar } from "@/components/sections/TrustBar";
+import { Method } from "@/components/sections/Method";
+import { FreePlan } from "@/components/sections/FreePlan";
 import { ProgramCards } from "@/components/sections/ProgramCards";
-import { TransformationSpotlight } from "@/components/sections/TransformationSpotlight";
+import { Larry } from "@/components/sections/Larry";
+import { FAQ } from "@/components/sections/FAQ";
 import { CTASection } from "@/components/sections/CTASection";
 
 export const metadata: Metadata = {
-  title: "Sculpted by Larry | Personal Training & Online Coaching | Tampa, FL",
+  title: "Sculpted by Larry — Premium Coaching · Tampa, FL",
   description:
-    "ISSA certified personal trainer offering in-person training in Tampa and online coaching nationwide. Custom programs, nutrition guidance, and real accountability. Book your free consultation.",
+    "1:1 coaching with Larry Faria. Online anywhere, in-person in Tampa. Real programming, real coaching, no hype. Start with a free 5-day plan.",
   openGraph: {
-    title: "Sculpted by Larry | Personal Training & Online Coaching | Tampa, FL",
+    title: "Sculpted by Larry — Premium Coaching · Tampa, FL",
     description:
-      "ISSA certified personal trainer offering in-person training in Tampa and online coaching nationwide. Custom programs, nutrition guidance, and real accountability.",
+      "1:1 coaching with Larry Faria. Online anywhere, in-person in Tampa. Real programming, real coaching, no hype.",
     url: "/",
     siteName: "Sculpted by Larry",
     type: "website",
@@ -24,9 +26,11 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <TrustBar />
+      <Method />
+      <FreePlan />
       <ProgramCards />
-      <TransformationSpotlight />
+      <Larry />
+      <FAQ />
       <CTASection />
     </>
   );

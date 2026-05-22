@@ -1,171 +1,409 @@
-import Link from "next/link";
-import { Check } from "lucide-react";
-import { SectionHeading } from "@/components/ui/SectionHeading";
-import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import {
+  CAL_BOOKING_URL,
+  ONLINE_TIERS,
+  ONLINE_FEATURES,
+  INPERSON_FEATURES,
+} from "@/lib/constants";
 
-interface OnlineTier {
-  cadence: string;
-  price: string;
-  savings?: string;
-}
-
-const onlineTiers: OnlineTier[] = [
-  { cadence: "Monthly", price: "$199/mo" },
-  { cadence: "Quarterly", price: "$499", savings: "save 17%" },
-  { cadence: "Yearly", price: "$999", savings: "save 58%" },
-];
-
-const onlineFeatures = [
-  "Programming built to your body, history, and equipment access",
-  "Weekly check-ins and adjustments",
-  "Direct message access — Larry replies fast",
-  "Nutrition framework (macros, taught honestly)",
-  "16-week program structure",
-];
-
-const inPersonFeatures = [
-  "All Online Coaching program features",
-  "Weekly in-person training at Larry's gym",
-  "Form coaching that's hard to get any other way",
-];
-
-interface ProgramCardsProps {
-  showHeading?: boolean;
-}
-
-export function ProgramCards({ showHeading = true }: ProgramCardsProps = {}) {
+export function ProgramCards() {
   return (
-    <section className="py-20 md:py-24 bg-off-white">
-      <div className="max-w-6xl mx-auto px-6 lg:px-8">
-        {showHeading && (
-          <SectionHeading
-            overline="Two Ways In"
-            title="Programs"
-            subtitle="Both real coaching, not template programs."
-            variant="light"
-          />
-        )}
+    <section
+      id="programs"
+      style={{ padding: "140px 0", borderTop: "1px solid var(--line)" }}
+    >
+      <div className="container">
+        <div
+          className="reveal"
+          style={{
+            marginBottom: 64,
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "flex-end",
+            flexWrap: "wrap",
+            gap: 32,
+          }}
+        >
+          <div>
+            <span className="eyebrow">
+              <span className="dot" aria-hidden="true"></span>Coaching · Available now
+            </span>
+            <h2
+              className="display"
+              style={{ fontSize: "clamp(40px,6vw,84px)", margin: "20px 0 0" }}
+            >
+              Two ways to{" "}
+              <em
+                className="serif-i"
+                style={{
+                  textTransform: "none",
+                  color: "var(--fg-soft)",
+                  letterSpacing: "-0.02em",
+                }}
+              >
+                work together
+              </em>
+              .
+            </h2>
+          </div>
+          <p
+            style={{
+              maxWidth: 360,
+              fontSize: 14.5,
+              lineHeight: 1.6,
+              color: "var(--fg-soft)",
+              margin: 0,
+            }}
+          >
+            Online — anywhere with a gym and a phone. In-person — Tampa only.
+            Both start with a 15-minute call so we can be sure it&rsquo;s a
+            fit.
+          </p>
+        </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-stretch">
-          {/* Online card — slight visual emphasis */}
-          <ScrollReveal className="flex">
-            <div className="relative w-full flex flex-col rounded-2xl bg-white p-8 md:p-10 border border-gold shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
-              <div className="absolute top-0 left-0 right-0 h-[3px] bg-gold rounded-t-2xl" />
-
-              <h3 className="font-heading text-2xl md:text-3xl font-semibold text-gray-700 uppercase tracking-wide">
+        {/* Online Coaching */}
+        <div
+          className="reveal"
+          style={{
+            border: "1px solid var(--line)",
+            padding: "36px 36px 32px",
+            marginBottom: 16,
+            background: "var(--bg-soft)",
+          }}
+        >
+          <div className="prog-grid">
+            <div>
+              <div className="eyebrow" style={{ marginBottom: 14 }}>
+                Product 01
+              </div>
+              <h3
+                className="display"
+                style={{
+                  fontSize: 44,
+                  margin: "0 0 8px",
+                  letterSpacing: "-0.005em",
+                }}
+              >
                 Online Coaching
               </h3>
-              <p className="mt-2 font-heading italic text-base md:text-lg text-gray-500">
-                Real coaching from anywhere.
+              <div
+                style={{
+                  fontFamily: "var(--mono)",
+                  fontSize: 12,
+                  color: "var(--fg-mute)",
+                  letterSpacing: "0.1em",
+                  textTransform: "uppercase",
+                  marginBottom: 22,
+                }}
+              >
+                1:1 · Anywhere
+              </div>
+              <p
+                style={{
+                  fontSize: 14.5,
+                  color: "var(--fg-soft)",
+                  lineHeight: 1.6,
+                  margin: "0 0 22px",
+                }}
+              >
+                Programming written for your body and your week, plus direct
+                access to me whenever the work gets hard. Pick the commitment
+                that matches where you are right now — month-to-month is fine,
+                longer saves money.
               </p>
-
-              <ul className="mt-6 space-y-3">
-                {onlineFeatures.map((feature) => (
+              <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+                {ONLINE_FEATURES.map((f, j) => (
                   <li
-                    key={feature}
-                    className="flex items-start gap-3 font-body text-sm text-gray-700"
+                    key={j}
+                    style={{
+                      display: "flex",
+                      gap: 12,
+                      padding: "10px 0",
+                      borderTop: "1px solid var(--line)",
+                      fontSize: 13.5,
+                      color: "var(--fg-soft)",
+                    }}
                   >
-                    <Check
-                      size={18}
-                      strokeWidth={1.5}
-                      className="mt-0.5 shrink-0 text-gold-dark"
-                    />
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-
-              <div className="mt-8 border-t border-gray-100 pt-6">
-                <p className="font-body text-[11px] font-medium uppercase tracking-[0.2em] text-gold-dark mb-3">
-                  Commitment
-                </p>
-                <div className="space-y-2">
-                  {onlineTiers.map((tier) => (
-                    <div
-                      key={tier.cadence}
-                      className="flex items-baseline justify-between gap-4"
+                    <span
+                      style={{
+                        color: "var(--accent)",
+                        fontFamily: "var(--mono)",
+                        fontSize: 11,
+                      }}
                     >
-                      <span className="font-body text-sm text-gray-700">
-                        {tier.cadence}
-                      </span>
-                      <span className="flex items-baseline gap-2">
-                        <span className="font-heading italic text-xl text-gray-700">
-                          {tier.price}
-                        </span>
-                        {tier.savings && (
-                          <span className="font-body text-xs text-gold-dark">
-                            {tier.savings}
-                          </span>
-                        )}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="mt-auto pt-8">
-                <Link
-                  href="/free-plan"
-                  className="inline-flex items-center justify-center w-full font-body text-[15px] font-medium rounded-lg px-8 py-3.5 transition-all duration-200 hover:-translate-y-0.5 bg-gold text-navy hover:bg-gold-hover"
-                >
-                  Get Started
-                </Link>
-              </div>
-            </div>
-          </ScrollReveal>
-
-          {/* In-Person card */}
-          <ScrollReveal delay={0.15} className="flex">
-            <div className="relative w-full flex flex-col rounded-2xl bg-white p-8 md:p-10 border border-gray-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
-              <h3 className="font-heading text-2xl md:text-3xl font-semibold text-gray-700 uppercase tracking-wide">
-                In-Person <span className="text-gold-dark">(Tampa)</span>
-              </h3>
-              <p className="mt-2 font-heading italic text-base md:text-lg text-gray-500">
-                Everything online includes, plus weekly sessions with Larry.
-              </p>
-
-              <ul className="mt-6 space-y-3">
-                {inPersonFeatures.map((feature) => (
-                  <li
-                    key={feature}
-                    className="flex items-start gap-3 font-body text-sm text-gray-700"
-                  >
-                    <Check
-                      size={18}
-                      strokeWidth={1.5}
-                      className="mt-0.5 shrink-0 text-gold-dark"
-                    />
-                    {feature}
+                      {String(j + 1).padStart(2, "0")}
+                    </span>
+                    <span>{f}</span>
                   </li>
                 ))}
               </ul>
+            </div>
+            <div className="tier-grid">
+              {ONLINE_TIERS.map((t) => {
+                const featured = "featured" in t && t.featured;
+                return (
+                  <div
+                    key={t.id}
+                    style={{
+                      border: featured
+                        ? "1px solid var(--accent)"
+                        : "1px solid var(--line-strong)",
+                      padding: "22px 18px 20px",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 10,
+                      position: "relative",
+                      background: "var(--bg)",
+                    }}
+                  >
+                    {featured && (
+                      <div
+                        style={{
+                          position: "absolute",
+                          top: -1,
+                          right: -1,
+                          background: "var(--accent)",
+                          color: "var(--accent-fg)",
+                          fontFamily: "var(--mono)",
+                          fontSize: 9,
+                          letterSpacing: "0.18em",
+                          padding: "5px 9px",
+                          textTransform: "uppercase",
+                        }}
+                      >
+                        Best value
+                      </div>
+                    )}
+                    <div className="eyebrow" style={{ fontSize: 10 }}>
+                      {t.cadence}
+                    </div>
+                    <div
+                      className="display"
+                      style={{
+                        fontSize: 38,
+                        lineHeight: 1,
+                        letterSpacing: "-0.01em",
+                        color: featured ? "var(--accent)" : "var(--fg)",
+                      }}
+                    >
+                      {t.price}
+                    </div>
+                    <p
+                      style={{
+                        fontSize: 12,
+                        lineHeight: 1.5,
+                        color: "var(--fg-soft)",
+                        margin: 0,
+                      }}
+                    >
+                      {t.note}
+                    </p>
+                    <a
+                      href={CAL_BOOKING_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={featured ? "btn btn-primary" : "btn btn-ghost"}
+                      style={{
+                        padding: "10px 14px",
+                        fontSize: 10.5,
+                        marginTop: "auto",
+                      }}
+                    >
+                      Start with a call <span className="arrow">→</span>
+                    </a>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
 
-              <div className="mt-8 border-t border-gray-100 pt-6">
-                <p className="font-heading italic text-2xl md:text-3xl text-gray-700 leading-tight">
-                  Price by conversation.
-                </p>
-                <p className="mt-2 font-body text-sm text-gray-700">
-                  First session is free.
-                </p>
-                <p className="mt-2 font-body text-sm text-gray-500 leading-relaxed">
-                  Get on the calendar with Larry to talk through fit.
-                </p>
+        {/* In-Person Tampa */}
+        <div
+          className="reveal"
+          style={{
+            border: "1px solid var(--line)",
+            padding: "36px 36px 32px",
+            background: "var(--bg-soft)",
+          }}
+        >
+          <div className="prog-grid">
+            <div>
+              <div className="eyebrow" style={{ marginBottom: 14 }}>
+                Product 02
               </div>
-
-              <div className="mt-auto pt-8">
+              <h3
+                className="display"
+                style={{
+                  fontSize: 44,
+                  margin: "0 0 8px",
+                  letterSpacing: "-0.005em",
+                }}
+              >
+                In-Person{" "}
+                <em
+                  className="serif-i"
+                  style={{
+                    textTransform: "none",
+                    color: "var(--fg-soft)",
+                    letterSpacing: "-0.02em",
+                  }}
+                >
+                  (Tampa)
+                </em>
+              </h3>
+              <div
+                style={{
+                  fontFamily: "var(--mono)",
+                  fontSize: 12,
+                  color: "var(--fg-mute)",
+                  letterSpacing: "0.1em",
+                  textTransform: "uppercase",
+                  marginBottom: 22,
+                }}
+              >
+                1:1 · In studio
+              </div>
+              <p
+                style={{
+                  fontSize: 14.5,
+                  color: "var(--fg-soft)",
+                  lineHeight: 1.6,
+                  margin: "0 0 22px",
+                }}
+              >
+                Train with me in person. We program around your schedule, lift
+                in the same room, and fix what only gets fixed when someone is
+                actually watching you move. The first session is free — if it
+                isn&rsquo;t a fit, that&rsquo;s fine.
+              </p>
+              <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+                {INPERSON_FEATURES.map((f, j) => (
+                  <li
+                    key={j}
+                    style={{
+                      display: "flex",
+                      gap: 12,
+                      padding: "10px 0",
+                      borderTop: "1px solid var(--line)",
+                      fontSize: 13.5,
+                      color: "var(--fg-soft)",
+                    }}
+                  >
+                    <span
+                      style={{
+                        color: "var(--accent)",
+                        fontFamily: "var(--mono)",
+                        fontSize: 11,
+                      }}
+                    >
+                      {String(j + 1).padStart(2, "0")}
+                    </span>
+                    <span>{f}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr",
+                gap: 12,
+                alignContent: "start",
+              }}
+            >
+              <div
+                style={{
+                  border: "1px solid var(--accent)",
+                  padding: "32px 26px",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 14,
+                  background: "var(--bg)",
+                }}
+              >
+                <div className="eyebrow" style={{ fontSize: 10 }}>
+                  First session
+                </div>
+                <div
+                  className="display"
+                  style={{
+                    fontSize: 48,
+                    lineHeight: 1,
+                    color: "var(--accent)",
+                    letterSpacing: "-0.01em",
+                  }}
+                >
+                  Free
+                </div>
+                <p
+                  style={{
+                    fontSize: 13,
+                    lineHeight: 1.55,
+                    color: "var(--fg-soft)",
+                    margin: 0,
+                  }}
+                >
+                  An hour in the studio. Movement screen, a real training
+                  session, an honest conversation about what working together
+                  would look like. No pitch deck.
+                </p>
+                <div
+                  style={{
+                    paddingTop: 14,
+                    borderTop: "1px solid var(--line)",
+                  }}
+                >
+                  <div
+                    className="eyebrow"
+                    style={{ fontSize: 10, marginBottom: 6 }}
+                  >
+                    Ongoing
+                  </div>
+                  <p
+                    style={{
+                      fontSize: 13,
+                      lineHeight: 1.55,
+                      color: "var(--fg-soft)",
+                      margin: 0,
+                    }}
+                  >
+                    Pricing is by conversation — it depends on session
+                    frequency, programming load, and where you&rsquo;re
+                    starting. Always fair, never surprise-billed.
+                  </p>
+                </div>
                 <a
-                  href="https://cal.com/sculptedbylarry/15min"
+                  href={CAL_BOOKING_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center w-full font-body text-[15px] font-medium rounded-lg px-8 py-3.5 transition-all duration-200 hover:-translate-y-0.5 bg-transparent border border-gold-dark text-gold-dark hover:bg-gold-dark hover:text-white"
+                  className="btn btn-primary"
+                  style={{ marginTop: 4 }}
                 >
-                  Book a 15-min call
+                  Book your free first session{" "}
+                  <span className="arrow">→</span>
                 </a>
               </div>
             </div>
-          </ScrollReveal>
+          </div>
         </div>
       </div>
+
+      <style>{`
+        .prog-grid {
+          display: grid;
+          grid-template-columns: minmax(0, 1.1fr) minmax(0, 2fr);
+          gap: 48px;
+        }
+        .tier-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 12px;
+        }
+        @media (max-width: 880px) {
+          .prog-grid { grid-template-columns: 1fr; gap: 32px; }
+          .tier-grid { grid-template-columns: 1fr; }
+        }
+      `}</style>
     </section>
   );
 }
