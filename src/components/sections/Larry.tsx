@@ -37,8 +37,8 @@ export function Larry() {
             <Image
               src="/images/larry-portrait.jpg"
               alt="Larry Faria — coach"
-              width={1200}
-              height={1500}
+              width={900}
+              height={1200}
               sizes="(max-width: 880px) 100vw, 45vw"
               className="larry-portrait-img"
             />
@@ -125,7 +125,7 @@ export function Larry() {
           align-items: center;
         }
         .larry-portrait-wrap {
-          aspect-ratio: 4 / 5;
+          aspect-ratio: 3 / 4;
           position: relative;
           overflow: hidden;
           background: var(--bg);
@@ -135,9 +135,8 @@ export function Larry() {
           width: 100% !important;
           height: 100% !important;
           object-fit: cover;
-          object-position: center top;
+          object-position: center 30%;
           display: block;
-          filter: contrast(1.02) saturate(0.96);
         }
         @media (max-width: 880px) {
           .larry-grid {
@@ -146,7 +145,7 @@ export function Larry() {
           }
           /* Copy first on mobile so the page doesn't open on a lone portrait */
           .larry-copy { order: 1; }
-          .larry-portrait-wrap { order: 2; aspect-ratio: 4 / 5; max-height: 80vh; }
+          .larry-portrait-wrap { order: 2; aspect-ratio: 3 / 4; max-height: 80vh; }
         }
       `}</style>
     </section>
