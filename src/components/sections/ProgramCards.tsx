@@ -378,7 +378,7 @@ export function ProgramCards() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn btn-primary"
-                  style={{ marginTop: 4 }}
+                  style={{ marginTop: 4, whiteSpace: "normal" }}
                 >
                   Book your free first session{" "}
                   <span className="arrow">→</span>
@@ -401,8 +401,12 @@ export function ProgramCards() {
           gap: 12px;
         }
         @media (max-width: 880px) {
-          .prog-grid { grid-template-columns: 1fr; gap: 32px; }
-          .tier-grid { grid-template-columns: 1fr; }
+          /* minmax(0, 1fr) prevents a wide-min-content child (e.g.
+             a nowrap CTA button) from blowing the column past the
+             container width on narrow phones — that was shifting
+             the In-Person card off-center vs the viewport. */
+          .prog-grid { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+          .tier-grid { grid-template-columns: minmax(0, 1fr); }
         }
       `}</style>
     </section>
