@@ -9,18 +9,20 @@ export function Hero() {
 
   return (
     <section id="top" className="hero-pad">
-      <div
-        className="container reveal"
-        style={{
-          marginBottom: 40,
-          color: "var(--fg-mute)",
-          fontFamily: "var(--mono)",
-          fontSize: 11,
-          letterSpacing: "0.2em",
-          textTransform: "uppercase",
-        }}
-      >
-        Taking new clients online &amp; in person — Tampa, FL only
+      <div className="container" style={{ marginBottom: 40 }}>
+        <div
+          className="hero-eyebrow reveal hero-strike"
+          style={{
+            color: "var(--fg-mute)",
+            fontFamily: "var(--mono)",
+            fontSize: 11,
+            letterSpacing: "0.2em",
+            textTransform: "uppercase",
+          }}
+        >
+          <span className="hero-eyebrow__dot" aria-hidden="true" />
+          <span>Taking new clients online &amp; in person — Tampa, FL only</span>
+        </div>
       </div>
 
       <div className="container">
@@ -41,19 +43,23 @@ export function Hero() {
 
       <div className="container" style={{ marginTop: 64 }}>
         <p
-          className="reveal reveal-delay-5"
+          className="reveal hero-strike"
           style={{
             fontSize: 17,
             lineHeight: 1.55,
             color: "var(--fg-soft)",
             margin: "0 0 32px",
             maxWidth: 540,
+            transitionDelay: "500ms",
           }}
         >
           One coach. Real programming. Direct access. Start with the free
           5-day plan, or book a call.
         </p>
-        <div className="cta-row hero-ctas reveal reveal-delay-6">
+        <div
+          className="cta-row hero-ctas reveal hero-strike"
+          style={{ transitionDelay: "620ms" }}
+        >
           <Link href="/free-plan" className="btn btn-primary">
             Get your free starter training plan{" "}
             <span className="arrow">→</span>

@@ -210,14 +210,22 @@ section { position: relative; }
 .reveal-delay-5 { transition-delay: 480ms; }
 .reveal-delay-6 { transition-delay: 600ms; }
 
-/* ── Hero motion language (Phase 1 prototype) ─────────────────────
-   Disciplined / weighty entrances on the hero only. Per-line mask
-   reveal for the big headline (lines rise into view from their own
-   clip boundary), composed with the existing .reveal observer for
-   the eyebrow, paragraph, and CTAs. Easing is ease-out-quint
-   (cubic-bezier(0.16, 1, 0.3, 1)) — strong decelerate, no overshoot.
-   Transform + opacity only (GPU). No CLS: every animated property
-   is non-layout. */
+/* ── Hero motion: IMPACT pass ─────────────────────────────────────
+   Reworked from Phase 1's "compose" character into a weight-room
+   STRIKE: every element punches in fast with an aggressive
+   decelerate that locks dead at the end (zero drift, zero bounce),
+   like a bar racking. The headline lines add a subtle scale-to-lock
+   (1.04 → 1, bottom-anchored) so they read as ARRIVING with force,
+   not gliding in. A burnt-orange accent dot in the eyebrow snaps in
+   as the signature accent beat. Eyebrow / paragraph / CTAs share
+   the same forceful character (shorter, smaller strikes) so the
+   headline stays the lead. transform + opacity + scale only (GPU).
+   Total entrance resolves in <1.0s. */
+
+/* Easing token — aggressive ease-out (hard decelerate, near-vertical
+   landing). Locks dead at end without overshoot. */
+:root { --hero-strike-ease: cubic-bezier(0.2, 0.9, 0.1, 1); }
+
 .line-mask {
   display: block;
   /* Padding lets italic descenders/swash terminals breathe so the
@@ -236,25 +244,63 @@ section { position: relative; }
 }
 .hero-headline .line-mask { overflow: hidden; }
 .hero-headline .line-inner {
-  transform: translate3d(0, 110%, 0);
+  /* Strike-in state: clipped below the mask + slightly oversized so
+     each line arrives by both rising AND locking to size. */
+  transform: translate3d(0, 110%, 0) scale(1.04);
   opacity: 0;
-  transition: transform 720ms cubic-bezier(0.16, 1, 0.3, 1),
-              opacity 720ms cubic-bezier(0.16, 1, 0.3, 1);
+  transform-origin: 50% 100%; /* bottom-anchored: top descends as it locks */
+  transition: transform 480ms var(--hero-strike-ease),
+              opacity 360ms var(--hero-strike-ease);
 }
 .hero-headline.in .line-inner {
-  transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0) scale(1);
   opacity: 1;
 }
-.hero-headline.in .line-mask:nth-of-type(1) .line-inner { transition-delay: 100ms; }
-.hero-headline.in .line-mask:nth-of-type(2) .line-inner { transition-delay: 220ms; }
-.hero-headline.in .line-mask:nth-of-type(3) .line-inner { transition-delay: 340ms; }
+/* Tight 80ms inter-line stagger so the headline reads as a rapid
+   sequence of strikes (not a slow compose). */
+.hero-headline.in .line-mask:nth-of-type(1) .line-inner { transition-delay: 200ms; }
+.hero-headline.in .line-mask:nth-of-type(2) .line-inner { transition-delay: 280ms; }
+.hero-headline.in .line-mask:nth-of-type(3) .line-inner { transition-delay: 360ms; }
 
-/* No-JS fallback: keep .reveal content and headline lines visible
-   when scripting is disabled (so animation is enhancement, never a
-   gate on the content being readable). */
+/* .hero-strike: override the gentler default .reveal transition with
+   the impact-pass character — 360ms hard-decelerate strike for the
+   supporting elements (eyebrow, paragraph, CTAs). Same vocabulary as
+   the headline lines, scaled down so the headline stays the lead. */
+.reveal.hero-strike {
+  transition: opacity 360ms var(--hero-strike-ease),
+              transform 360ms var(--hero-strike-ease);
+}
+
+/* Eyebrow row — accent dot is the signature beat (burnt-orange square
+   that snaps in as the lead-off, before the headline strikes). Square
+   not round: reads industrial/struck-metal, not soft. */
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+.hero-eyebrow__dot {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  background: var(--accent);
+  flex-shrink: 0;
+  transform: scale(0);
+  transform-origin: center;
+  transition: transform 240ms var(--hero-strike-ease);
+}
+.hero-eyebrow.in .hero-eyebrow__dot {
+  transform: scale(1);
+  transition-delay: 80ms;
+}
+
+/* No-JS fallback: keep all motion'd hero elements visible when
+   scripting is disabled. Animation is enhancement, never a content
+   gate. */
 @media (scripting: none) {
   .reveal,
-  .hero-headline .line-inner {
+  .hero-headline .line-inner,
+  .hero-eyebrow__dot {
     opacity: 1;
     transform: none;
     transition: none;
@@ -648,5 +694,6 @@ section { position: relative; }
   }
   .reveal { opacity: 1; transform: none; }
   .hero-headline .line-inner { opacity: 1; transform: none; transition: none; }
+  .hero-eyebrow__dot { transform: none; transition: none; }
   .mobile-nav-overlay { animation: none; }
 }
