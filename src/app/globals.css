@@ -198,7 +198,7 @@ section { position: relative; }
 /* ── Reveal-on-scroll ─────────────────────────────────────────── */
 .reveal {
   opacity: 0;
-  transform: translateY(24px);
+  transform: translate3d(0, 24px, 0);
   transition: opacity 800ms cubic-bezier(.2,.7,.2,1),
               transform 800ms cubic-bezier(.2,.7,.2,1);
 }
@@ -206,6 +206,60 @@ section { position: relative; }
 .reveal-delay-1 { transition-delay: 80ms; }
 .reveal-delay-2 { transition-delay: 160ms; }
 .reveal-delay-3 { transition-delay: 240ms; }
+.reveal-delay-4 { transition-delay: 360ms; }
+.reveal-delay-5 { transition-delay: 480ms; }
+.reveal-delay-6 { transition-delay: 600ms; }
+
+/* ── Hero motion language (Phase 1 prototype) ─────────────────────
+   Disciplined / weighty entrances on the hero only. Per-line mask
+   reveal for the big headline (lines rise into view from their own
+   clip boundary), composed with the existing .reveal observer for
+   the eyebrow, paragraph, and CTAs. Easing is ease-out-quint
+   (cubic-bezier(0.16, 1, 0.3, 1)) — strong decelerate, no overshoot.
+   Transform + opacity only (GPU). No CLS: every animated property
+   is non-layout. */
+.line-mask {
+  display: block;
+  /* Padding lets italic descenders/swash terminals breathe so the
+     mask clip doesn't shave the glyphs. */
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+.hero-headline.reveal { /* parent stays put — its lines do the work */
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+.line-inner {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+.hero-headline .line-mask { overflow: hidden; }
+.hero-headline .line-inner {
+  transform: translate3d(0, 110%, 0);
+  opacity: 0;
+  transition: transform 720ms cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 720ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.hero-headline.in .line-inner {
+  transform: translate3d(0, 0, 0);
+  opacity: 1;
+}
+.hero-headline.in .line-mask:nth-of-type(1) .line-inner { transition-delay: 100ms; }
+.hero-headline.in .line-mask:nth-of-type(2) .line-inner { transition-delay: 220ms; }
+.hero-headline.in .line-mask:nth-of-type(3) .line-inner { transition-delay: 340ms; }
+
+/* No-JS fallback: keep .reveal content and headline lines visible
+   when scripting is disabled (so animation is enhancement, never a
+   gate on the content being readable). */
+@media (scripting: none) {
+  .reveal,
+  .hero-headline .line-inner {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
 
 /* ── Hairline divider ─────────────────────────────────────────── */
 .hairline { height: 1px; background: var(--line); width: 100%; }
@@ -593,5 +647,6 @@ section { position: relative; }
     scroll-behavior: auto !important;
   }
   .reveal { opacity: 1; transform: none; }
+  .hero-headline .line-inner { opacity: 1; transform: none; transition: none; }
   .mobile-nav-overlay { animation: none; }
 }

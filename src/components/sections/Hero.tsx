@@ -25,40 +25,47 @@ export function Hero() {
 
       <div className="container">
         <h1 className="display hero-headline reveal" style={{ margin: 0 }}>
-          Sculpt the<br />
-          <em>body</em> your<br />
-          life demands.
+          <span className="line-mask">
+            <span className="line-inner">Sculpt the</span>
+          </span>
+          <span className="line-mask">
+            <span className="line-inner">
+              <em>body</em> your
+            </span>
+          </span>
+          <span className="line-mask">
+            <span className="line-inner">life demands.</span>
+          </span>
         </h1>
       </div>
 
       <div className="container" style={{ marginTop: 64 }}>
-        <div className="reveal reveal-delay-1">
-          <p
-            style={{
-              fontSize: 17,
-              lineHeight: 1.55,
-              color: "var(--fg-soft)",
-              margin: "0 0 32px",
-              maxWidth: 540,
-            }}
+        <p
+          className="reveal reveal-delay-5"
+          style={{
+            fontSize: 17,
+            lineHeight: 1.55,
+            color: "var(--fg-soft)",
+            margin: "0 0 32px",
+            maxWidth: 540,
+          }}
+        >
+          One coach. Real programming. Direct access. Start with the free
+          5-day plan, or book a call.
+        </p>
+        <div className="cta-row hero-ctas reveal reveal-delay-6">
+          <Link href="/free-plan" className="btn btn-primary">
+            Get your free starter training plan{" "}
+            <span className="arrow">→</span>
+          </Link>
+          <a
+            href={CAL_BOOKING_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-ghost"
           >
-            One coach. Real programming. Direct access. Start with the free
-            5-day plan, or book a call.
-          </p>
-          <div className="cta-row hero-ctas">
-            <Link href="/free-plan" className="btn btn-primary">
-              Get your free starter training plan{" "}
-              <span className="arrow">→</span>
-            </Link>
-            <a
-              href={CAL_BOOKING_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-ghost"
-            >
-              Book a 15-min call <span className="arrow">→</span>
-            </a>
-          </div>
+            Book a 15-min call <span className="arrow">→</span>
+          </a>
         </div>
       </div>
 
