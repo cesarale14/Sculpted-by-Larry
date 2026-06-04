@@ -113,11 +113,27 @@ export function StartFlow() {
       if (!res.ok || !body?.success) {
         throw new Error(body?.error || "Something went wrong. Please try again.");
       }
-      if (body.checkoutUrl) {
-        window.location.href = body.checkoutUrl as string;
-        return;
+
+      // Waiver signed + emailed. Hand off to payment using the signed token —
+      // the checkout route won't create a session without a valid token.
+      const token = body.token as string | undefined;
+      if (token) {
+        try {
+          const payRes = await fetch("/api/waiver/checkout", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ token }),
+          });
+          const payBody = await payRes.json().catch(() => null);
+          if (payRes.ok && payBody?.url) {
+            window.location.href = payBody.url as string;
+            return;
+          }
+        } catch {
+          // fall through to the "signed, payment pending" state
+        }
       }
-      // Waiver stored, but Stripe isn't configured yet (go-live step).
+      // Waiver emailed, but payment isn't enabled yet (Stripe keys missing).
       setStoredNoPayment(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
@@ -134,7 +150,7 @@ export function StartFlow() {
           <p className="eyebrow justify-center"><span className="dot" />Waiver received</p>
           <h1 className="display mt-4 text-3xl text-fg">You&apos;re signed.</h1>
           <p className="mt-4 text-fg-soft leading-relaxed">
-            Your waiver has been stored and a copy is on its way to your inbox. Payment
+            Your signed waiver is on its way to your inbox, and Larry has a copy. Payment
             isn&apos;t enabled in this environment yet — Larry will follow up to complete
             enrollment.
           </p>

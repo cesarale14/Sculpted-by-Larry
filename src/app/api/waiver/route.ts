@@ -1,19 +1,14 @@
 import { NextResponse } from "next/server";
-import { getSupabaseAdmin, WAIVER_BUCKET } from "@/lib/supabaseAdmin";
 import { generateWaiverPdf } from "@/lib/waiverPdf";
 import { sendExecutedWaiver } from "@/lib/resend";
-import { createCheckoutSession } from "@/lib/stripe";
+import { createWaiverToken } from "@/lib/waiverToken";
 import { WAIVER_VERSION } from "@/lib/waiver";
 
-// pdf-lib + service-role insert require the Node runtime (not edge).
+// pdf-lib + crypto require the Node runtime (not edge).
 export const runtime = "nodejs";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/;
-
-// One-time $499 quarterly. Prefer env; fall back to the confirmed price id.
-const QUARTERLY_PRICE_ID =
-  process.env.STRIPE_PRICE_QUARTERLY || "price_1TeihUCx8rPt5AvKXLVApCIB";
 
 /** Server-side IP capture — never trust a client-sent IP. */
 function clientIp(request: Request): string {
@@ -85,48 +80,16 @@ export async function POST(request: Request) {
 
     // agreed_at: trust the client-captured timestamp if valid, else stamp now.
     const parsed = clientAgreedAt ? new Date(clientAgreedAt) : null;
-    const agreedAt =
-      parsed && !Number.isNaN(parsed.getTime()) ? parsed.toISOString() : new Date().toISOString();
+    const agreedDate =
+      parsed && !Number.isNaN(parsed.getTime()) ? parsed : new Date();
+    const agreedAt = agreedDate.toISOString();
+    const signedDate = agreedAt.slice(0, 10); // yyyy-mm-dd for the subject line
 
     // ── Audit trail captured SERVER-side ──────────────────────────────────────
     const signerIp = clientIp(request);
     const userAgent = request.headers.get("user-agent")?.slice(0, 1000) || "unknown";
 
-    const supabase = getSupabaseAdmin();
-
-    // 1) Insert the signed waiver (service role — bypasses RLS).
-    const { data: inserted, error: insertError } = await supabase
-      .from("client_waivers")
-      .insert({
-        participant_name: participantName,
-        participant_email: participantEmail,
-        participant_dob: participantDob,
-        participant_phone: participantPhone,
-        emergency_name: emergencyName,
-        emergency_phone: emergencyPhone,
-        fitness_attestation: fitnessAttestation,
-        waiver_version: WAIVER_VERSION,
-        signature_name: signatureName,
-        signature_method: "typed",
-        agreed_at: agreedAt,
-        signer_ip: signerIp,
-        user_agent: userAgent,
-        payment_status: "pending",
-      })
-      .select("id")
-      .single();
-
-    if (insertError || !inserted) {
-      console.error("[waiver] insert failed:", insertError?.message);
-      return NextResponse.json(
-        { success: false, error: "Could not store the waiver. Please try again." },
-        { status: 500 },
-      );
-    }
-
-    const waiverId: string = inserted.id;
-
-    // 2) Generate the executed PDF (server-side).
+    // Generate the executed PDF server-side (the email IS the record — no DB).
     const pdfBytes = await generateWaiverPdf({
       participantName,
       participantEmail,
@@ -141,68 +104,32 @@ export async function POST(request: Request) {
       waiverVersion: WAIVER_VERSION,
     });
 
-    // 3) Store the PDF in the PRIVATE bucket; record the path.
-    const pdfPath = `${waiverId}/waiver-${WAIVER_VERSION}.pdf`;
-    const { error: uploadError } = await supabase.storage
-      .from(WAIVER_BUCKET)
-      .upload(pdfPath, Buffer.from(pdfBytes), {
-        contentType: "application/pdf",
-        upsert: true,
-      });
-
-    if (uploadError) {
-      console.error("[waiver] pdf upload failed:", uploadError.message);
-    } else {
-      await supabase
-        .from("client_waivers")
-        .update({ pdf_storage_path: pdfPath })
-        .eq("id", waiverId);
-    }
-
-    // 4) Email the executed PDF to the participant + Larry (best-effort).
-    let emailSent = false;
-    try {
-      const emailResult = await sendExecutedWaiver({
-        participantName,
-        participantEmail,
-        pdfBytes,
-        waiverVersion: WAIVER_VERSION,
-      });
-      emailSent = emailResult.success;
-      if (!emailResult.success) {
-        console.error("[waiver] email failed:", emailResult.error);
-      }
-    } catch (err) {
-      console.error("[waiver] email threw:", err instanceof Error ? err.message : "unknown");
-    }
-
-    // 5) Stripe handoff — Checkout Session tied to this waiver via metadata.
-    //    Only reachable here because the waiver is already stored above.
-    let checkoutUrl: string | null = null;
-    let paymentConfigured = false;
-    try {
-      checkoutUrl = await createCheckoutSession({
-        priceId: QUARTERLY_PRICE_ID,
-        customerEmail: participantEmail,
-        customerName: participantName,
-        mode: "payment",
-        metadata: { waiverId, plan: "Online Coaching — Quarterly" },
-      });
-      paymentConfigured = true;
-    } catch (err) {
-      // Stripe keys not configured yet (go-live step). Waiver is still stored.
-      console.error("[waiver] checkout session failed:", err instanceof Error ? err.message : "unknown");
-    }
-
-    return NextResponse.json({
-      success: true,
-      id: waiverId,
-      checkoutUrl,
-      paymentConfigured,
-      emailSent,
+    // Email the executed PDF to the participant + Larry. This is the system of
+    // record, so a failure here MUST fail the request (no DB fallback).
+    const emailResult = await sendExecutedWaiver({
+      participantName,
+      participantEmail,
+      pdfBytes,
+      waiverVersion: WAIVER_VERSION,
+      signedDate,
     });
+    if (!emailResult.success) {
+      console.error("[waiver] email failed:", emailResult.error);
+      return NextResponse.json(
+        { success: false, error: "We couldn't deliver your signed waiver by email. Please try again." },
+        { status: 502 },
+      );
+    }
+
+    // Mint a short-lived signed token that gates the payment step. Not stored.
+    const { token } = createWaiverToken({
+      name: participantName,
+      email: participantEmail,
+      version: WAIVER_VERSION,
+    });
+
+    return NextResponse.json({ success: true, token });
   } catch (err) {
-    // Generic catch — e.g. Supabase not configured locally. No PII in logs.
     console.error("[waiver] handler error:", err instanceof Error ? err.message : "unknown");
     return NextResponse.json(
       { success: false, error: "The waiver service is temporarily unavailable." },

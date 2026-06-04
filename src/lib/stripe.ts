@@ -39,8 +39,8 @@ export interface CreateCheckoutSessionInput {
   mode?: "payment" | "subscription";
   /**
    * Extra metadata merged into the Checkout Session (and surfaced on the
-   * webhook). Used by the /start waiver flow to pass `waiverId` so the
-   * webhook can flip the waiver's payment_status to "paid".
+   * webhook). Used by the /start waiver flow to pass `waiverRef` (the signed
+   * waiver token reference) so Stripe carries the signed↔paid cross-reference.
    */
   metadata?: Record<string, string>;
 }

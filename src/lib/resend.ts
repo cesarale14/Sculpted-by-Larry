@@ -33,6 +33,7 @@ export async function sendExecutedWaiver(data: {
   participantEmail: string;
   pdfBytes: Uint8Array;
   waiverVersion: string;
+  signedDate: string; // yyyy-mm-dd, used in Larry's filterable subject line
 }): Promise<Result> {
   try {
     const content = Buffer.from(data.pdfBytes);
@@ -62,7 +63,8 @@ export async function sendExecutedWaiver(data: {
       from: FROM_EMAIL,
       to: LARRY_INBOX,
       replyTo: data.participantEmail,
-      subject: `Signed waiver — ${name}`,
+      // Filterable/searchable record subject (email-as-record system).
+      subject: `SIGNED WAIVER — ${data.participantName} — ${data.signedDate}`,
       html: `
         <h2>New signed waiver</h2>
         <p><strong>Participant:</strong> ${name}</p>
@@ -74,6 +76,35 @@ export async function sendExecutedWaiver(data: {
     });
     if (larry.error) return { success: false, error: larry.error.message };
 
+    return { success: true };
+  } catch (err) {
+    return { success: false, error: err instanceof Error ? err.message : "Unknown error" };
+  }
+}
+
+export async function sendPaymentNotificationToLarry(data: {
+  customerName: string;
+  email: string;
+  plan: string;
+  amount: number;
+}): Promise<Result> {
+  try {
+    const amount = (data.amount / 100).toFixed(2);
+    const { error } = await getResend().emails.send({
+      from: FROM_EMAIL,
+      to: LARRY_INBOX,
+      replyTo: data.email,
+      // Filterable/searchable record subject (email-as-record system).
+      subject: `PAYMENT RECEIVED — ${data.customerName}`,
+      html: `
+        <h2>Payment received</h2>
+        <p><strong>Client:</strong> ${escape(data.customerName)}</p>
+        <p><strong>Email:</strong> ${escape(data.email)}</p>
+        <p><strong>Plan:</strong> ${escape(data.plan)}</p>
+        <p><strong>Amount:</strong> $${amount}</p>
+      `,
+    });
+    if (error) return { success: false, error: error.message };
     return { success: true };
   } catch (err) {
     return { success: false, error: err instanceof Error ? err.message : "Unknown error" };

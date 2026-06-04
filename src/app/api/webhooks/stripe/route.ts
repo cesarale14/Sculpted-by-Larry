@@ -1,26 +1,7 @@
 import { NextResponse } from "next/server";
 import type Stripe from "stripe";
 import { stripe } from "@/lib/stripe";
-import { sendPaymentConfirmation } from "@/lib/resend";
-import { getSupabaseAdmin } from "@/lib/supabaseAdmin";
-
-/**
- * If this checkout session was started from the /start waiver flow, the waiver
- * id rides along in metadata. Flip the stored waiver to paid + record the
- * Stripe session id. Best-effort: never fail the webhook over this.
- */
-async function markWaiverPaid(session: Stripe.Checkout.Session): Promise<void> {
-  const waiverId = session.metadata?.waiverId;
-  if (!waiverId) return;
-  try {
-    await getSupabaseAdmin()
-      .from("client_waivers")
-      .update({ payment_status: "paid", stripe_session_id: session.id })
-      .eq("id", waiverId);
-  } catch (err) {
-    console.error("[stripe-webhook] waiver update failed:", err instanceof Error ? err.message : "unknown");
-  }
-}
+import { sendPaymentConfirmation, sendPaymentNotificationToLarry } from "@/lib/resend";
 
 export const runtime = "nodejs";
 
@@ -60,11 +41,11 @@ export async function POST(request: Request) {
           (session.metadata?.plan as string | undefined) ??
           (session.mode === "subscription" ? "Coaching Subscription" : "Sculpted by Larry");
 
-        // Link payment back to the signed waiver (if this came from /start).
-        await markWaiverPaid(session);
-
         if (email) {
           await sendPaymentConfirmation({ email, customerName, plan, amount });
+          // Email-as-record: notify Larry so payment lands in his inbox next to
+          // the SIGNED WAIVER email (cross-reference via the waiverRef metadata).
+          await sendPaymentNotificationToLarry({ email, customerName, plan, amount });
         }
         break;
       }
