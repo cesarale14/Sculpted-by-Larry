@@ -37,6 +37,12 @@ export interface CreateCheckoutSessionInput {
   customerEmail: string;
   customerName: string;
   mode?: "payment" | "subscription";
+  /**
+   * Extra metadata merged into the Checkout Session (and surfaced on the
+   * webhook). Used by the /start waiver flow to pass `waiverId` so the
+   * webhook can flip the waiver's payment_status to "paid".
+   */
+  metadata?: Record<string, string>;
 }
 
 export async function createCheckoutSession({
@@ -44,6 +50,7 @@ export async function createCheckoutSession({
   customerEmail,
   customerName,
   mode,
+  metadata,
 }: CreateCheckoutSessionInput): Promise<string> {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
   const resolvedMode: "payment" | "subscription" =
@@ -53,7 +60,7 @@ export async function createCheckoutSession({
     mode: resolvedMode,
     line_items: [{ price: priceId, quantity: 1 }],
     customer_email: customerEmail,
-    metadata: { customerName },
+    metadata: { customerName, ...(metadata ?? {}) },
     success_url: `${siteUrl}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${siteUrl}/payment/cancel`,
   });

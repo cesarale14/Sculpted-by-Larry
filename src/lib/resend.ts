@@ -28,6 +28,58 @@ function escape(input: string): string {
     .replace(/"/g, "&quot;");
 }
 
+export async function sendExecutedWaiver(data: {
+  participantName: string;
+  participantEmail: string;
+  pdfBytes: Uint8Array;
+  waiverVersion: string;
+}): Promise<Result> {
+  try {
+    const content = Buffer.from(data.pdfBytes);
+    const filename = `sculpted-by-larry-waiver-${data.waiverVersion}.pdf`;
+    const name = escape(data.participantName);
+    const version = escape(data.waiverVersion);
+    const resend = getResend();
+
+    // Participant's copy — sent separately so the two recipients are never
+    // exposed to each other in the To: field.
+    const participant = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: data.participantEmail,
+      subject: "Your signed Sculpted by Larry waiver",
+      html: `
+        <h2>Thanks, ${name}.</h2>
+        <p>Attached is your signed Activity Waiver (version ${version}) for your records.</p>
+        <p>Keep this for your reference. If anything looks off, just reply to this email.</p>
+        <p>&mdash; Larry<br />ISSA Certified Personal Trainer</p>
+      `,
+      attachments: [{ filename, content }],
+    });
+    if (participant.error) return { success: false, error: participant.error.message };
+
+    // Larry's record copy.
+    const larry = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: LARRY_INBOX,
+      replyTo: data.participantEmail,
+      subject: `Signed waiver — ${name}`,
+      html: `
+        <h2>New signed waiver</h2>
+        <p><strong>Participant:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${escape(data.participantEmail)}</p>
+        <p><strong>Document version:</strong> ${version}</p>
+        <p>The executed PDF is attached.</p>
+      `,
+      attachments: [{ filename, content }],
+    });
+    if (larry.error) return { success: false, error: larry.error.message };
+
+    return { success: true };
+  } catch (err) {
+    return { success: false, error: err instanceof Error ? err.message : "Unknown error" };
+  }
+}
+
 export async function sendContactEmail(data: {
   name: string;
   email: string;
