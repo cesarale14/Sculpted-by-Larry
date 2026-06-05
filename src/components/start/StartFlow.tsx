@@ -299,14 +299,21 @@ export function StartFlow() {
               </div>
 
               {!scrolledToEnd && (
-                <p className="mt-3 text-xs text-fg-mute">Scroll to the end to continue.</p>
+                <p className="mt-3 text-xs text-fg-mute">
+                  Scroll to the end of the waiver to enable the checkbox.
+                </p>
               )}
 
-              <label className="mt-6 flex cursor-pointer items-start gap-3">
+              <label
+                className={`mt-6 flex items-start gap-3 ${
+                  scrolledToEnd ? "cursor-pointer" : "cursor-not-allowed opacity-50"
+                }`}
+              >
                 <input
                   type="checkbox"
-                  className="mt-1 h-4 w-4 shrink-0 accent-[var(--accent)]"
+                  className="mt-1 h-4 w-4 shrink-0 accent-[var(--accent)] disabled:cursor-not-allowed"
                   checked={fitnessAttestation}
+                  disabled={!scrolledToEnd}
                   onChange={(e) => setFitnessAttestation(e.target.checked)}
                 />
                 <span className="text-sm text-fg-soft">
