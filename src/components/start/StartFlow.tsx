@@ -407,7 +407,7 @@ export function StartFlow() {
 
 function Shell({ children }: { children: React.ReactNode }) {
   return (
-    <main className="min-h-screen bg-bg">
+    <main id="main" className="min-h-screen bg-bg">
       <div className="container">
         <header className="flex items-center justify-between py-7">
           <Logo href="/" size={26} />

@@ -5,8 +5,7 @@ import {
   Manrope,
   JetBrains_Mono,
 } from "next/font/google";
-import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
+import { SiteChrome } from "@/components/layout/SiteChrome";
 import { StructuredData } from "@/components/StructuredData";
 import { localBusinessSchema } from "@/lib/schema";
 import { BRAND } from "@/lib/constants";
@@ -109,9 +108,7 @@ export default function RootLayout({
           Skip to content
         </a>
         <div className="grain" aria-hidden="true" />
-        <Navbar />
-        <main id="main">{children}</main>
-        <Footer />
+        <SiteChrome>{children}</SiteChrome>
       </body>
     </html>
   );
