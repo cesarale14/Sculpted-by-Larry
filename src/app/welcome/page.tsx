@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { WelcomeView } from "@/components/welcome/WelcomeView";
+import { WelcomeStrike } from "@/components/welcome/WelcomeStrike";
 
 // Focused route like /start: the post-payment confirmation. Kept out of the
 // nav/footer and explicitly noindex — it's only ever reached via Stripe's
@@ -11,5 +11,5 @@ export const metadata: Metadata = {
 };
 
 export default function WelcomePage() {
-  return <WelcomeView />;
+  return <WelcomeStrike />;
 }
