@@ -40,7 +40,11 @@ const BRAND_BONE = "#ECE6D6"; // fg
 const BRAND_SOFT = "#C9C2B0"; // fg-soft
 const BRAND_MUTE = "#8A8472"; // fg-mute
 const BRAND_ACCENT = "#C84E2A"; // burnt orange
-const LOGO_URL = `${SITE_URL}/logos/logo_icon.png`;
+// The real SBL wordmark (Big Shoulders + dumbbell-U + "by larry"), bone on
+// transparent, matching the waiver PDF header. Hardcoded to the canonical https
+// host (NOT SITE_URL) so the image resolves in inboxes even when emails are
+// generated in a localhost/preview context. Asset: public/brand/email-logo.png.
+const EMAIL_LOGO_URL = "https://sculptedbylarry.com/brand/email-logo.png";
 
 /** A single body paragraph in the branded body color. */
 function emailParagraph(html: string): string {
@@ -78,16 +82,7 @@ ${
       <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px;max-width:100%;background-color:${BRAND_SURFACE};border:1px solid ${BRAND_LINE};">
         <tr>
           <td style="background-color:${BRAND_INK};padding:22px 28px;border-bottom:1px solid ${BRAND_LINE};">
-            <table role="presentation" cellpadding="0" cellspacing="0" border="0">
-              <tr>
-                <td style="padding-right:12px;vertical-align:middle;">
-                  <img src="${LOGO_URL}" width="34" height="34" alt="Sculpted by Larry" style="display:block;border-radius:50%;" />
-                </td>
-                <td style="vertical-align:middle;font-family:Georgia,'Times New Roman',serif;color:${BRAND_BONE};font-size:18px;letter-spacing:0.04em;">
-                  SCULPTED <span style="font-style:italic;color:${BRAND_ACCENT};">by Larry</span>
-                </td>
-              </tr>
-            </table>
+            <img src="${EMAIL_LOGO_URL}" width="164" height="32" alt="Sculpted by Larry" style="display:block;border:0;outline:none;" />
           </td>
         </tr>
         <tr>
