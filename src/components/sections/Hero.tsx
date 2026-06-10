@@ -21,7 +21,7 @@ export function Hero() {
           }}
         >
           <span className="hero-eyebrow__dot" aria-hidden="true" />
-          <span>Taking new clients online &amp; in person — Tampa, FL only</span>
+          <span>Taking new online coaching clients — in person for Tampa locals</span>
         </div>
       </div>
 

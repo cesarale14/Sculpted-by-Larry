@@ -50,6 +50,41 @@ export const ONLINE_TIERS = [
 ] as const;
 
 /**
+ * /start enrollment plan selector — the three commitment tiers a client picks
+ * before signing. `key` is the value sent to /api/waiver/checkout and validated
+ * server-side; monthly is a recurring subscription, quarterly/yearly are one-time.
+ */
+export const START_PLANS = [
+  {
+    key: "monthly",
+    name: "Monthly",
+    price: "$199",
+    cadence: "/mo",
+    terms: "Recurring · cancel anytime",
+    tagline: "Built for flexibility.",
+  },
+  {
+    key: "quarterly",
+    name: "Quarterly",
+    price: "$499",
+    cadence: "",
+    terms: "One-time · 12 weeks",
+    tagline: "Commit to the full block.",
+    popular: true,
+  },
+  {
+    key: "yearly",
+    name: "Yearly",
+    price: "$999",
+    cadence: "",
+    terms: "One-time · 12 months",
+    tagline: "Best value.",
+  },
+] as const;
+
+export type StartPlanKey = (typeof START_PLANS)[number]["key"];
+
+/**
  * Online coaching feature list.
  */
 export const ONLINE_FEATURES = [

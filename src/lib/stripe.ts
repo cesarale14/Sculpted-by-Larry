@@ -43,6 +43,10 @@ export interface CreateCheckoutSessionInput {
    * waiver token reference) so Stripe carries the signed↔paid cross-reference.
    */
   metadata?: Record<string, string>;
+  /** Override the post-payment redirect (the /start flow sends users to /welcome). */
+  successUrl?: string;
+  /** Override the cancel redirect (the /start flow returns users to /start). */
+  cancelUrl?: string;
 }
 
 export async function createCheckoutSession({
@@ -51,6 +55,8 @@ export async function createCheckoutSession({
   customerName,
   mode,
   metadata,
+  successUrl,
+  cancelUrl,
 }: CreateCheckoutSessionInput): Promise<string> {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
   const resolvedMode: "payment" | "subscription" =
@@ -61,8 +67,9 @@ export async function createCheckoutSession({
     line_items: [{ price: priceId, quantity: 1 }],
     customer_email: customerEmail,
     metadata: { customerName, ...(metadata ?? {}) },
-    success_url: `${siteUrl}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${siteUrl}/payment/cancel`,
+    success_url:
+      successUrl ?? `${siteUrl}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url: cancelUrl ?? `${siteUrl}/payment/cancel`,
   });
 
   if (!session.url) {

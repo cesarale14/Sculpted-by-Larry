@@ -20,12 +20,12 @@ const items = [
     a: "Cancel anytime on the monthly plan. The quarterly and annual plans are non-refundable past the first two weeks, but I'd rather you leave than be miserable — tell me and we'll work it out.",
   },
   {
-    q: "Where in Tampa do we train?",
-    a: "At my gym. I'll share the exact location when we book your free first session.",
+    q: "I'm in Tampa — can we train in person?",
+    a: "Yes. Everyone's on the same online coaching program, but if you're local I coordinate in-person sessions with you directly — same program, same price. Tell me on your call and we'll set it up.",
   },
   {
     q: "I'm not in Florida. Can I still work with you?",
-    a: "Yes — online coaching is the same product wherever you live. The only thing you won't get is the in-person session.",
+    a: "Absolutely — online coaching is the whole product, and it's the same wherever you live. The only thing that changes for Tampa locals is we can also meet in person.",
   },
 ];
 

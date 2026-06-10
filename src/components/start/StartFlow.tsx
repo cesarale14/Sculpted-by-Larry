@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Logo } from "@/components/ui/Logo";
+import { START_PLANS, type StartPlanKey } from "@/lib/constants";
 import {
   WAIVER_SECTIONS,
   WAIVER_VERSION,
@@ -25,18 +26,22 @@ function ordinal(n: number): string {
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/;
 
-type Step = 1 | 2 | 3;
+type Step = 1 | 2 | 3 | 4;
 
 const STEP_LABELS: Record<Step, string> = {
-  1: "Your details",
-  2: "The waiver",
-  3: "Agree & sign",
+  1: "Your plan",
+  2: "Your details",
+  3: "The waiver",
+  4: "Agree & sign",
 };
 
 export function StartFlow() {
   const [step, setStep] = useState<Step>(1);
 
-  // Step 1 — intake
+  // Step 1 — plan selection (quarterly is the default / most popular)
+  const [plan, setPlan] = useState<StartPlanKey>("quarterly");
+
+  // Step 2 — intake
   const [participantName, setParticipantName] = useState("");
   const [participantEmail, setParticipantEmail] = useState("");
   const [participantDob, setParticipantDob] = useState("");
@@ -44,12 +49,12 @@ export function StartFlow() {
   const [emergencyName, setEmergencyName] = useState("");
   const [emergencyPhone, setEmergencyPhone] = useState("");
 
-  // Step 2 — waiver
+  // Step 3 — waiver
   const [scrolledToEnd, setScrolledToEnd] = useState(false);
   const [fitnessAttestation, setFitnessAttestation] = useState(false);
   const waiverBoxRef = useRef<HTMLDivElement>(null);
 
-  // Step 3 — agreement + signature
+  // Step 4 — agreement + signature
   const [agree, setAgree] = useState(false);
   const [signatureName, setSignatureName] = useState("");
 
@@ -59,19 +64,19 @@ export function StartFlow() {
   const [storedNoPayment, setStoredNoPayment] = useState(false);
 
   const emailOk = EMAIL_REGEX.test(participantEmail.trim());
-  const step1Valid =
+  const step2Valid =
     participantName.trim() !== "" &&
     emailOk &&
     DATE_REGEX.test(participantDob) &&
     participantPhone.trim() !== "" &&
     emergencyName.trim() !== "" &&
     emergencyPhone.trim() !== "";
-  const step2Valid = scrolledToEnd && fitnessAttestation;
-  const step3Valid = agree && signatureName.trim() !== "";
+  const step3Valid = scrolledToEnd && fitnessAttestation;
+  const step4Valid = agree && signatureName.trim() !== "";
 
   // Auto-enable the "read" gate if the waiver text isn't tall enough to scroll.
   useEffect(() => {
-    if (step !== 2) return;
+    if (step !== 3) return;
     const el = waiverBoxRef.current;
     if (el && el.scrollHeight - el.clientHeight < 8) setScrolledToEnd(true);
   }, [step]);
@@ -115,14 +120,15 @@ export function StartFlow() {
       }
 
       // Waiver signed + emailed. Hand off to payment using the signed token —
-      // the checkout route won't create a session without a valid token.
+      // the checkout route won't create a session without a valid token. The
+      // chosen plan rides along so the right Stripe price (and mode) is used.
       const token = body.token as string | undefined;
       if (token) {
         try {
           const payRes = await fetch("/api/waiver/checkout", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ token }),
+            body: JSON.stringify({ token, plan }),
           });
           const payBody = await payRes.json().catch(() => null);
           if (payRes.ok && payBody?.url) {
@@ -163,7 +169,7 @@ export function StartFlow() {
     <Shell>
       {/* Progress */}
       <div className="mb-10 flex items-center gap-3">
-        {([1, 2, 3] as Step[]).map((n) => (
+        {([1, 2, 3, 4] as Step[]).map((n) => (
           <div key={n} className="flex flex-1 flex-col gap-2">
             <div
               className="h-0.5 w-full"
@@ -189,7 +195,99 @@ export function StartFlow() {
         >
           {step === 1 && (
             <section>
-              <StepHeader eyebrow="Step 1" title="Tell me about you" />
+              <StepHeader eyebrow="Step 1" title="Choose your plan" />
+              <p className="mt-3 text-sm text-fg-mute">
+                One coaching program. Pick the commitment that fits.
+              </p>
+
+              <div className="mt-8 flex flex-col gap-4">
+                {START_PLANS.map((p) => {
+                  const selected = plan === p.key;
+                  const popular = "popular" in p && p.popular;
+                  return (
+                    <button
+                      key={p.key}
+                      type="button"
+                      aria-pressed={selected}
+                      onClick={() => setPlan(p.key)}
+                      className="relative flex w-full items-center justify-between gap-4 p-5 text-left transition-colors"
+                      style={{
+                        border: "1px solid",
+                        borderColor: selected ? "var(--accent)" : "var(--line-strong)",
+                        background: selected ? "var(--bg-soft)" : "transparent",
+                      }}
+                    >
+                      {popular && (
+                        <span
+                          className="absolute font-mono uppercase"
+                          style={{
+                            top: -1,
+                            right: -1,
+                            background: "var(--accent)",
+                            color: "var(--accent-fg)",
+                            fontSize: 9,
+                            letterSpacing: "0.18em",
+                            padding: "5px 9px",
+                          }}
+                        >
+                          Most popular
+                        </span>
+                      )}
+                      <span className="flex items-start gap-3">
+                        <span
+                          aria-hidden="true"
+                          className="mt-1 h-3.5 w-3.5 shrink-0 rounded-full"
+                          style={{
+                            border: "1px solid",
+                            borderColor: selected ? "var(--accent)" : "var(--line-strong)",
+                            background: selected
+                              ? "radial-gradient(circle, var(--accent) 0 40%, transparent 45%)"
+                              : "transparent",
+                          }}
+                        />
+                        <span>
+                          <span className="display block text-xl text-fg">{p.name}</span>
+                          <span className="mt-1 block text-xs text-fg-mute">
+                            {p.terms} · {p.tagline}
+                          </span>
+                        </span>
+                      </span>
+                      <span className="shrink-0 whitespace-nowrap text-right">
+                        <span
+                          className="display text-2xl"
+                          style={{ color: selected ? "var(--accent)" : "var(--fg)" }}
+                        >
+                          {p.price}
+                        </span>
+                        {p.cadence && (
+                          <span className="text-sm text-fg-mute">{p.cadence}</span>
+                        )}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              <p className="mt-6 text-xs leading-relaxed text-fg-mute">
+                Real results take 12+ weeks. Monthly billing exists for convenience —
+                most clients choose quarterly.
+              </p>
+
+              <div className="mt-10 flex justify-end">
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={() => setStep(2)}
+                >
+                  Continue <span className="arrow">&rarr;</span>
+                </button>
+              </div>
+            </section>
+          )}
+
+          {step === 2 && (
+            <section>
+              <StepHeader eyebrow="Step 2" title="Tell me about you" />
               <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
                 <Field label="Full name" className="sm:col-span-2">
                   <input
@@ -254,13 +352,16 @@ export function StartFlow() {
                 </Field>
               </div>
 
-              <div className="mt-10 flex justify-end">
+              <div className="mt-10 flex justify-between gap-3">
+                <button type="button" className="btn btn-ghost" onClick={() => setStep(1)}>
+                  <span className="arrow" style={{ transform: "scaleX(-1)" }}>&rarr;</span> Back
+                </button>
                 <button
                   type="button"
                   className="btn btn-primary"
-                  disabled={!step1Valid}
-                  style={!step1Valid ? { opacity: 0.5, cursor: "not-allowed" } : undefined}
-                  onClick={() => setStep(2)}
+                  disabled={!step2Valid}
+                  style={!step2Valid ? { opacity: 0.5, cursor: "not-allowed" } : undefined}
+                  onClick={() => setStep(3)}
                 >
                   Continue <span className="arrow">&rarr;</span>
                 </button>
@@ -268,9 +369,9 @@ export function StartFlow() {
             </section>
           )}
 
-          {step === 2 && (
+          {step === 3 && (
             <section>
-              <StepHeader eyebrow="Step 2" title="Read the waiver" />
+              <StepHeader eyebrow="Step 3" title="Read the waiver" />
               <p className="mt-3 text-sm text-fg-mute">
                 Scroll through the full document. {ACTIVITY_PROVIDER}. Version {WAIVER_VERSION}.
               </p>
@@ -323,15 +424,15 @@ export function StartFlow() {
               </label>
 
               <div className="mt-10 flex justify-between gap-3">
-                <button type="button" className="btn btn-ghost" onClick={() => setStep(1)}>
+                <button type="button" className="btn btn-ghost" onClick={() => setStep(2)}>
                   <span className="arrow" style={{ transform: "scaleX(-1)" }}>&rarr;</span> Back
                 </button>
                 <button
                   type="button"
                   className="btn btn-primary"
-                  disabled={!step2Valid}
-                  style={!step2Valid ? { opacity: 0.5, cursor: "not-allowed" } : undefined}
-                  onClick={() => setStep(3)}
+                  disabled={!step3Valid}
+                  style={!step3Valid ? { opacity: 0.5, cursor: "not-allowed" } : undefined}
+                  onClick={() => setStep(4)}
                 >
                   Continue <span className="arrow">&rarr;</span>
                 </button>
@@ -339,9 +440,9 @@ export function StartFlow() {
             </section>
           )}
 
-          {step === 3 && (
+          {step === 4 && (
             <section>
-              <StepHeader eyebrow="Step 3" title="Agree & sign" />
+              <StepHeader eyebrow="Step 4" title="Agree & sign" />
 
               <label className="mt-8 flex cursor-pointer items-start gap-3">
                 <input
@@ -387,16 +488,16 @@ export function StartFlow() {
                   type="button"
                   className="btn btn-ghost"
                   disabled={submitting}
-                  onClick={() => setStep(2)}
+                  onClick={() => setStep(3)}
                 >
                   <span className="arrow" style={{ transform: "scaleX(-1)" }}>&rarr;</span> Back
                 </button>
                 <button
                   type="button"
                   className="btn btn-primary"
-                  disabled={!step3Valid || submitting}
+                  disabled={!step4Valid || submitting}
                   style={
-                    !step3Valid || submitting ? { opacity: 0.5, cursor: "not-allowed" } : undefined
+                    !step4Valid || submitting ? { opacity: 0.5, cursor: "not-allowed" } : undefined
                   }
                   onClick={handleSubmit}
                 >

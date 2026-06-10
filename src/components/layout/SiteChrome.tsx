@@ -8,9 +8,10 @@ import { Footer } from "@/components/layout/Footer";
  * Routes that intentionally provide their own focused chrome (their own header
  * logo, no global nav/footer). The /start enrollment flow is stripped on purpose
  * so users don't navigate away mid-waiver — rendering the global Navbar there
- * would double the logo and add distractions.
+ * would double the logo and add distractions. /welcome (the post-payment page)
+ * is focused for the same reason — it owns the moment, no nav pulling away.
  */
-const FOCUSED_ROUTES = ["/start"];
+const FOCUSED_ROUTES = ["/start", "/welcome"];
 
 function isFocused(pathname: string): boolean {
   return FOCUSED_ROUTES.some(

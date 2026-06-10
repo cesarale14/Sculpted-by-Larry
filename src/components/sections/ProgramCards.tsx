@@ -2,7 +2,6 @@ import {
   CAL_BOOKING_URL,
   ONLINE_TIERS,
   ONLINE_FEATURES,
-  INPERSON_FEATURES,
 } from "@/lib/constants";
 
 export function ProgramCards() {
@@ -29,7 +28,7 @@ export function ProgramCards() {
               className="display"
               style={{ fontSize: "clamp(40px,6vw,84px)", margin: 0 }}
             >
-              Two ways to{" "}
+              How we{" "}
               <em
                 className="serif-i"
                 style={{
@@ -52,8 +51,9 @@ export function ProgramCards() {
               margin: 0,
             }}
           >
-            Online: anywhere with a gym and a phone. In-person: Tampa only.
-            Both start with a 15-minute call.
+            One program, billed as online coaching — anywhere with a gym and a
+            phone. Tampa locals also train with me in person. It starts with a
+            15-minute call.
           </p>
         </div>
 
@@ -225,167 +225,55 @@ export function ProgramCards() {
           </div>
         </div>
 
-        {/* In-Person Tampa */}
+        {/* Tampa in-person — same online product, coordinated in person for locals */}
         <div
-          className="reveal"
+          className="reveal tampa-strip"
           style={{
             border: "1px solid var(--line)",
-            padding: "36px 36px 32px",
+            borderLeft: "2px solid var(--accent)",
+            padding: "26px 30px",
             background: "var(--bg-soft)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 24,
+            flexWrap: "wrap",
           }}
         >
-          <div className="prog-grid">
-            <div>
-              <h3
-                className="display"
-                style={{
-                  fontSize: 44,
-                  margin: "0 0 8px",
-                  letterSpacing: "-0.005em",
-                }}
-              >
-                In-Person{" "}
-                <em
-                  className="serif-i"
-                  style={{
-                    textTransform: "none",
-                    color: "var(--fg-soft)",
-                    letterSpacing: "-0.02em",
-                  }}
-                >
-                  (Tampa)
-                </em>
-              </h3>
-              <div
-                style={{
-                  fontFamily: "var(--mono)",
-                  fontSize: 12,
-                  color: "var(--fg-mute)",
-                  letterSpacing: "0.1em",
-                  textTransform: "uppercase",
-                  marginBottom: 22,
-                }}
-              >
-                1:1 sessions
-              </div>
-              <p
-                style={{
-                  fontSize: 14.5,
-                  color: "var(--fg-soft)",
-                  lineHeight: 1.6,
-                  margin: "0 0 22px",
-                }}
-              >
-                Train with me in person. We program around your schedule and
-                fix what only gets fixed in person. First session is free. If
-                it isn&rsquo;t a fit, that&rsquo;s fine.
-              </p>
-              <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
-                {INPERSON_FEATURES.map((f, j) => (
-                  <li
-                    key={j}
-                    style={{
-                      display: "flex",
-                      gap: 12,
-                      padding: "10px 0",
-                      borderTop: "1px solid var(--line)",
-                      fontSize: 13.5,
-                      color: "var(--fg-soft)",
-                    }}
-                  >
-                    <span
-                      aria-hidden="true"
-                      style={{
-                        color: "var(--accent)",
-                        fontFamily: "var(--mono)",
-                        fontSize: 14,
-                        lineHeight: 1.3,
-                        flexShrink: 0,
-                      }}
-                    >
-                      —
-                    </span>
-                    <span>{f}</span>
-                  </li>
-                ))}
-              </ul>
+          <div style={{ maxWidth: 640 }}>
+            <div
+              style={{
+                fontFamily: "var(--mono)",
+                fontSize: 11,
+                color: "var(--accent)",
+                letterSpacing: "0.14em",
+                textTransform: "uppercase",
+                marginBottom: 8,
+              }}
+            >
+              Tampa local?
             </div>
-            <div style={{ width: "100%" }}>
-              <div
-                style={{
-                  border: "1px solid var(--accent)",
-                  padding: "32px 26px",
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 14,
-                  background: "var(--bg)",
-                  width: "100%",
-                }}
-              >
-                <div className="eyebrow" style={{ fontSize: 10 }}>
-                  First session
-                </div>
-                <div
-                  className="display"
-                  style={{
-                    fontSize: 48,
-                    lineHeight: 1,
-                    color: "var(--accent)",
-                    letterSpacing: "-0.01em",
-                  }}
-                >
-                  Free
-                </div>
-                <p
-                  style={{
-                    fontSize: 13,
-                    lineHeight: 1.55,
-                    color: "var(--fg-soft)",
-                    margin: 0,
-                  }}
-                >
-                  An hour at my gym. Movement screen, a real training
-                  session, an honest conversation about what working together
-                  would look like. No pitch deck.
-                </p>
-                <div
-                  style={{
-                    paddingTop: 14,
-                    borderTop: "1px solid var(--line)",
-                  }}
-                >
-                  <div
-                    className="eyebrow"
-                    style={{ fontSize: 10, marginBottom: 6 }}
-                  >
-                    Ongoing
-                  </div>
-                  <p
-                    style={{
-                      fontSize: 13,
-                      lineHeight: 1.55,
-                      color: "var(--fg-soft)",
-                      margin: 0,
-                    }}
-                  >
-                    Pricing is by conversation — it depends on session
-                    frequency, programming load, and where you&rsquo;re
-                    starting. Always fair, never surprise-billed.
-                  </p>
-                </div>
-                <a
-                  href={CAL_BOOKING_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn btn-primary"
-                  style={{ marginTop: 4, whiteSpace: "normal" }}
-                >
-                  Book your free first session{" "}
-                  <span className="arrow">→</span>
-                </a>
-              </div>
-            </div>
+            <p
+              style={{
+                fontSize: 14.5,
+                color: "var(--fg-soft)",
+                lineHeight: 1.6,
+                margin: 0,
+              }}
+            >
+              Larry coordinates in-person sessions with local clients directly —
+              same program, same price. Just say so on your call.
+            </p>
           </div>
+          <a
+            href={CAL_BOOKING_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-ghost"
+            style={{ whiteSpace: "nowrap" }}
+          >
+            Book a 15-min call <span className="arrow">→</span>
+          </a>
         </div>
       </div>
 
