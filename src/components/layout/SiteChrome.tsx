@@ -10,8 +10,10 @@ import { Footer } from "@/components/layout/Footer";
  * so users don't navigate away mid-waiver — rendering the global Navbar there
  * would double the logo and add distractions. /welcome (the post-payment page)
  * is focused for the same reason — it owns the moment, no nav pulling away.
+ * /pay (the custom-amount in-person payment page) is focused too — it's shared
+ * directly with a quoted client, so the global chrome would only distract.
  */
-const FOCUSED_ROUTES = ["/start", "/welcome"];
+const FOCUSED_ROUTES = ["/start", "/welcome", "/pay"];
 
 function isFocused(pathname: string): boolean {
   return FOCUSED_ROUTES.some(

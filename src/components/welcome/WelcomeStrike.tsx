@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BRAND } from "@/lib/constants";
 
 /**
@@ -24,6 +24,16 @@ export function WelcomeStrike() {
   const rootRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const skipRef = useRef<HTMLButtonElement>(null);
+
+  // Custom in-person payments (from /pay) arrive with ?t=custom. Those clients
+  // did NOT sign a waiver through this path and there's no online-intake to run,
+  // so the confirmation line and the "what happens next" block both change.
+  // Resolved after mount (SSR-safe); it lands well before the reveal transitions
+  // fire in the animation timeline, so there's no visible flash.
+  const [isCustom, setIsCustom] = useState(false);
+  useEffect(() => {
+    setIsCustom(new URLSearchParams(window.location.search).get("t") === "custom");
+  }, []);
 
   useEffect(() => {
     const root = rootRef.current;
@@ -316,43 +326,51 @@ export function WelcomeStrike() {
         <div className="ws-rule" />
 
         <p className="ws-confirm">
-          Payment confirmed. Your signed waiver is in your inbox.
+          {isCustom
+            ? "Payment confirmed. Larry's got the notification."
+            : "Payment confirmed. Your signed waiver is in your inbox."}
         </p>
 
-        <section className="ws-next" aria-label="What happens next">
-          <div className="ws-next-label">What happens next</div>
-          <div className="ws-step">
-            <div className="ws-num">01</div>
-            <div>
-              <h3>Intake</h3>
-              <p>
-                Your intake questions land in your inbox within 24 hours. Answer
-                them straight — the programming is only as good as the
-                information.
-              </p>
+        {isCustom ? (
+          <section className="ws-next ws-next-custom" aria-label="What happens next">
+            <p className="ws-custom-line">You&apos;re set. See you at the next session.</p>
+          </section>
+        ) : (
+          <section className="ws-next" aria-label="What happens next">
+            <div className="ws-next-label">What happens next</div>
+            <div className="ws-step">
+              <div className="ws-num">01</div>
+              <div>
+                <h3>Intake</h3>
+                <p>
+                  Your intake questions land in your inbox within 24 hours. Answer
+                  them straight — the programming is only as good as the
+                  information.
+                </p>
+              </div>
             </div>
-          </div>
-          <div className="ws-step">
-            <div className="ws-num">02</div>
-            <div>
-              <h3>Programming</h3>
-              <p>
-                Larry builds your first block around your body, your schedule,
-                and your answers. Written for you, not copied from a template.
-              </p>
+            <div className="ws-step">
+              <div className="ws-num">02</div>
+              <div>
+                <h3>Programming</h3>
+                <p>
+                  Larry builds your first block around your body, your schedule,
+                  and your answers. Written for you, not copied from a template.
+                </p>
+              </div>
             </div>
-          </div>
-          <div className="ws-step">
-            <div className="ws-num">03</div>
-            <div>
-              <h3>Training</h3>
-              <p>
-                Day one. Show up, follow the plan, send your check-ins. The rest
-                compounds.
-              </p>
+            <div className="ws-step">
+              <div className="ws-num">03</div>
+              <div>
+                <h3>Training</h3>
+                <p>
+                  Day one. Show up, follow the plan, send your check-ins. The rest
+                  compounds.
+                </p>
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        )}
 
         <div className="ws-cta-wrap">
           <p className="ws-cta-q">Questions before then?</p>
@@ -558,6 +576,23 @@ export function WelcomeStrike() {
           transform: translateY(0);
         }
 
+        /* custom (in-person) — single sign-off line replaces the numbered steps */
+        .ws-next-custom { text-align: center; }
+        .ws-custom-line {
+          font-family: var(--serif);
+          font-style: italic;
+          font-size: 22px;
+          line-height: 1.5;
+          color: var(--bone-dim);
+          opacity: 0;
+          transform: translateY(16px);
+        }
+        .welcome-strike.struck .ws-custom-line {
+          transition: opacity 0.55s ease 1.05s, transform 0.55s var(--strike) 1.05s;
+          opacity: 1;
+          transform: translateY(0);
+        }
+
         /* CTA */
         .ws-cta-wrap {
           margin-top: 46px;
@@ -619,6 +654,7 @@ export function WelcomeStrike() {
           .ws-confirm,
           .ws-next-label,
           .ws-step,
+          .ws-custom-line,
           .ws-cta-wrap {
             opacity: 1 !important;
             transform: none !important;

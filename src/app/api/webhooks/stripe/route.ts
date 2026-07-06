@@ -37,15 +37,25 @@ export async function POST(request: Request) {
           session.customer_details?.name ??
           "Client";
         const amount = session.amount_total ?? 0;
-        const plan =
-          (session.metadata?.plan as string | undefined) ??
-          (session.mode === "subscription" ? "Coaching Subscription" : "Sculpted by Larry");
+        const isCustomInPerson = session.metadata?.type === "custom_in_person";
+
+        // Custom in-person payments (from /pay) have no pre-made plan — the
+        // client entered the amount Larry quoted. Give the client a clean plan
+        // label, but tag Larry's PAYMENT RECEIVED subject with the amount so it
+        // reads "… — $[amount] (in-person custom)" and never prints undefined.
+        const clientPlan = isCustomInPerson
+          ? "In-Person Training — Sculpted by Larry"
+          : ((session.metadata?.plan as string | undefined) ??
+            (session.mode === "subscription" ? "Coaching Subscription" : "Sculpted by Larry"));
+        const larryPlan = isCustomInPerson
+          ? `$${(amount / 100).toFixed(2)} (in-person custom)`
+          : clientPlan;
 
         if (email) {
-          await sendPaymentConfirmation({ email, customerName, plan, amount });
+          await sendPaymentConfirmation({ email, customerName, plan: clientPlan, amount });
           // Email-as-record: notify Larry so payment lands in his inbox next to
           // the SIGNED WAIVER email (cross-reference via the waiverRef metadata).
-          await sendPaymentNotificationToLarry({ email, customerName, plan, amount });
+          await sendPaymentNotificationToLarry({ email, customerName, plan: larryPlan, amount });
         }
         break;
       }
