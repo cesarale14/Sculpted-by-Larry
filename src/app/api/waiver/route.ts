@@ -39,6 +39,10 @@ export async function POST(request: Request) {
     const fitnessAttestation = b.fitnessAttestation === true;
     const agree = b.agree === true;
     const clientAgreedAt = str(b.agreedAt);
+    // Which flow submitted this. "start" (default) is the enrollment flow with
+    // payment attached; "waiver_only" is the standalone /waiver page for
+    // in-person clients — Larry's copy gets a line noting no payment follows.
+    const source = b.source === "waiver_only" ? "waiver_only" : "start";
 
     // ── Validation (hand-rolled, matching the repo's existing routes) ─────────
     if (!participantName) {
@@ -112,6 +116,7 @@ export async function POST(request: Request) {
       pdfBytes,
       waiverVersion: WAIVER_VERSION,
       signedDate,
+      source,
     });
     if (!emailResult.success) {
       console.error("[waiver] email failed:", emailResult.error);

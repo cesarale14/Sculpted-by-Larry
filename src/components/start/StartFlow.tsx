@@ -1,30 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Logo } from "@/components/ui/Logo";
 import { START_PLANS, type StartPlanKey } from "@/lib/constants";
-import {
-  WAIVER_SECTIONS,
-  WAIVER_VERSION,
-  ACTIVITY_PROVIDER,
-  FITNESS_ATTESTATION_TEXT,
-  fillIntro,
-} from "@/lib/waiver";
-
-const MONTHS = [
-  "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December",
-];
-
-function ordinal(n: number): string {
-  const s = ["th", "st", "nd", "rd"];
-  const v = n % 100;
-  return n + (s[(v - 20) % 10] || s[v] || s[0]);
-}
-
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/;
+import { useWaiverForm } from "@/components/waiver/useWaiverForm";
+import { StepHeader, DetailsStep, WaiverReadStep, SignStep } from "@/components/waiver/steps";
 
 type Step = 1 | 2 | 3 | 4;
 
@@ -41,78 +22,23 @@ export function StartFlow() {
   // Step 1 — plan selection (quarterly is the default / most popular)
   const [plan, setPlan] = useState<StartPlanKey>("quarterly");
 
-  // Step 2 — intake
-  const [participantName, setParticipantName] = useState("");
-  const [participantEmail, setParticipantEmail] = useState("");
-  const [participantDob, setParticipantDob] = useState("");
-  const [participantPhone, setParticipantPhone] = useState("");
-  const [emergencyName, setEmergencyName] = useState("");
-  const [emergencyPhone, setEmergencyPhone] = useState("");
-
-  // Step 3 — waiver
-  const [scrolledToEnd, setScrolledToEnd] = useState(false);
-  const [fitnessAttestation, setFitnessAttestation] = useState(false);
-  const waiverBoxRef = useRef<HTMLDivElement>(null);
-
-  // Step 4 — agreement + signature
-  const [agree, setAgree] = useState(false);
-  const [signatureName, setSignatureName] = useState("");
+  // Steps 2–4 — shared waiver form (details, waiver, sign) live in useWaiverForm
+  // so /start and /waiver never diverge.
+  const form = useWaiverForm();
 
   // Submit
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [storedNoPayment, setStoredNoPayment] = useState(false);
 
-  const emailOk = EMAIL_REGEX.test(participantEmail.trim());
-  const step2Valid =
-    participantName.trim() !== "" &&
-    emailOk &&
-    DATE_REGEX.test(participantDob) &&
-    participantPhone.trim() !== "" &&
-    emergencyName.trim() !== "" &&
-    emergencyPhone.trim() !== "";
-  const step3Valid = scrolledToEnd && fitnessAttestation;
-  const step4Valid = agree && signatureName.trim() !== "";
-
-  // Auto-enable the "read" gate if the waiver text isn't tall enough to scroll.
-  useEffect(() => {
-    if (step !== 3) return;
-    const el = waiverBoxRef.current;
-    if (el && el.scrollHeight - el.clientHeight < 8) setScrolledToEnd(true);
-  }, [step]);
-
-  function handleWaiverScroll(e: React.UIEvent<HTMLDivElement>) {
-    const el = e.currentTarget;
-    if (el.scrollHeight - el.scrollTop - el.clientHeight < 32) setScrolledToEnd(true);
-  }
-
-  const now = new Date();
-  const introText = fillIntro(
-    participantName.trim() || "[participant name]",
-    ordinal(now.getDate()),
-    `${MONTHS[now.getMonth()]}, ${now.getFullYear()}`,
-  );
-
   async function handleSubmit() {
     setError(null);
     setSubmitting(true);
-    const agreedAt = new Date().toISOString();
     try {
       const res = await fetch("/api/waiver", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          participantName: participantName.trim(),
-          participantEmail: participantEmail.trim(),
-          participantDob,
-          participantPhone: participantPhone.trim(),
-          emergencyName: emergencyName.trim(),
-          emergencyPhone: emergencyPhone.trim(),
-          fitnessAttestation,
-          agree,
-          signatureName: signatureName.trim(),
-          agreedAt,
-        }),
+        body: JSON.stringify(form.buildPayload()),
       });
       const body = await res.json().catch(() => null);
       if (!res.ok || !body?.success) {
@@ -288,69 +214,7 @@ export function StartFlow() {
           {step === 2 && (
             <section>
               <StepHeader eyebrow="Step 2" title="Tell me about you" />
-              <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
-                <Field label="Full name" className="sm:col-span-2">
-                  <input
-                    className="field"
-                    type="text"
-                    autoComplete="name"
-                    value={participantName}
-                    onChange={(e) => setParticipantName(e.target.value)}
-                    placeholder="Your full legal name"
-                  />
-                </Field>
-                <Field label="Email">
-                  <input
-                    className="field"
-                    type="email"
-                    autoComplete="email"
-                    value={participantEmail}
-                    onChange={(e) => setParticipantEmail(e.target.value)}
-                    placeholder="you@email.com"
-                  />
-                </Field>
-                <Field label="Phone">
-                  <input
-                    className="field"
-                    type="tel"
-                    autoComplete="tel"
-                    value={participantPhone}
-                    onChange={(e) => setParticipantPhone(e.target.value)}
-                    placeholder="(813) 555-0123"
-                  />
-                </Field>
-                <Field label="Date of birth">
-                  <input
-                    className="field"
-                    type="date"
-                    value={participantDob}
-                    onChange={(e) => setParticipantDob(e.target.value)}
-                  />
-                </Field>
-                <div className="sm:col-span-2 mt-2 border-t border-line pt-6">
-                  <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-fg-mute">
-                    Emergency contact
-                  </p>
-                </div>
-                <Field label="Emergency contact name">
-                  <input
-                    className="field"
-                    type="text"
-                    value={emergencyName}
-                    onChange={(e) => setEmergencyName(e.target.value)}
-                    placeholder="Their name"
-                  />
-                </Field>
-                <Field label="Emergency contact phone">
-                  <input
-                    className="field"
-                    type="tel"
-                    value={emergencyPhone}
-                    onChange={(e) => setEmergencyPhone(e.target.value)}
-                    placeholder="Their phone"
-                  />
-                </Field>
-              </div>
+              <DetailsStep form={form} />
 
               <div className="mt-10 flex justify-between gap-3">
                 <button type="button" className="btn btn-ghost" onClick={() => setStep(1)}>
@@ -359,8 +223,8 @@ export function StartFlow() {
                 <button
                   type="button"
                   className="btn btn-primary"
-                  disabled={!step2Valid}
-                  style={!step2Valid ? { opacity: 0.5, cursor: "not-allowed" } : undefined}
+                  disabled={!form.detailsValid}
+                  style={!form.detailsValid ? { opacity: 0.5, cursor: "not-allowed" } : undefined}
                   onClick={() => setStep(3)}
                 >
                   Continue <span className="arrow">&rarr;</span>
@@ -372,56 +236,7 @@ export function StartFlow() {
           {step === 3 && (
             <section>
               <StepHeader eyebrow="Step 3" title="Read the waiver" />
-              <p className="mt-3 text-sm text-fg-mute">
-                Scroll through the full document. {ACTIVITY_PROVIDER}. Version {WAIVER_VERSION}.
-              </p>
-
-              <div
-                ref={waiverBoxRef}
-                onScroll={handleWaiverScroll}
-                className="mt-6 max-h-[360px] overflow-y-auto border border-line bg-bg-soft p-6 text-[14px] leading-relaxed text-fg-soft"
-              >
-                <p className="mb-5">{introText}</p>
-                {WAIVER_SECTIONS.map((sectionItem) => (
-                  <div key={sectionItem.heading} className="mb-5">
-                    <p className="mb-2 font-mono text-[11px] uppercase tracking-[0.14em] text-accent">
-                      {sectionItem.heading}
-                    </p>
-                    {sectionItem.clauses.map((clause) => (
-                      <p key={clause.n} className="mb-2">
-                        <span className="text-fg">{clause.n}.</span> {clause.text}
-                      </p>
-                    ))}
-                  </div>
-                ))}
-                <p className="mt-4 border-t border-line pt-4 text-xs text-fg-mute">
-                  You have reached the end of the waiver.
-                </p>
-              </div>
-
-              {!scrolledToEnd && (
-                <p className="mt-3 text-xs text-fg-mute">
-                  Scroll to the end of the waiver to enable the checkbox.
-                </p>
-              )}
-
-              <label
-                className={`mt-6 flex items-start gap-3 ${
-                  scrolledToEnd ? "cursor-pointer" : "cursor-not-allowed opacity-50"
-                }`}
-              >
-                <input
-                  type="checkbox"
-                  className="mt-1 h-4 w-4 shrink-0 accent-[var(--accent)] disabled:cursor-not-allowed"
-                  checked={fitnessAttestation}
-                  disabled={!scrolledToEnd}
-                  onChange={(e) => setFitnessAttestation(e.target.checked)}
-                />
-                <span className="text-sm text-fg-soft">
-                  <span className="font-semibold text-fg">Clause 5 — Fitness to participate.</span>{" "}
-                  {FITNESS_ATTESTATION_TEXT}
-                </span>
-              </label>
+              <WaiverReadStep form={form} />
 
               <div className="mt-10 flex justify-between gap-3">
                 <button type="button" className="btn btn-ghost" onClick={() => setStep(2)}>
@@ -430,8 +245,8 @@ export function StartFlow() {
                 <button
                   type="button"
                   className="btn btn-primary"
-                  disabled={!step3Valid}
-                  style={!step3Valid ? { opacity: 0.5, cursor: "not-allowed" } : undefined}
+                  disabled={!form.waiverValid}
+                  style={!form.waiverValid ? { opacity: 0.5, cursor: "not-allowed" } : undefined}
                   onClick={() => setStep(4)}
                 >
                   Continue <span className="arrow">&rarr;</span>
@@ -443,45 +258,7 @@ export function StartFlow() {
           {step === 4 && (
             <section>
               <StepHeader eyebrow="Step 4" title="Agree & sign" />
-
-              <label className="mt-8 flex cursor-pointer items-start gap-3">
-                <input
-                  type="checkbox"
-                  className="mt-1 h-4 w-4 shrink-0 accent-[var(--accent)]"
-                  checked={agree}
-                  onChange={(e) => setAgree(e.target.checked)}
-                />
-                <span className="text-sm text-fg-soft">
-                  I have read and agree to this waiver, and I understand I am releasing the
-                  Activity Provider as described above.
-                </span>
-              </label>
-
-              <div className="mt-8">
-                <label
-                  htmlFor="signature"
-                  className="font-mono text-[10px] uppercase tracking-[0.16em] text-fg-mute"
-                >
-                  Type your full legal name to sign
-                </label>
-                <input
-                  id="signature"
-                  type="text"
-                  autoComplete="off"
-                  value={signatureName}
-                  onChange={(e) => setSignatureName(e.target.value)}
-                  placeholder="Your full legal name"
-                  className="mt-2 w-full border-b border-line-strong bg-transparent pb-2 font-serif text-2xl italic text-fg outline-none focus:border-accent"
-                  style={{ fontFamily: "var(--serif)" }}
-                />
-                <p className="mt-3 text-xs leading-relaxed text-fg-mute">
-                  By typing your name above, you adopt it as your legal electronic signature.
-                  The date, your IP address, and your browser will be recorded with this signature
-                  as part of the audit trail. Document version {WAIVER_VERSION}.
-                </p>
-              </div>
-
-              {error && <p className="mt-6 text-sm text-danger">{error}</p>}
+              <SignStep form={form} error={error} />
 
               <div className="mt-10 flex justify-between gap-3">
                 <button
@@ -495,9 +272,9 @@ export function StartFlow() {
                 <button
                   type="button"
                   className="btn btn-primary"
-                  disabled={!step4Valid || submitting}
+                  disabled={!form.signValid || submitting}
                   style={
-                    !step4Valid || submitting ? { opacity: 0.5, cursor: "not-allowed" } : undefined
+                    !form.signValid || submitting ? { opacity: 0.5, cursor: "not-allowed" } : undefined
                   }
                   onClick={handleSubmit}
                 >
@@ -526,33 +303,5 @@ function Shell({ children }: { children: React.ReactNode }) {
         <div className="mx-auto max-w-2xl pb-24 pt-8 sm:pt-14">{children}</div>
       </div>
     </main>
-  );
-}
-
-function StepHeader({ eyebrow, title }: { eyebrow: string; title: string }) {
-  return (
-    <div>
-      <p className="eyebrow"><span className="dot" />{eyebrow}</p>
-      <h1 className="display mt-3 text-4xl text-fg sm:text-5xl">{title}</h1>
-    </div>
-  );
-}
-
-function Field({
-  label,
-  className,
-  children,
-}: {
-  label: string;
-  className?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <label className={`flex flex-col gap-2 ${className ?? ""}`}>
-      <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-fg-mute">
-        {label}
-      </span>
-      {children}
-    </label>
   );
 }

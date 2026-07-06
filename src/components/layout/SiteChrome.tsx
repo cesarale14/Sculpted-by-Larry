@@ -12,8 +12,10 @@ import { Footer } from "@/components/layout/Footer";
  * is focused for the same reason — it owns the moment, no nav pulling away.
  * /pay (the custom-amount in-person payment page) is focused too — it's shared
  * directly with a quoted client, so the global chrome would only distract.
+ * /waiver (standalone waiver signing for in-person clients) is focused for the
+ * same reason as /start — no nav to wander off mid-signature.
  */
-const FOCUSED_ROUTES = ["/start", "/welcome", "/pay"];
+const FOCUSED_ROUTES = ["/start", "/welcome", "/pay", "/waiver"];
 
 function isFocused(pathname: string): boolean {
   return FOCUSED_ROUTES.some(

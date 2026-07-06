@@ -114,6 +114,8 @@ export async function sendExecutedWaiver(data: {
   pdfBytes: Uint8Array;
   waiverVersion: string;
   signedDate: string; // yyyy-mm-dd, used in Larry's filterable subject line
+  /** Which flow signed it — "waiver_only" adds a no-payment note to Larry's copy. */
+  source?: "start" | "waiver_only";
 }): Promise<Result> {
   try {
     const content = Buffer.from(data.pdfBytes);
@@ -150,6 +152,16 @@ ISSA Certified Personal Trainer`,
     });
     if (participant.error) return { success: false, error: participant.error.message };
 
+    // Standalone-waiver clients (in-person, /waiver) have no payment attached —
+    // flag that so Larry isn't left waiting on a PAYMENT RECEIVED that won't come.
+    const waiverOnly = data.source === "waiver_only";
+    const sourceNoteHtml = waiverOnly
+      ? emailParagraph("Signed via /waiver (in-person client — no payment attached).")
+      : "";
+    const sourceNoteText = waiverOnly
+      ? "\n\nSigned via /waiver (in-person client — no payment attached)."
+      : "";
+
     // Larry's record copy.
     const larry = await resend.emails.send({
       from: FROM_EMAIL,
@@ -164,7 +176,8 @@ ISSA Certified Personal Trainer`,
           emailRow("Participant", name) +
           emailRow("Email", escape(data.participantEmail)) +
           emailRow("Document version", version) +
-          emailParagraph("The executed PDF is attached."),
+          emailParagraph("The executed PDF is attached.") +
+          sourceNoteHtml,
       }),
       text: `New signed waiver
 
@@ -172,7 +185,7 @@ Participant: ${data.participantName}
 Email: ${data.participantEmail}
 Document version: ${data.waiverVersion}
 
-The executed PDF is attached.`,
+The executed PDF is attached.${sourceNoteText}`,
       attachments: [{ filename, content }],
     });
     if (larry.error) return { success: false, error: larry.error.message };
