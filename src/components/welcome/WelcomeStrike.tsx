@@ -30,9 +30,15 @@ export function WelcomeStrike() {
   // so the confirmation line and the "what happens next" block both change.
   // Resolved after mount (SSR-safe); it lands well before the reveal transitions
   // fire in the animation timeline, so there's no visible flash.
+  // `b` names the cadence for recurring custom payments (weekly | monthly), so
+  // the confirmation can say how it bills and how to stop it.
   const [isCustom, setIsCustom] = useState(false);
+  const [cadence, setCadence] = useState<string | null>(null);
   useEffect(() => {
-    setIsCustom(new URLSearchParams(window.location.search).get("t") === "custom");
+    const params = new URLSearchParams(window.location.search);
+    setIsCustom(params.get("t") === "custom");
+    const b = params.get("b");
+    setCadence(b === "weekly" || b === "monthly" ? b : null);
   }, []);
 
   useEffect(() => {
@@ -326,9 +332,11 @@ export function WelcomeStrike() {
         <div className="ws-rule" />
 
         <p className="ws-confirm">
-          {isCustom
-            ? "Payment confirmed. Larry's got the notification."
-            : "Payment confirmed. Your signed waiver is in your inbox."}
+          {isCustom && cadence
+            ? `Payment set up. Larry's got the notification — this bills ${cadence} until you tell him to stop.`
+            : isCustom
+              ? "Payment confirmed. Larry's got the notification."
+              : "Payment confirmed. Your signed waiver is in your inbox."}
         </p>
 
         {isCustom ? (

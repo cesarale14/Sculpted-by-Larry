@@ -233,6 +233,53 @@ Amount: $${amount}`,
   }
 }
 
+/**
+ * Renewal notification for recurring custom in-person billing (/pay weekly or
+ * monthly). Fired from the invoice.paid webhook on RENEWAL cycles only — the
+ * first charge is reported by sendPaymentNotificationToLarry instead, so Larry
+ * never gets two emails for one payment.
+ */
+export async function sendRecurringPaymentToLarry(data: {
+  customerName: string;
+  email: string;
+  amount: number;
+  cadence: "weekly" | "monthly";
+}): Promise<Result> {
+  try {
+    const amount = (data.amount / 100).toFixed(2);
+    const { error } = await getResend().emails.send({
+      from: FROM_EMAIL,
+      to: LARRY_INBOX,
+      ...(data.email ? { replyTo: data.email } : {}),
+      // Filterable/searchable record subject (email-as-record system).
+      subject: `RECURRING PAYMENT — ${data.customerName} — $${amount} (${data.cadence})`,
+      html: emailShell({
+        heading: "Recurring payment received",
+        preheader: `${data.customerName} — $${amount} — ${data.cadence}`,
+        bodyHtml:
+          emailRow("Client", escape(data.customerName)) +
+          (data.email ? emailRow("Email", escape(data.email)) : "") +
+          emailRow("Amount", `$${amount}`) +
+          emailRow("Billing", `In-person custom — ${data.cadence}`) +
+          emailParagraph(
+            "This is a renewal charge. It repeats until the subscription is cancelled in the Stripe dashboard.",
+          ),
+      }),
+      text: `Recurring payment received
+
+Client: ${data.customerName}${data.email ? `\nEmail: ${data.email}` : ""}
+Amount: $${amount}
+Billing: In-person custom — ${data.cadence}
+
+This is a renewal charge. It repeats until the subscription is cancelled in the Stripe dashboard.`,
+    });
+    if (error) return { success: false, error: error.message };
+    return { success: true };
+  } catch (err) {
+    return { success: false, error: err instanceof Error ? err.message : "Unknown error" };
+  }
+}
+
 export async function sendContactEmail(data: {
   name: string;
   email: string;

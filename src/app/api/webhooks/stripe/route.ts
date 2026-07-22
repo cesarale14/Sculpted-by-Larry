@@ -1,7 +1,11 @@
 import { NextResponse } from "next/server";
 import type Stripe from "stripe";
 import { stripe } from "@/lib/stripe";
-import { sendPaymentConfirmation, sendPaymentNotificationToLarry } from "@/lib/resend";
+import {
+  sendPaymentConfirmation,
+  sendPaymentNotificationToLarry,
+  sendRecurringPaymentToLarry,
+} from "@/lib/resend";
 
 export const runtime = "nodejs";
 
@@ -47,8 +51,12 @@ export async function POST(request: Request) {
           ? "In-Person Training — Sculpted by Larry"
           : ((session.metadata?.plan as string | undefined) ??
             (session.mode === "subscription" ? "Coaching Subscription" : "Sculpted by Larry"));
+        // Name the cadence for recurring custom payments so Larry knows this
+        // one repeats: "$150.00 (in-person custom, weekly)".
+        const billing = session.metadata?.billing;
+        const cadence = billing === "weekly" || billing === "monthly" ? `, ${billing}` : "";
         const larryPlan = isCustomInPerson
-          ? `$${(amount / 100).toFixed(2)} (in-person custom)`
+          ? `$${(amount / 100).toFixed(2)} (in-person custom${cadence})`
           : clientPlan;
 
         if (email) {
@@ -57,6 +65,29 @@ export async function POST(request: Request) {
           // the SIGNED WAIVER email (cross-reference via the waiverRef metadata).
           await sendPaymentNotificationToLarry({ email, customerName, plan: larryPlan, amount });
         }
+        break;
+      }
+      case "invoice.paid": {
+        const invoice = event.data.object as Stripe.Invoice;
+
+        // ONLY renewal cycles. The first subscription invoice carries
+        // billing_reason "subscription_create" and is already reported by
+        // checkout.session.completed above — handling it here too would send
+        // Larry two emails for the same first charge.
+        if (invoice.billing_reason !== "subscription_cycle") break;
+
+        // Metadata snapshot taken from the Subscription at invoice finalization
+        // (this is why /api/pay/checkout sets subscription_data.metadata).
+        const subMeta = invoice.parent?.subscription_details?.metadata;
+        if (subMeta?.type !== "custom_in_person") break;
+
+        const cadence = subMeta.billing === "weekly" ? "weekly" : "monthly";
+        await sendRecurringPaymentToLarry({
+          customerName: subMeta.client_name || "Client",
+          email: invoice.customer_email ?? "",
+          amount: invoice.amount_paid ?? 0,
+          cadence,
+        });
         break;
       }
       case "customer.subscription.created": {

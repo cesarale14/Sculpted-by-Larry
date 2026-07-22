@@ -7,6 +7,20 @@ export const runtime = "nodejs";
 const MIN_AMOUNT = 25;
 const MAX_AMOUNT = 5000;
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PRODUCT_NAME = "In-Person Training — Sculpted by Larry";
+
+type Billing = "one_time" | "weekly" | "monthly";
+
+/** Cadence → Stripe recurring interval. one_time has none (mode: 'payment'). */
+const RECURRING_INTERVAL: Record<Billing, "week" | "month" | null> = {
+  one_time: null,
+  weekly: "week",
+  monthly: "month",
+};
+
+function isBilling(v: unknown): v is Billing {
+  return v === "one_time" || v === "weekly" || v === "monthly";
+}
 
 /**
  * Custom-amount payment for in-person clients Larry has already quoted in person.
@@ -43,30 +57,52 @@ export async function POST(request: Request) {
     );
   }
 
+  // Cadence Larry quoted. Absent → one_time (the original behaviour);
+  // present-but-unrecognized → reject rather than silently charging once.
+  if (body?.billing !== undefined && !isBilling(body.billing)) {
+    return NextResponse.json({ error: "Unknown billing frequency." }, { status: 400 });
+  }
+  const billing: Billing = isBilling(body?.billing) ? body.billing : "one_time";
+  const interval = RECURRING_INTERVAL[billing];
+  const isRecurring = interval !== null;
+
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+
+  const metadata = {
+    type: "custom_in_person",
+    billing,
+    client_name: name,
+    amount: String(amount),
+    // customerName is what the webhook reads for the client's display name.
+    customerName: name,
+  };
 
   try {
     const session = await stripe.checkout.sessions.create({
-      mode: "payment",
+      mode: isRecurring ? "subscription" : "payment",
       line_items: [
         {
           quantity: 1,
           price_data: {
             currency: "usd",
             unit_amount: amount * 100,
-            product_data: { name: "In-Person Training — Sculpted by Larry" },
+            product_data: { name: PRODUCT_NAME },
+            // Subscription mode requires `recurring`; one-time must omit it.
+            ...(interval ? { recurring: { interval } } : {}),
           },
         },
       ],
       customer_email: email,
-      metadata: {
-        type: "custom_in_person",
-        client_name: name,
-        amount: String(amount),
-        // customerName is what the webhook reads for the client's display name.
-        customerName: name,
-      },
-      success_url: `${siteUrl}/welcome?t=custom&session_id={CHECKOUT_SESSION_ID}`,
+      metadata,
+      // The SAME metadata must also ride on the Subscription: renewal invoices
+      // reference the subscription, not this session, and invoice.paid reads it
+      // back via invoice.parent.subscription_details.metadata.
+      ...(isRecurring ? { subscription_data: { metadata } } : {}),
+      // /welcome branches on t=custom; b names the cadence so the confirmation
+      // can state how it bills and how to stop it.
+      success_url: `${siteUrl}/welcome?t=custom${
+        isRecurring ? `&b=${billing}` : ""
+      }&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${siteUrl}/pay`,
     });
 

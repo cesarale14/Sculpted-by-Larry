@@ -9,10 +9,21 @@ const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MIN_AMOUNT = 25;
 const MAX_AMOUNT = 5000;
 
+type Billing = "one_time" | "weekly" | "monthly";
+
+// The cadence Larry quoted. One-time is the default (the common case); weekly
+// and monthly create a Stripe subscription at the same client-entered amount.
+const BILLING_OPTIONS: { key: Billing; label: string }[] = [
+  { key: "one_time", label: "One-time" },
+  { key: "weekly", label: "Weekly" },
+  { key: "monthly", label: "Monthly" },
+];
+
 export function PayFlow() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [amount, setAmount] = useState("");
+  const [billing, setBilling] = useState<Billing>("one_time");
 
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -43,6 +54,7 @@ export function PayFlow() {
           name: name.trim(),
           email: email.trim(),
           amount: amountNum,
+          billing,
         }),
       });
       const body = await res.json().catch(() => null);
@@ -134,6 +146,40 @@ export function PayFlow() {
                 Whole dollars · ${MIN_AMOUNT}–${MAX_AMOUNT.toLocaleString()}
               </span>
             </label>
+
+            <div className="flex flex-col gap-2">
+              <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-fg-mute">
+                How often
+              </span>
+              <div className="grid grid-cols-3 gap-3">
+                {BILLING_OPTIONS.map((option) => {
+                  const selected = billing === option.key;
+                  return (
+                    <button
+                      key={option.key}
+                      type="button"
+                      aria-pressed={selected}
+                      onClick={() => setBilling(option.key)}
+                      className="display px-2 py-4 text-lg transition-colors"
+                      style={{
+                        border: "1px solid",
+                        borderColor: selected ? "var(--accent)" : "var(--line-strong)",
+                        background: selected ? "var(--bg-soft)" : "transparent",
+                        color: selected ? "var(--accent)" : "var(--fg)",
+                      }}
+                    >
+                      {option.label}
+                    </button>
+                  );
+                })}
+              </div>
+              {billing !== "one_time" && (
+                <p className="mt-1 text-xs leading-relaxed text-fg-mute">
+                  Recurring charges continue until you or Larry cancel — just tell Larry
+                  when you&apos;re done.
+                </p>
+              )}
+            </div>
 
             {error && <p className="text-sm text-danger">{error}</p>}
 
