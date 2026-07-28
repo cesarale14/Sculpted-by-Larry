@@ -39,20 +39,21 @@ export function LeadCaptureForm() {
 
   if (submitted) {
     return (
-      <div className="rounded-xl p-8 text-center bg-navy-light border border-gold">
-        <p className="font-heading text-2xl font-semibold text-gold">You&apos;re In</p>
-        <p className="mt-2 font-body text-sm text-gray-300">
-          Check your inbox for your free 5-Day Sculpt Starter Plan.
+      <div className="border border-accent p-8 text-center">
+        <p className="eyebrow justify-center" style={{ display: "inline-flex" }}>
+          <span className="dot" aria-hidden="true" />
+          Check your inbox
+        </p>
+        <p className="display mt-3 text-3xl text-fg">You&apos;re in.</p>
+        <p className="mt-3 text-sm text-fg-soft leading-relaxed">
+          Your free 5-Day Sculpt Starter Plan is on its way.
         </p>
       </div>
     );
   }
 
-  const inputClasses =
-    "w-full px-4 py-3.5 rounded-lg font-body text-base bg-navy-light border border-navy-lighter text-white placeholder:text-gray-500 focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 transition-colors";
-
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-3 max-w-md mx-auto text-left">
+    <form onSubmit={handleSubmit} className="mx-auto flex max-w-md flex-col gap-5 text-left">
       <label htmlFor="lead-name" className="sr-only">
         Your first name
       </label>
@@ -62,7 +63,7 @@ export function LeadCaptureForm() {
         name="name"
         required
         placeholder="Your first name"
-        className={inputClasses}
+        className="field"
       />
       <label htmlFor="lead-email" className="sr-only">
         Your email
@@ -73,17 +74,17 @@ export function LeadCaptureForm() {
         name="email"
         required
         placeholder="Your email"
-        className={inputClasses}
+        className="field"
       />
-      {error && (
-        <p className="font-body text-sm text-error text-center">{error}</p>
-      )}
+      {error && <p className="text-center text-sm text-danger">{error}</p>}
       <button
         type="submit"
         disabled={loading}
-        className="inline-flex items-center justify-center font-body text-[15px] font-medium bg-gold text-navy rounded-lg px-8 py-3.5 hover:bg-gold-hover transition-all duration-200 hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed"
+        className="btn btn-primary mt-2 w-full justify-center"
+        style={loading ? { opacity: 0.5, cursor: "not-allowed" } : undefined}
       >
-        {loading ? "Sending..." : "Send me the plan →"}
+        {loading ? "Sending…" : "Send me the plan"}{" "}
+        {!loading && <span className="arrow">→</span>}
       </button>
     </form>
   );

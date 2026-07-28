@@ -11,6 +11,7 @@
   --color-line: #2A2723;
   --color-line-strong: #3D3933;
   --color-accent: #C84E2A;      /* burnt orange — site/PDF brand unification */
+  --color-accent-bright: #CD5530; /* accent-as-surface under dark text (WCAG AA at 13px) */
   --color-accent-soft: #A03A20;
   --color-accent-fg: #0B0B0B;
   --color-danger: #C84A38;
@@ -45,6 +46,41 @@
   --container: 1280px;
   --gutter: clamp(20px, 4vw, 56px);
 
+  /* ── Motion tokens ─────────────────────────────────────────────
+     --ease-strike is the hero's shipped curve (hard decelerate,
+     locks dead, zero overshoot) — the site-wide signature.
+     --ease-std is the softer standard for micro-interactions. */
+  --ease-strike: cubic-bezier(0.2, 0.9, 0.1, 1);
+  --ease-std: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --dur-fast: 200ms;   /* hovers, color shifts */
+  --dur-med: 360ms;    /* strikes, accordion, step transitions */
+  --dur-slow: 800ms;   /* scroll reveals */
+
+  /* ── Spacing scale (4px base) ─────────────────────────────────── */
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-14: 56px;
+  --space-16: 64px;
+  --space-18: 72px;
+
+  /* ── Fluid type scale ─────────────────────────────────────────── */
+  --text-xs: 11px;                                /* mono labels, eyebrows */
+  --text-sm: 13px;                                /* buttons, captions */
+  --text-base: clamp(14.5px, 0.35vw + 13.5px, 15.5px);  /* body copy */
+  --text-lede: clamp(16px, 0.45vw + 14.8px, 17px);      /* lead paragraphs */
+  --text-display-xl: clamp(64px, 11vw, 184px);    /* hero / final CTA */
+  --text-display-lg: clamp(40px, 6vw, 84px);      /* section headlines */
+  --text-display-md: clamp(40px, 5vw, 72px);      /* dense headlines (FAQ) */
+
+  /* ── Measure ──────────────────────────────────────────────────── */
+  --measure: 60ch;        /* body copy */
+  --measure-narrow: 360px; /* side notes next to headlines */
+
   /* Mirror tokens as plain CSS vars so the design's .display / .eyebrow /
      .btn / .pillar / .acc-* / .nav classes can use var(--bg) etc. without
      the --color- prefix Tailwind requires. */
@@ -57,6 +93,7 @@
   --line: #2A2723;
   --line-strong: #3D3933;
   --accent: #C84E2A;
+  --accent-bright: #CD5530; /* accent surfaces that carry dark text */
   --accent-soft: #A03A20;
   --accent-fg: #0B0B0B;
   --danger: #C84A38;
@@ -76,10 +113,42 @@ body {
   font-feature-settings: "ss01", "cv11";
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  /* Horizontal clip WITHOUT creating a scroll container. overflow-x:
+     hidden turns body into a scroll container in engines that don't
+     propagate body overflow to the viewport, which silently defeats
+     every position:sticky descendant (the pinned Method section).
+     clip clips the same overflow but can never capture stickiness.
+     The hidden line is only the fallback for pre-2022 engines. */
   overflow-x: hidden;
+  overflow-x: clip;
 }
 
 ::selection { background: var(--accent); color: var(--accent-fg); }
+
+/* ── Focus rings — one system, every interactive element ──────── */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* ── Scrollbar — thin, on-brand ───────────────────────────────── */
+html {
+  scrollbar-width: thin;                          /* Firefox */
+  scrollbar-color: var(--line-strong) var(--bg);
+}
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb {
+  background: var(--line-strong);
+  border: 2px solid var(--bg);
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--fg-mute); }
 
 /* ── Type tokens ──────────────────────────────────────────────── */
 .display {
@@ -88,7 +157,54 @@ body {
   letter-spacing: -0.01em;
   line-height: 0.88;
   text-transform: uppercase;
+  font-variant-numeric: tabular-nums lining-nums; /* prices align */
 }
+
+/* Serif-italic counterpoint inside display type — one rule instead of
+   per-section inline styles. Sections write <em>word</em> and get the
+   Instrument Serif contrast beat for free. */
+.display em {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  text-transform: none;
+  color: var(--fg-soft);
+  letter-spacing: -0.02em;
+}
+.display em.em-accent { color: var(--accent); }
+
+/* Display size steps — fluid, tightened tracking at scale. */
+.display-xl { font-size: var(--text-display-xl); letter-spacing: -0.01em; }
+.display-lg { font-size: var(--text-display-lg); letter-spacing: -0.005em; }
+.display-md { font-size: var(--text-display-md); letter-spacing: -0.005em; }
+
+/* Balance wrapped headline lines (no-op on single-line and on the
+   hero's manual line-masks). */
+h1.display, h2.display, h3.display { text-wrap: balance; }
+
+/* Section head: headline + side-note row used by every public section. */
+.section-head {
+  margin-bottom: var(--space-16);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--space-10);
+  flex-wrap: wrap;
+}
+.side-note {
+  max-width: var(--measure-narrow);
+  font-size: var(--text-base);
+  line-height: 1.65;
+  color: var(--fg-soft);
+  margin: 0;
+}
+.lede {
+  font-size: var(--text-lede);
+  line-height: 1.6;
+  color: var(--fg-soft);
+  max-width: var(--measure);
+}
+.tnum { font-variant-numeric: tabular-nums lining-nums; }
 
 .serif-i {
   font-family: var(--serif);
@@ -143,16 +259,19 @@ section { position: relative; }
   border: 1px solid transparent;
   border-radius: 0;
   cursor: pointer;
-  transition: background-color 220ms cubic-bezier(.2,.7,.2,1),
-              color 220ms cubic-bezier(.2,.7,.2,1),
-              border-color 220ms cubic-bezier(.2,.7,.2,1);
+  transition: background-color var(--dur-fast) var(--ease-std),
+              color var(--dur-fast) var(--ease-std),
+              border-color var(--dur-fast) var(--ease-std),
+              transform var(--dur-fast) var(--ease-std);
   background: transparent;
   color: var(--fg);
   text-decoration: none;
   white-space: nowrap;
 }
 .btn-primary {
-  background: var(--accent);
+  /* --accent-bright, not --accent: dark 13px text on ember needs the
+     slightly brighter surface to clear WCAG AA (4.5:1). */
+  background: var(--accent-bright);
   color: var(--accent-fg);
 }
 .btn-primary:hover { background: var(--fg); color: var(--bg); }
@@ -178,6 +297,8 @@ section { position: relative; }
   outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
+/* Weighted press — the button physically gives under the click. */
+.btn:active { transform: translateY(1px); }
 
 /* ── Inputs ───────────────────────────────────────────────────── */
 .field {
@@ -199,8 +320,8 @@ section { position: relative; }
 .reveal {
   opacity: 0;
   transform: translate3d(0, 24px, 0);
-  transition: opacity 800ms cubic-bezier(.2,.7,.2,1),
-              transform 800ms cubic-bezier(.2,.7,.2,1);
+  transition: opacity var(--dur-slow) var(--ease-std),
+              transform var(--dur-slow) var(--ease-std);
 }
 .reveal.in { opacity: 1; transform: none; }
 .reveal-delay-1 { transition-delay: 80ms; }
@@ -222,9 +343,9 @@ section { position: relative; }
    headline stays the lead. transform + opacity + scale only (GPU).
    Total entrance resolves in <1.0s. */
 
-/* Easing token — aggressive ease-out (hard decelerate, near-vertical
-   landing). Locks dead at end without overshoot. */
-:root { --hero-strike-ease: cubic-bezier(0.2, 0.9, 0.1, 1); }
+/* Legacy alias — the strike ease is now the site-wide --ease-strike
+   token; hero rules still reference this name. */
+:root { --hero-strike-ease: var(--ease-strike); }
 
 .line-mask {
   display: block;
@@ -262,13 +383,15 @@ section { position: relative; }
 .hero-headline.in .line-mask:nth-of-type(2) .line-inner { transition-delay: 280ms; }
 .hero-headline.in .line-mask:nth-of-type(3) .line-inner { transition-delay: 360ms; }
 
-/* .hero-strike: override the gentler default .reveal transition with
-   the impact-pass character — 360ms hard-decelerate strike for the
-   supporting elements (eyebrow, paragraph, CTAs). Same vocabulary as
-   the headline lines, scaled down so the headline stays the lead. */
-.reveal.hero-strike {
-  transition: opacity 360ms var(--hero-strike-ease),
-              transform 360ms var(--hero-strike-ease);
+/* .hero-strike / .strike: override the gentler default .reveal
+   transition with the impact-pass character — 360ms hard-decelerate
+   strike. .strike is the site-wide variant applied to section
+   headlines so the hero's vocabulary carries through the whole page;
+   supporting blocks keep the slower default fade so headlines lead. */
+.reveal.hero-strike,
+.reveal.strike {
+  transition: opacity var(--dur-med) var(--hero-strike-ease),
+              transform var(--dur-med) var(--hero-strike-ease);
 }
 
 /* Eyebrow row — accent dot is the signature beat (burnt-orange square
@@ -310,9 +433,58 @@ section { position: relative; }
 /* ── Hairline divider ─────────────────────────────────────────── */
 .hairline { height: 1px; background: var(--line); width: 100%; }
 
+/* ── Section vignette — faint top-edge light, barely there ────── */
+.vignette::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    120% 55% at 50% 0%,
+    rgba(236, 230, 214, 0.022),
+    transparent 55%
+  );
+}
+
+/* ── Chalk dust — sparse drifting motes in the hero only ──────── */
+.hero-dust {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.hero-dust span {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: rgba(236, 230, 214, 0.35);
+  opacity: 0;
+  animation: dust-drift 18s linear infinite;
+  will-change: transform, opacity;
+}
+@keyframes dust-drift {
+  0%   { transform: translate3d(0, 0, 0); opacity: 0; }
+  12%  { opacity: 0.5; }
+  55%  { opacity: 0.22; }
+  100% { transform: translate3d(26px, -110px, 0); opacity: 0; }
+}
+.hero-dust span:nth-child(1) { left: 12%; top: 68%; animation-duration: 16s; }
+.hero-dust span:nth-child(2) { left: 26%; top: 42%; animation-duration: 22s; animation-delay: -6s; width: 3px; height: 3px; }
+.hero-dust span:nth-child(3) { left: 41%; top: 76%; animation-duration: 19s; animation-delay: -11s; }
+.hero-dust span:nth-child(4) { left: 55%; top: 30%; animation-duration: 24s; animation-delay: -3s; }
+.hero-dust span:nth-child(5) { left: 67%; top: 62%; animation-duration: 17s; animation-delay: -9s; width: 3px; height: 3px; }
+.hero-dust span:nth-child(6) { left: 78%; top: 48%; animation-duration: 21s; animation-delay: -14s; }
+.hero-dust span:nth-child(7) { left: 88%; top: 71%; animation-duration: 20s; animation-delay: -5s; }
+.hero-dust span:nth-child(8) { left: 34%; top: 22%; animation-duration: 25s; animation-delay: -17s; }
+/* Cost control: no dust on mobile or under reduced motion. */
+@media (max-width: 860px), (prefers-reduced-motion: reduce) {
+  .hero-dust { display: none; }
+}
+
 /* ── Hero specific ────────────────────────────────────────────── */
 .hero-headline {
-  font-size: clamp(64px, 11vw, 184px);
+  font-size: var(--text-display-xl);
 }
 .hero-headline em {
   font-family: var(--serif);
@@ -349,7 +521,7 @@ section { position: relative; }
 .acc-trigger:hover { color: var(--accent); }
 .acc-trigger .plus { font-family: var(--body); font-weight: 300; font-size: 22px; color: var(--fg-mute); transition: transform 240ms ease, color 240ms ease; }
 .acc-item.open .acc-trigger .plus { transform: rotate(45deg); color: var(--accent); }
-.acc-content { max-height: 0; overflow: hidden; transition: max-height 360ms cubic-bezier(.2,.7,.2,1); }
+.acc-content { max-height: 0; overflow: hidden; transition: max-height var(--dur-med) var(--ease-std); }
 .acc-item.open .acc-content { max-height: 600px; }
 .acc-inner { padding: 0 0 28px; max-width: 720px; color: var(--fg-soft); font-size: 16px; line-height: 1.65; }
 
@@ -359,15 +531,33 @@ section { position: relative; }
   padding: 32px 28px 28px;
   position: relative;
   background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.01) 100%);
-  transition: border-color 240ms ease, transform 240ms ease;
+  transition: border-color 240ms ease, transform 240ms ease, box-shadow 240ms ease;
 }
-.pillar:hover { border-color: var(--line-strong); transform: translateY(-2px); }
+.pillar:hover {
+  border-color: var(--line-strong);
+  transform: translateY(-2px);
+  /* Inner hairline + barely-there ember glow. */
+  box-shadow: inset 0 0 0 1px rgba(236, 230, 214, 0.03),
+              0 14px 44px -20px rgba(200, 78, 42, 0.22);
+}
 .pillar .num {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--text-xs);
   color: var(--fg-mute);
   letter-spacing: 0.2em;
   margin-bottom: 36px;
+  /* Numeral strikes in with its card (delay inherited from the
+     pillar's inline stagger). */
+  opacity: 0;
+  transform: translate3d(0, 10px, 0);
+  transition: opacity var(--dur-med) var(--ease-strike),
+              transform var(--dur-med) var(--ease-strike);
+  transition-delay: inherit;
+}
+.pillar.in .num,
+.pillar:not(.reveal) .num {
+  opacity: 1;
+  transform: none;
 }
 .pillar h3 {
   font-family: var(--display);
@@ -454,15 +644,32 @@ section { position: relative; }
 .nav-links { display: flex; gap: 36px; }
 @media (max-width: 860px) { .nav-links { display: none; } }
 .nav-link {
+  position: relative;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--text-xs);
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--fg-soft);
   text-decoration: none;
-  transition: color 200ms ease;
+  transition: color var(--dur-fast) ease;
 }
-.nav-link:hover { color: var(--accent); }
+/* Underline draws in left-to-right on hover/focus — same strike ease. */
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-med) var(--ease-strike);
+}
+.nav-link:hover,
+.nav-link:focus-visible { color: var(--accent); }
+.nav-link:hover::after,
+.nav-link:focus-visible::after { transform: scaleX(1); }
 
 /* ── Mobile nav (hamburger + overlay) ─────────────────────────── */
 .mobile-nav-trigger {
@@ -672,6 +879,7 @@ section { position: relative; }
 
 /* ── Method spacing on mobile (tighten gap above cards, in cards) ─ */
 @media (max-width: 720px) {
+  .section-head { margin-bottom: var(--space-10); }
   .method-head { margin-bottom: 40px !important; }
   .pillar      { padding: 22px 20px 22px; }
   .pillar .num { margin-bottom: 16px; }
@@ -695,5 +903,6 @@ section { position: relative; }
   .reveal { opacity: 1; transform: none; }
   .hero-headline .line-inner { opacity: 1; transform: none; transition: none; }
   .hero-eyebrow__dot { transform: none; transition: none; }
+  .pillar .num { opacity: 1; transform: none; transition: none; }
   .mobile-nav-overlay { animation: none; }
 }

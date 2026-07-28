@@ -5,7 +5,7 @@ export function CTASection() {
   return (
     <section
       id="start"
-      className="section-pad-lg"
+      className="section-pad-lg vignette"
       style={{
         borderTop: "1px solid var(--line)",
         position: "relative",
@@ -13,37 +13,21 @@ export function CTASection() {
     >
       <div className="container">
         <h2
-          className="display reveal final-cta-headline"
+          className="display display-xl reveal strike final-cta-headline"
           style={{
-            fontSize: "clamp(64px,11vw,184px)",
             margin: "0 0 24px",
             textAlign: "center",
             lineHeight: 0.86,
-            letterSpacing: "-0.01em",
           }}
         >
-          Start the{" "}
-          <em
-            className="serif-i"
-            style={{
-              textTransform: "none",
-              color: "var(--accent)",
-              letterSpacing: "-0.02em",
-            }}
-          >
-            work
-          </em>
-          .
+          Start the <em className="em-accent">work</em>.
         </h2>
         <p
-          className="reveal reveal-delay-1"
+          className="reveal reveal-delay-1 lede"
           style={{
             textAlign: "center",
+            margin: "0 auto var(--space-14)",
             maxWidth: 560,
-            margin: "0 auto 56px",
-            color: "var(--fg-soft)",
-            fontSize: 17,
-            lineHeight: 1.6,
           }}
         >
           Try the free 5-day plan if you want to see how I program first. Or

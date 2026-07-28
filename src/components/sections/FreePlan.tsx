@@ -8,49 +8,15 @@ export function FreePlan() {
       style={{ borderTop: "1px solid var(--line)" }}
     >
       <div className="container">
-        <div
-          className="reveal"
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "flex-end",
-            gap: 40,
-            flexWrap: "wrap",
-          }}
-        >
+        <div className="reveal strike section-head" style={{ marginBottom: 0 }}>
           <div style={{ maxWidth: 760 }}>
-            <h2
-              className="display"
-              style={{
-                fontSize: "clamp(40px,6vw,84px)",
-                margin: 0,
-                letterSpacing: "-0.005em",
-              }}
-            >
-              A real{" "}
-              <em
-                className="serif-i"
-                style={{
-                  textTransform: "none",
-                  color: "var(--fg-soft)",
-                  letterSpacing: "-0.02em",
-                }}
-              >
-                five-day
-              </em>
+            <h2 className="display display-lg" style={{ margin: 0 }}>
+              A real <em>five-day</em>
               <br />
               plan, on me.
             </h2>
           </div>
-          <p
-            style={{
-              maxWidth: 360,
-              fontSize: 15.5,
-              lineHeight: 1.65,
-              color: "var(--fg-soft)",
-              margin: 0,
-            }}
-          >
+          <p className="side-note">
             Three training days, two mobility days. Beginner-appropriate.
             Written like a paying client&rsquo;s program. No upsell.
           </p>
@@ -59,7 +25,7 @@ export function FreePlan() {
         <div
           className="reveal reveal-delay-1"
           style={{
-            marginTop: 56,
+            marginTop: "var(--space-14)",
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
@@ -70,9 +36,9 @@ export function FreePlan() {
           <p
             style={{
               margin: 0,
-              maxWidth: 560,
+              maxWidth: "var(--measure)",
               color: "var(--fg-soft)",
-              fontSize: 15,
+              fontSize: "var(--text-base)",
               lineHeight: 1.6,
             }}
           >

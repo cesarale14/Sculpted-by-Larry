@@ -40,7 +40,10 @@ export function Logo({
   };
 
   const inner = (
-    <>
+    // aria-hidden: the visible word renders as "SC<svg U>LPTED", which a
+    // screen reader (and axe's label-content-name-mismatch) would read as
+    // "SCLPTED". The aria-label on the wrapper carries the real name.
+    <span aria-hidden="true" style={{ display: "inline-flex", alignItems: "baseline", gap: "inherit" }}>
       <span className="sbl-logo__word">
         SC
         <svg
@@ -57,7 +60,7 @@ export function Logo({
       {showByLarry && (
         <span className="sbl-logo__by">by Larry</span>
       )}
-    </>
+    </span>
   );
 
   const classes = ["sbl-logo", className].filter(Boolean).join(" ");
