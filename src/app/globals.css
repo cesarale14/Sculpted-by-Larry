@@ -261,6 +261,8 @@ section { position: relative; }
   outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
+/* Weighted press — the button physically gives under the click. */
+.btn:active { transform: translateY(1px); }
 
 /* ── Inputs ───────────────────────────────────────────────────── */
 .field {
@@ -345,13 +347,15 @@ section { position: relative; }
 .hero-headline.in .line-mask:nth-of-type(2) .line-inner { transition-delay: 280ms; }
 .hero-headline.in .line-mask:nth-of-type(3) .line-inner { transition-delay: 360ms; }
 
-/* .hero-strike: override the gentler default .reveal transition with
-   the impact-pass character — 360ms hard-decelerate strike for the
-   supporting elements (eyebrow, paragraph, CTAs). Same vocabulary as
-   the headline lines, scaled down so the headline stays the lead. */
-.reveal.hero-strike {
-  transition: opacity 360ms var(--hero-strike-ease),
-              transform 360ms var(--hero-strike-ease);
+/* .hero-strike / .strike: override the gentler default .reveal
+   transition with the impact-pass character — 360ms hard-decelerate
+   strike. .strike is the site-wide variant applied to section
+   headlines so the hero's vocabulary carries through the whole page;
+   supporting blocks keep the slower default fade so headlines lead. */
+.reveal.hero-strike,
+.reveal.strike {
+  transition: opacity var(--dur-med) var(--hero-strike-ease),
+              transform var(--dur-med) var(--hero-strike-ease);
 }
 
 /* Eyebrow row — accent dot is the signature beat (burnt-orange square
@@ -447,10 +451,22 @@ section { position: relative; }
 .pillar:hover { border-color: var(--line-strong); transform: translateY(-2px); }
 .pillar .num {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--text-xs);
   color: var(--fg-mute);
   letter-spacing: 0.2em;
   margin-bottom: 36px;
+  /* Numeral strikes in with its card (delay inherited from the
+     pillar's inline stagger). */
+  opacity: 0;
+  transform: translate3d(0, 10px, 0);
+  transition: opacity var(--dur-med) var(--ease-strike),
+              transform var(--dur-med) var(--ease-strike);
+  transition-delay: inherit;
+}
+.pillar.in .num,
+.pillar:not(.reveal) .num {
+  opacity: 1;
+  transform: none;
 }
 .pillar h3 {
   font-family: var(--display);
@@ -537,15 +553,32 @@ section { position: relative; }
 .nav-links { display: flex; gap: 36px; }
 @media (max-width: 860px) { .nav-links { display: none; } }
 .nav-link {
+  position: relative;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--text-xs);
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--fg-soft);
   text-decoration: none;
-  transition: color 200ms ease;
+  transition: color var(--dur-fast) ease;
 }
-.nav-link:hover { color: var(--accent); }
+/* Underline draws in left-to-right on hover/focus — same strike ease. */
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-med) var(--ease-strike);
+}
+.nav-link:hover,
+.nav-link:focus-visible { color: var(--accent); }
+.nav-link:hover::after,
+.nav-link:focus-visible::after { transform: scaleX(1); }
 
 /* ── Mobile nav (hamburger + overlay) ─────────────────────────── */
 .mobile-nav-trigger {
@@ -779,5 +812,6 @@ section { position: relative; }
   .reveal { opacity: 1; transform: none; }
   .hero-headline .line-inner { opacity: 1; transform: none; transition: none; }
   .hero-eyebrow__dot { transform: none; transition: none; }
+  .pillar .num { opacity: 1; transform: none; transition: none; }
   .mobile-nav-overlay { animation: none; }
 }

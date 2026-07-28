@@ -12,7 +12,7 @@ export function ProgramCards() {
       style={{ borderTop: "1px solid var(--line)" }}
     >
       <div className="container">
-        <div className="reveal section-head">
+        <div className="reveal strike section-head">
           <div>
             <h2 className="display display-lg" style={{ margin: 0 }}>
               How we <em>work together</em>.

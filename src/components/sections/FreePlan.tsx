@@ -8,7 +8,7 @@ export function FreePlan() {
       style={{ borderTop: "1px solid var(--line)" }}
     >
       <div className="container">
-        <div className="reveal section-head" style={{ marginBottom: 0 }}>
+        <div className="reveal strike section-head" style={{ marginBottom: 0 }}>
           <div style={{ maxWidth: 760 }}>
             <h2 className="display display-lg" style={{ margin: 0 }}>
               A real <em>five-day</em>

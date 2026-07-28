@@ -21,8 +21,8 @@ export function Testimonials() {
     >
       <div className="container">
         <div
-          className="reveal"
-          style={{ marginBottom: 64, maxWidth: 760 }}
+          className="reveal strike"
+          style={{ marginBottom: "var(--space-16)", maxWidth: 760 }}
         >
           <span className="eyebrow">
             <span className="dot" aria-hidden="true"></span>From clients

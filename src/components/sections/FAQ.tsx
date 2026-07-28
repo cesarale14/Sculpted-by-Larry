@@ -40,7 +40,7 @@ export function FAQ() {
     >
       <div className="container">
         <div className="faq-grid">
-          <div className="reveal">
+          <div className="reveal strike">
             <span className="eyebrow">
               <span className="dot" aria-hidden="true"></span>FAQ
             </span>

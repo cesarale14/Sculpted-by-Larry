@@ -13,7 +13,7 @@ export function CTASection() {
     >
       <div className="container">
         <h2
-          className="display display-xl reveal final-cta-headline"
+          className="display display-xl reveal strike final-cta-headline"
           style={{
             margin: "0 0 24px",
             textAlign: "center",

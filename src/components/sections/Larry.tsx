@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { BRAND } from "@/lib/constants";
+import { Parallax } from "@/components/ui/Parallax";
 
 /**
  * Larry section — credibility home.
@@ -34,17 +35,19 @@ export function Larry() {
       <div className="container">
         <div className="larry-grid">
           <div className="reveal larry-portrait-wrap">
-            <Image
-              src="/images/larry-portrait.jpg"
-              alt="Larry Faria — coach"
-              width={900}
-              height={1200}
-              sizes="(max-width: 880px) 100vw, 45vw"
-              className="larry-portrait-img"
-            />
+            <Parallax amount={18} baseScale={1.08} style={{ height: "100%" }}>
+              <Image
+                src="/images/larry-portrait.jpg"
+                alt="Larry Faria — coach"
+                width={900}
+                height={1200}
+                sizes="(max-width: 880px) 100vw, 45vw"
+                className="larry-portrait-img"
+              />
+            </Parallax>
           </div>
 
-          <div className="reveal reveal-delay-1 larry-copy">
+          <div className="reveal strike reveal-delay-1 larry-copy">
             <h2
               className="display display-lg larry-headline"
               style={{ margin: "0 0 24px" }}
