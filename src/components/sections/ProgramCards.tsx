@@ -137,7 +137,7 @@ export function ProgramCards() {
                           position: "absolute",
                           top: -1,
                           right: -1,
-                          background: "var(--accent)",
+                          background: "var(--accent-bright)",
                           color: "var(--accent-fg)",
                           fontFamily: "var(--mono)",
                           fontSize: 9,

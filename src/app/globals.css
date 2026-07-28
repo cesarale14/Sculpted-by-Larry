@@ -11,6 +11,7 @@
   --color-line: #2A2723;
   --color-line-strong: #3D3933;
   --color-accent: #C84E2A;      /* burnt orange — site/PDF brand unification */
+  --color-accent-bright: #CD5530; /* accent-as-surface under dark text (WCAG AA at 13px) */
   --color-accent-soft: #A03A20;
   --color-accent-fg: #0B0B0B;
   --color-danger: #C84A38;
@@ -92,6 +93,7 @@
   --line: #2A2723;
   --line-strong: #3D3933;
   --accent: #C84E2A;
+  --accent-bright: #CD5530; /* accent surfaces that carry dark text */
   --accent-soft: #A03A20;
   --accent-fg: #0B0B0B;
   --danger: #C84A38;
@@ -260,7 +262,9 @@ section { position: relative; }
   white-space: nowrap;
 }
 .btn-primary {
-  background: var(--accent);
+  /* --accent-bright, not --accent: dark 13px text on ember needs the
+     slightly brighter surface to clear WCAG AA (4.5:1). */
+  background: var(--accent-bright);
   color: var(--accent-fg);
 }
 .btn-primary:hover { background: var(--fg); color: var(--bg); }
