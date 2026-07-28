@@ -1,12 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useReveal } from "@/lib/useReveal";
 import { CAL_BOOKING_URL } from "@/lib/constants";
 
+// Reveal observation is owned globally by SiteChrome (useReveal per pathname),
+// so the Hero no longer mounts its own observer.
 export function Hero() {
-  useReveal();
-
   return (
     <section id="top" className="hero-pad">
       <div className="container" style={{ marginBottom: 40 }}>

@@ -11,7 +11,7 @@ type PlanKey = "monthly" | "quarterly" | "yearly";
  * The three commitment tiers a client can pick on /start.
  * - monthly  → recurring Stripe subscription ($199/mo)
  * - quarterly → one-time payment ($499, the existing confirmed price)
- * - yearly   → one-time payment ($999)
+ * - yearly   → one-time payment ($1,599)
  *
  * Price ids come from env (Cesar adds the real live ids in .env.local + Vercel).
  * Quarterly keeps a fallback to the already-confirmed live price so the existing
@@ -35,7 +35,7 @@ const PLAN_CONFIG: Record<
   yearly: {
     mode: "payment",
     priceEnv: "STRIPE_PRICE_YEARLY",
-    label: "Online Coaching — Yearly ($999)",
+    label: "Online Coaching — Yearly ($1,599)",
   },
 };
 

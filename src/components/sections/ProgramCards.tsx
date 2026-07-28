@@ -51,8 +51,8 @@ export function ProgramCards() {
               margin: 0,
             }}
           >
-            One program, billed as online coaching — anywhere with a gym and a
-            phone. Tampa locals also train with me in person. It starts with a
+            Online coaching — anywhere with a gym and a phone. In-person
+            training in Tampa, priced separately. Either way, it starts with a
             15-minute call.
           </p>
         </div>
@@ -225,7 +225,8 @@ export function ProgramCards() {
           </div>
         </div>
 
-        {/* Tampa in-person — same online product, coordinated in person for locals */}
+        {/* Tampa in-person — its own product, quote-only. From $70/week; the
+            exact price is set in conversation with Larry, never published. */}
         <div
           className="reveal tampa-strip"
           style={{
@@ -251,7 +252,7 @@ export function ProgramCards() {
                 marginBottom: 8,
               }}
             >
-              Tampa local?
+              Tampa local? Train with me in person — from $70/week.
             </div>
             <p
               style={{
@@ -261,8 +262,9 @@ export function ProgramCards() {
                 margin: 0,
               }}
             >
-              Larry coordinates in-person sessions with local clients directly —
-              same program, same price. Just say so on your call.
+              In-person is its own thing. I price it in the room, not on a
+              pricing page — depends on your schedule, your goals, how often we
+              train. Book the call and we&rsquo;ll set it.
             </p>
           </div>
           <a

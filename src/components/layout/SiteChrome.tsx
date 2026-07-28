@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { useReveal } from "@/lib/useReveal";
 
 /**
  * Routes that intentionally provide their own focused chrome (their own header
@@ -25,6 +26,10 @@ function isFocused(pathname: string): boolean {
 
 export function SiteChrome({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+
+  // Observe .reveal elements on every route (re-scans on navigation). Focused
+  // routes have none — the hook is a no-op there.
+  useReveal(pathname);
 
   // Focused routes own their <main id="main"> and chrome entirely.
   if (isFocused(pathname)) {

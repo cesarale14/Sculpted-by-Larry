@@ -5,7 +5,7 @@ import { CTASection } from "@/components/sections/CTASection";
 export const metadata: Metadata = {
   title: "Programs · Sculpted by Larry",
   description:
-    "Online coaching, one program — $199/mo, $499/quarter, or $999/year. Tampa locals also train in person. Real coaching, not template programs.",
+    "Online coaching, one program — $199/mo, $499/quarter, or $1,599/year. In-person training in Tampa from $70/week. Real coaching, not template programs.",
 };
 
 export default function ProgramsPage() {
