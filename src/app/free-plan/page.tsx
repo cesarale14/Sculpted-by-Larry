@@ -9,44 +9,89 @@ export const metadata: Metadata = {
 
 export default function FreePlanPage() {
   return (
-    <section className="min-h-screen bg-navy">
-      <div className="max-w-2xl mx-auto px-5 sm:px-6 lg:px-8 pt-24 pb-16 sm:pt-28 sm:pb-24 md:pt-32 md:pb-32 text-center">
-        <h1 className="font-heading text-4xl md:text-5xl font-bold text-white leading-[1.05]">
-          You&apos;ve started before.
-        </h1>
-        <p className="mt-3 font-heading italic text-2xl md:text-3xl text-gold leading-tight">
-          You&apos;ve stopped before, too.
+    <section className="section-pad" style={{ minHeight: "100vh" }}>
+      <div
+        className="container"
+        style={{ maxWidth: 720, paddingTop: 80, textAlign: "center" }}
+      >
+        <p
+          className="eyebrow"
+          style={{ display: "inline-flex", justifyContent: "center" }}
+        >
+          <span className="dot" aria-hidden="true" />
+          The free 5-day plan
         </p>
 
-        <div className="mt-12 font-body text-lg md:text-xl text-gray-300 leading-relaxed space-y-6">
-          <p>
+        <h1
+          className="display display-md"
+          style={{ margin: "24px 0 0" }}
+        >
+          You&apos;ve started before.
+          <br />
+          <em>You&apos;ve stopped before, too.</em>
+        </h1>
+
+        <div
+          className="lede"
+          style={{
+            margin: "40px auto 0",
+            maxWidth: 560,
+            display: "flex",
+            flexDirection: "column",
+            gap: 24,
+            textAlign: "center",
+          }}
+        >
+          <p style={{ margin: 0 }}>
             Most people don&apos;t quit fitness because they&apos;re lazy.
             <br />
             They quit because nobody ever taught them what they were doing.
           </p>
-          <p>This is a 5-day plan I built for that.</p>
-          <p>
+          <p style={{ margin: 0 }}>This is a 5-day plan I built for that.</p>
+          <p style={{ margin: 0 }}>
             Five workouts. The nutrition rule that actually matters.
             <br />
             No filler. No shortcuts. No &ldquo;just trust the process.&rdquo;
           </p>
-          <p>
+          <p style={{ margin: 0 }}>
             If you want to feel what real programming feels like
             <br />
             before you ever pay anyone — start here.
           </p>
         </div>
 
-        <p className="mt-10 font-body text-sm text-gray-400">
+        <p
+          className="serif-i"
+          style={{
+            marginTop: 40,
+            fontSize: 16,
+            color: "var(--fg-mute)",
+          }}
+        >
           — Larry, ISSA Certified Trainer · Tampa, FL
         </p>
 
-        <div className="mt-10 bg-navy-light rounded-2xl p-6 md:p-8 border border-navy-lighter">
+        <div
+          style={{
+            marginTop: 40,
+            border: "1px solid var(--line)",
+            background: "var(--bg-soft)",
+            padding: "var(--space-8)",
+          }}
+        >
           <LeadCaptureForm />
         </div>
 
-        <p className="mt-6 font-body text-xs text-gray-500">
-          (One email. The plan. No spam. Reply if you want to talk.)
+        <p
+          style={{
+            marginTop: 24,
+            fontSize: 12,
+            color: "var(--fg-mute)",
+            fontFamily: "var(--mono)",
+            letterSpacing: "0.04em",
+          }}
+        >
+          One email. The plan. No spam. Reply if you want to talk.
         </p>
       </div>
     </section>
