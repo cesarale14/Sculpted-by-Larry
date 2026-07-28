@@ -113,7 +113,14 @@ body {
   font-feature-settings: "ss01", "cv11";
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  /* Horizontal clip WITHOUT creating a scroll container. overflow-x:
+     hidden turns body into a scroll container in engines that don't
+     propagate body overflow to the viewport, which silently defeats
+     every position:sticky descendant (the pinned Method section).
+     clip clips the same overflow but can never capture stickiness.
+     The hidden line is only the fallback for pre-2022 engines. */
   overflow-x: hidden;
+  overflow-x: clip;
 }
 
 ::selection { background: var(--accent); color: var(--accent-fg); }
