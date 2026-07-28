@@ -8,6 +8,10 @@ import { CAL_BOOKING_URL } from "@/lib/constants";
 export function Hero() {
   return (
     <section id="top" className="hero-pad">
+      <div className="hero-dust" aria-hidden="true">
+        <span /><span /><span /><span />
+        <span /><span /><span /><span />
+      </div>
       <div className="container" style={{ marginBottom: 40 }}>
         <div
           className="hero-eyebrow reveal hero-strike"

@@ -5,7 +5,7 @@ export function CTASection() {
   return (
     <section
       id="start"
-      className="section-pad-lg"
+      className="section-pad-lg vignette"
       style={{
         borderTop: "1px solid var(--line)",
         position: "relative",

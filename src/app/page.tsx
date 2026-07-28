@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Hero } from "@/components/sections/Hero";
 import { Method } from "@/components/sections/Method";
+import { PhotoBand } from "@/components/sections/PhotoBand";
 import { FreePlan } from "@/components/sections/FreePlan";
 import { Larry } from "@/components/sections/Larry";
 import { Testimonials } from "@/components/sections/Testimonials";
@@ -28,6 +29,7 @@ export default function Home() {
     <>
       <Hero />
       <Method />
+      <PhotoBand />
       <FreePlan />
       <Larry />
       <Testimonials />

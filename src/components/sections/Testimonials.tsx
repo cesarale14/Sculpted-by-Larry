@@ -109,6 +109,11 @@ export function Testimonials() {
           flex-direction: column;
           justify-content: space-between;
           min-height: 280px;
+          transition: box-shadow 240ms ease;
+        }
+        .testimonial-card:hover {
+          box-shadow: inset 0 0 0 1px rgba(236, 230, 214, 0.03),
+                      0 14px 44px -20px rgba(200, 78, 42, 0.18);
         }
       `}</style>
     </section>

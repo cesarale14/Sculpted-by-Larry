@@ -26,7 +26,7 @@ export function Larry() {
   return (
     <section
       id="larry"
-      className="section-pad"
+      className="section-pad vignette"
       style={{
         borderTop: "1px solid var(--line)",
         background: "var(--bg-soft)",
