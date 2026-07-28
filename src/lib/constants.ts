@@ -43,9 +43,9 @@ export const ONLINE_TIERS = [
   },
   {
     id: "annual",
-    price: "$999",
+    price: "$1,599",
     cadence: "per year",
-    note: "Save $1,389. For people who already know they're staying.",
+    note: "Save $789. For people who already know they're staying.",
   },
 ] as const;
 
@@ -75,7 +75,7 @@ export const START_PLANS = [
   {
     key: "yearly",
     name: "Yearly",
-    price: "$999",
+    price: "$1,599",
     cadence: "",
     terms: "One-time · 12 months",
     tagline: "Best value.",

@@ -21,11 +21,11 @@ const items = [
   },
   {
     q: "I'm in Tampa — can we train in person?",
-    a: "Yes. Everyone's on the same online coaching program, but if you're local I coordinate in-person sessions with you directly — same program, same price. Tell me on your call and we'll set it up.",
+    a: "Yes. In-person training is its own program with its own pricing — it starts from $70/week, and the exact number depends on how often we train and what you're after. I quote it in conversation, not on a pricing page. Book the call and we'll set it.",
   },
   {
     q: "I'm not in Florida. Can I still work with you?",
-    a: "Absolutely — online coaching is the whole product, and it's the same wherever you live. The only thing that changes for Tampa locals is we can also meet in person.",
+    a: "Absolutely — online coaching is the same wherever you live. Tampa locals get one extra option: in-person training, priced separately.",
   },
 ];
 

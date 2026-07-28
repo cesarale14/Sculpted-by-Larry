@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Logo } from "@/components/ui/Logo";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -27,6 +27,26 @@ export function PayFlow() {
 
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Prefill from query params so Larry can text exact quote links, e.g.
+  // /pay?amount=70&billing=weekly. Values pass the same validation as manual
+  // entry; anything invalid is silently ignored and the form stays blank.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+
+    const rawAmount = params.get("amount");
+    if (rawAmount && /^\d+$/.test(rawAmount)) {
+      const n = Number(rawAmount);
+      if (Number.isInteger(n) && n >= MIN_AMOUNT && n <= MAX_AMOUNT) {
+        setAmount(String(n));
+      }
+    }
+
+    const rawBilling = params.get("billing");
+    if (rawBilling === "one_time" || rawBilling === "weekly" || rawBilling === "monthly") {
+      setBilling(rawBilling);
+    }
+  }, []);
 
   // Whole dollars only — strip anything that isn't a digit as the client types.
   function handleAmountChange(e: React.ChangeEvent<HTMLInputElement>) {
