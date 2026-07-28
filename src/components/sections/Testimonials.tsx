@@ -27,26 +27,8 @@ export function Testimonials() {
           <span className="eyebrow">
             <span className="dot" aria-hidden="true"></span>From clients
           </span>
-          <h2
-            className="display"
-            style={{
-              fontSize: "clamp(40px,6vw,84px)",
-              margin: "20px 0 0",
-              letterSpacing: "-0.005em",
-            }}
-          >
-            What people{" "}
-            <em
-              className="serif-i"
-              style={{
-                textTransform: "none",
-                color: "var(--fg-soft)",
-                letterSpacing: "-0.02em",
-              }}
-            >
-              actually say
-            </em>
-            .
+          <h2 className="display display-lg" style={{ margin: "20px 0 0" }}>
+            What people <em>actually say</em>.
           </h2>
         </div>
 

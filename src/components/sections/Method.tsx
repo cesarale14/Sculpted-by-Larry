@@ -29,52 +29,18 @@ export function Method() {
       style={{ borderTop: "1px solid var(--line)" }}
     >
       <div className="container">
-        <div
-          className="reveal method-head"
-          style={{
-            marginBottom: 72,
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "flex-end",
-            gap: 40,
-            flexWrap: "wrap",
-          }}
-        >
+        <div className="reveal method-head section-head">
           <div style={{ maxWidth: 720 }}>
             <span className="eyebrow">
               <span className="dot" aria-hidden="true"></span>The Method
             </span>
-            <h2
-              className="display"
-              style={{
-                fontSize: "clamp(40px,6vw,84px)",
-                margin: "20px 0 0",
-                letterSpacing: "-0.005em",
-              }}
-            >
+            <h2 className="display display-lg" style={{ margin: "20px 0 0" }}>
               Four phases.
               <br />
-              <em
-                className="serif-i"
-                style={{
-                  textTransform: "none",
-                  color: "var(--fg-soft)",
-                  letterSpacing: "-0.02em",
-                }}
-              >
-                One outcome.
-              </em>
+              <em>One outcome.</em>
             </h2>
           </div>
-          <p
-            style={{
-              maxWidth: 360,
-              fontSize: 15.5,
-              lineHeight: 1.65,
-              color: "var(--fg-soft)",
-              margin: 0,
-            }}
-          >
+          <p className="side-note">
             Same system, every client. Adapted to your body, your schedule,
             your goals.
           </p>

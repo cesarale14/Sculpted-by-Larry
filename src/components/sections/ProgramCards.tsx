@@ -12,45 +12,13 @@ export function ProgramCards() {
       style={{ borderTop: "1px solid var(--line)" }}
     >
       <div className="container">
-        <div
-          className="reveal"
-          style={{
-            marginBottom: 64,
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "flex-end",
-            flexWrap: "wrap",
-            gap: 32,
-          }}
-        >
+        <div className="reveal section-head">
           <div>
-            <h2
-              className="display"
-              style={{ fontSize: "clamp(40px,6vw,84px)", margin: 0 }}
-            >
-              How we{" "}
-              <em
-                className="serif-i"
-                style={{
-                  textTransform: "none",
-                  color: "var(--fg-soft)",
-                  letterSpacing: "-0.02em",
-                }}
-              >
-                work together
-              </em>
-              .
+            <h2 className="display display-lg" style={{ margin: 0 }}>
+              How we <em>work together</em>.
             </h2>
           </div>
-          <p
-            style={{
-              maxWidth: 360,
-              fontSize: 14.5,
-              lineHeight: 1.6,
-              color: "var(--fg-soft)",
-              margin: 0,
-            }}
-          >
+          <p className="side-note">
             Online coaching — anywhere with a gym and a phone. In-person
             training in Tampa, priced separately. Either way, it starts with a
             15-minute call.

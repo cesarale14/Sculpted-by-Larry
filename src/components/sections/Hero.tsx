@@ -42,11 +42,9 @@ export function Hero() {
 
       <div className="container" style={{ marginTop: 64 }}>
         <p
-          className="reveal hero-strike"
+          className="reveal hero-strike lede"
           style={{
-            fontSize: 17,
             lineHeight: 1.55,
-            color: "var(--fg-soft)",
             margin: "0 0 32px",
             maxWidth: 540,
             transitionDelay: "500ms",

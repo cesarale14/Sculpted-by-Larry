@@ -45,25 +45,10 @@ export function FAQ() {
               <span className="dot" aria-hidden="true"></span>FAQ
             </span>
             <h2
-              className="display faq-headline"
-              style={{
-                fontSize: "clamp(40px,5vw,72px)",
-                margin: "20px 0 0",
-                letterSpacing: "-0.005em",
-              }}
+              className="display display-md faq-headline"
+              style={{ margin: "20px 0 0" }}
             >
-              Direct answers to{" "}
-              <em
-                className="serif-i"
-                style={{
-                  textTransform: "none",
-                  color: "var(--fg-soft)",
-                  letterSpacing: "-0.02em",
-                }}
-              >
-                direct
-              </em>{" "}
-              questions.
+              Direct answers to <em>direct</em> questions.
             </h2>
           </div>
           <div className="reveal reveal-delay-1">

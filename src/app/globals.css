@@ -45,6 +45,41 @@
   --container: 1280px;
   --gutter: clamp(20px, 4vw, 56px);
 
+  /* ── Motion tokens ─────────────────────────────────────────────
+     --ease-strike is the hero's shipped curve (hard decelerate,
+     locks dead, zero overshoot) — the site-wide signature.
+     --ease-std is the softer standard for micro-interactions. */
+  --ease-strike: cubic-bezier(0.2, 0.9, 0.1, 1);
+  --ease-std: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --dur-fast: 200ms;   /* hovers, color shifts */
+  --dur-med: 360ms;    /* strikes, accordion, step transitions */
+  --dur-slow: 800ms;   /* scroll reveals */
+
+  /* ── Spacing scale (4px base) ─────────────────────────────────── */
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-14: 56px;
+  --space-16: 64px;
+  --space-18: 72px;
+
+  /* ── Fluid type scale ─────────────────────────────────────────── */
+  --text-xs: 11px;                                /* mono labels, eyebrows */
+  --text-sm: 13px;                                /* buttons, captions */
+  --text-base: clamp(14.5px, 0.35vw + 13.5px, 15.5px);  /* body copy */
+  --text-lede: clamp(16px, 0.45vw + 14.8px, 17px);      /* lead paragraphs */
+  --text-display-xl: clamp(64px, 11vw, 184px);    /* hero / final CTA */
+  --text-display-lg: clamp(40px, 6vw, 84px);      /* section headlines */
+  --text-display-md: clamp(40px, 5vw, 72px);      /* dense headlines (FAQ) */
+
+  /* ── Measure ──────────────────────────────────────────────────── */
+  --measure: 60ch;        /* body copy */
+  --measure-narrow: 360px; /* side notes next to headlines */
+
   /* Mirror tokens as plain CSS vars so the design's .display / .eyebrow /
      .btn / .pillar / .acc-* / .nav classes can use var(--bg) etc. without
      the --color- prefix Tailwind requires. */
@@ -88,7 +123,54 @@ body {
   letter-spacing: -0.01em;
   line-height: 0.88;
   text-transform: uppercase;
+  font-variant-numeric: tabular-nums lining-nums; /* prices align */
 }
+
+/* Serif-italic counterpoint inside display type — one rule instead of
+   per-section inline styles. Sections write <em>word</em> and get the
+   Instrument Serif contrast beat for free. */
+.display em {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  text-transform: none;
+  color: var(--fg-soft);
+  letter-spacing: -0.02em;
+}
+.display em.em-accent { color: var(--accent); }
+
+/* Display size steps — fluid, tightened tracking at scale. */
+.display-xl { font-size: var(--text-display-xl); letter-spacing: -0.01em; }
+.display-lg { font-size: var(--text-display-lg); letter-spacing: -0.005em; }
+.display-md { font-size: var(--text-display-md); letter-spacing: -0.005em; }
+
+/* Balance wrapped headline lines (no-op on single-line and on the
+   hero's manual line-masks). */
+h1.display, h2.display, h3.display { text-wrap: balance; }
+
+/* Section head: headline + side-note row used by every public section. */
+.section-head {
+  margin-bottom: var(--space-16);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--space-10);
+  flex-wrap: wrap;
+}
+.side-note {
+  max-width: var(--measure-narrow);
+  font-size: var(--text-base);
+  line-height: 1.65;
+  color: var(--fg-soft);
+  margin: 0;
+}
+.lede {
+  font-size: var(--text-lede);
+  line-height: 1.6;
+  color: var(--fg-soft);
+  max-width: var(--measure);
+}
+.tnum { font-variant-numeric: tabular-nums lining-nums; }
 
 .serif-i {
   font-family: var(--serif);
@@ -143,9 +225,10 @@ section { position: relative; }
   border: 1px solid transparent;
   border-radius: 0;
   cursor: pointer;
-  transition: background-color 220ms cubic-bezier(.2,.7,.2,1),
-              color 220ms cubic-bezier(.2,.7,.2,1),
-              border-color 220ms cubic-bezier(.2,.7,.2,1);
+  transition: background-color var(--dur-fast) var(--ease-std),
+              color var(--dur-fast) var(--ease-std),
+              border-color var(--dur-fast) var(--ease-std),
+              transform var(--dur-fast) var(--ease-std);
   background: transparent;
   color: var(--fg);
   text-decoration: none;
@@ -199,8 +282,8 @@ section { position: relative; }
 .reveal {
   opacity: 0;
   transform: translate3d(0, 24px, 0);
-  transition: opacity 800ms cubic-bezier(.2,.7,.2,1),
-              transform 800ms cubic-bezier(.2,.7,.2,1);
+  transition: opacity var(--dur-slow) var(--ease-std),
+              transform var(--dur-slow) var(--ease-std);
 }
 .reveal.in { opacity: 1; transform: none; }
 .reveal-delay-1 { transition-delay: 80ms; }
@@ -222,9 +305,9 @@ section { position: relative; }
    headline stays the lead. transform + opacity + scale only (GPU).
    Total entrance resolves in <1.0s. */
 
-/* Easing token — aggressive ease-out (hard decelerate, near-vertical
-   landing). Locks dead at end without overshoot. */
-:root { --hero-strike-ease: cubic-bezier(0.2, 0.9, 0.1, 1); }
+/* Legacy alias — the strike ease is now the site-wide --ease-strike
+   token; hero rules still reference this name. */
+:root { --hero-strike-ease: var(--ease-strike); }
 
 .line-mask {
   display: block;
@@ -312,7 +395,7 @@ section { position: relative; }
 
 /* ── Hero specific ────────────────────────────────────────────── */
 .hero-headline {
-  font-size: clamp(64px, 11vw, 184px);
+  font-size: var(--text-display-xl);
 }
 .hero-headline em {
   font-family: var(--serif);
@@ -349,7 +432,7 @@ section { position: relative; }
 .acc-trigger:hover { color: var(--accent); }
 .acc-trigger .plus { font-family: var(--body); font-weight: 300; font-size: 22px; color: var(--fg-mute); transition: transform 240ms ease, color 240ms ease; }
 .acc-item.open .acc-trigger .plus { transform: rotate(45deg); color: var(--accent); }
-.acc-content { max-height: 0; overflow: hidden; transition: max-height 360ms cubic-bezier(.2,.7,.2,1); }
+.acc-content { max-height: 0; overflow: hidden; transition: max-height var(--dur-med) var(--ease-std); }
 .acc-item.open .acc-content { max-height: 600px; }
 .acc-inner { padding: 0 0 28px; max-width: 720px; color: var(--fg-soft); font-size: 16px; line-height: 1.65; }
 
@@ -672,6 +755,7 @@ section { position: relative; }
 
 /* ── Method spacing on mobile (tighten gap above cards, in cards) ─ */
 @media (max-width: 720px) {
+  .section-head { margin-bottom: var(--space-10); }
   .method-head { margin-bottom: 40px !important; }
   .pillar      { padding: 22px 20px 22px; }
   .pillar .num { margin-bottom: 16px; }

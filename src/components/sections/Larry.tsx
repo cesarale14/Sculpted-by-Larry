@@ -46,37 +46,19 @@ export function Larry() {
 
           <div className="reveal reveal-delay-1 larry-copy">
             <h2
-              className="display larry-headline"
-              style={{
-                fontSize: "clamp(40px,6vw,84px)",
-                margin: "0 0 24px",
-                letterSpacing: "-0.005em",
-              }}
+              className="display display-lg larry-headline"
+              style={{ margin: "0 0 24px" }}
             >
               One coach.
               <br />
-              <em
-                className="serif-i"
-                style={{
-                  textTransform: "none",
-                  color: "var(--fg-soft)",
-                  letterSpacing: "-0.02em",
-                }}
-              >
-                Every rep.
-              </em>
+              <em>Every rep.</em>
               <br />
               Every result.
             </h2>
 
             <p
-              style={{
-                fontSize: 17,
-                lineHeight: 1.65,
-                color: "var(--fg-soft)",
-                margin: "0 0 22px",
-                maxWidth: 540,
-              }}
+              className="lede"
+              style={{ lineHeight: 1.65, margin: "0 0 22px" }}
             >
               I&rsquo;m Larry. I coach in Tampa, in person and online. No
               franchise. No assistant writing your program. One trainer. I
@@ -84,14 +66,13 @@ export function Larry() {
             </p>
 
             <p
+              className="serif-i"
               style={{
                 fontSize: 16,
                 lineHeight: 1.65,
                 color: "var(--fg-mute)",
                 margin: "0 0 36px",
-                maxWidth: 540,
-                fontStyle: "italic",
-                fontFamily: "var(--serif)",
+                maxWidth: "var(--measure)",
               }}
             >
               &ldquo;I don&rsquo;t sell motivation. I sell structure. Show up,
