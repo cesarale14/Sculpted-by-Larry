@@ -45,9 +45,10 @@ export function Method() {
     const el = stickyRef.current;
     if (!el) return;
 
-    const mq = window.matchMedia(
-      "(min-width: 861px) and (prefers-reduced-motion: no-preference)",
-    );
+    // The pinned sequence runs at every width now (Cesar's call after
+    // production review) — only prefers-reduced-motion keeps the
+    // stacked fallback. Must stay in sync with the CSS display gate.
+    const mq = window.matchMedia("(prefers-reduced-motion: no-preference)");
 
     let raf = 0;
     const tick = () => {
@@ -91,7 +92,7 @@ export function Method() {
       id="method"
       style={{ borderTop: "1px solid var(--line)" }}
     >
-      {/* ── Pinned sequence (desktop, motion-ok) ─────────────────── */}
+      {/* ── Pinned sequence (all widths, motion-ok) ──────────────── */}
       <div className="method-sticky" ref={stickyRef}>
         <div className="method-sticky__pin">
           <div className="container">
@@ -129,7 +130,7 @@ export function Method() {
         </div>
       </div>
 
-      {/* ── Stacked fallback (mobile / reduced motion) ───────────── */}
+      {/* ── Stacked fallback (reduced motion) ────────────────────── */}
       <div className="method-stacked section-pad">
         <div className="container">
           <div className="reveal method-head section-head">
@@ -169,9 +170,12 @@ export function Method() {
       </div>
 
       <style>{`
-        /* Variant gating — exactly one renders. */
+        /* Variant gating — exactly one renders. The pinned sequence
+           runs at every width; only prefers-reduced-motion (or no CSS
+           media support) keeps the stacked fallback. Must stay in sync
+           with the matchMedia gate in the scroll driver above. */
         .method-sticky { display: none; }
-        @media (min-width: 861px) and (prefers-reduced-motion: no-preference) {
+        @media (prefers-reduced-motion: no-preference) {
           .method-sticky { display: block; }
           .method-stacked { display: none; }
         }
@@ -180,7 +184,10 @@ export function Method() {
         .method-sticky__pin {
           position: sticky;
           top: 0;
+          /* dvh so iOS Safari's collapsing chrome resizes the pin
+             smoothly instead of leaving a gap / overflowing. */
           height: 100vh;
+          height: 100dvh;
           display: flex;
           align-items: center;
           overflow: hidden;
@@ -252,6 +259,37 @@ export function Method() {
           transition: color var(--dur-fast) ease;
         }
         .method-rail__tick.active { color: var(--accent); }
+
+        /* ── Mobile tuning for the pinned sequence ─────────────────── */
+        @media (max-width: 860px) {
+          .method-sticky { height: 280vh; } /* shorter thumb travel */
+          /* Clear the fixed nav so the eyebrow + headline never sit
+             under it while pinned. */
+          .method-sticky__pin { padding-top: 84px; }
+          .method-sticky__head { margin-bottom: var(--space-8); }
+          .method-sticky__stage-area { min-height: 320px; }
+          .method-stage {
+            grid-template-columns: 1fr;
+            gap: var(--space-4);
+            align-content: start;
+          }
+          .method-stage__num {
+            font-size: 88px;
+            line-height: 0.85;
+          }
+          .method-stage__title {
+            font-size: clamp(30px, 9vw, 40px);
+            margin: 0 0 var(--space-3);
+          }
+          .method-stage__body {
+            font-size: 15px;
+            line-height: 1.6;
+          }
+          .method-sticky__rail {
+            margin-top: var(--space-10);
+            gap: var(--space-4);
+          }
+        }
       `}</style>
     </section>
   );
