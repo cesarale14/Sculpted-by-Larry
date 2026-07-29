@@ -9,8 +9,8 @@ import { Parallax } from "@/components/ui/Parallax";
  * BAND_IMAGE (and adjust BAND_POSITION if the crop needs it). Nothing else
  * in this component should need to change.
  */
-const BAND_IMAGE = "/images/larry-portrait.jpg";
-const BAND_POSITION = "center 24%";
+const BAND_IMAGE = "/images/larry-band.jpg";
+const BAND_POSITION = "center 42%";
 
 export function PhotoBand() {
   return (
